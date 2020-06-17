@@ -3,7 +3,7 @@ import DatePicker from './FormElements/DatePicker';
 
 class BenefitParams extends Component {
   renderParam = (param) => {
-    if (param.NAME.indexOf('_FLG')>-1) {
+    if (param.NAME.indexOf('_FLG')>-1 && param.TYPE !== 'S') {
       param.TYPE = 'F';
     }
 
