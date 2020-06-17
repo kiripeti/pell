@@ -240,7 +240,7 @@ class App extends Component {
                   {this.state.selectedBenefits.map((benefit) => (<BenefitParams
                     key={benefit}
                     benefit={benefit}
-                    benefitParams={this.state.benefitParams}
+                    benefitParams={this.state.benefitParams.filter((param) => param.ELLATAS_CD === benefit)}
                     benefitDescription={this.state.benefits[benefit]}
                     params={this.state.params}
                     setParam={this.setParam} />))}
