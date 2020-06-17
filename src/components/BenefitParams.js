@@ -2,6 +2,15 @@ import React, {Component} from 'react';
 import DatePicker from './FormElements/DatePicker';
 
 class BenefitParams extends Component {
+  handleNumeric = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    if (!isNaN(value)) {
+      this.props.setParam({[name]: value});
+    }
+  }
+
   renderParam = (param) => {
     if (param.NAME.indexOf('_FLG')>-1 && param.TYPE !== 'S') {
       param.TYPE = 'F';
@@ -17,7 +26,7 @@ class BenefitParams extends Component {
             name={param.NAME}
             className="cell_input"
             value={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
-            onChange={(event) => this.props.setParam({[param.NAME]: Number.parseFloat(event.target.VALUE)})} />
+            onChange={handleNumeric} />
         );
         break;
       case 'S':
@@ -30,7 +39,9 @@ class BenefitParams extends Component {
             value={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
             onChange={(event) => this.props.setParam({[param.NAME]: event.target.value})} >
             <option></option>
-            {pairs.map( (pair, index) => <option key={index} value={pair.split(':')[0]}> {pair.split(':')[1]} </option> )}
+            {pairs.map( (pair, index) => (
+              <option key={index} value={pair.split(':')[0]}> {pair.split(':')[1]} </option>
+            ))}
           </select>
         );
         if (pairs.length > 1) break;

@@ -11,9 +11,11 @@ const functionOnColumns = (table, columns, func) => (
   table.map((row, index) => {
     let modCols = {};
     columns.forEach((column) => {
-      modCols[column] = func(row[column], index);
+      if (row.hasOwnProperty(column)) {
+        modCols[column] = func(row[column], index);
+      }
     });
-    return {...row, ...modCols};
+    return { ...row, ...modCols };
   })
 );
 

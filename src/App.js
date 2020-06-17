@@ -48,8 +48,8 @@ class App extends Component {
       loadingMessage: 'Adatok letöltése'
     },
       (res) => this.setState(() => ({
-        benefits: res.benefits,
-        benefitParams: res.benefitParams
+        benefits: res.benefits.sort( (b1, b2) = b1.GROUP < b2.GROUP ? -1 : (b1.ELLATAS_NEV < b2.ELLATAS_NEV ? -1 : 1) ),
+        benefitParams: res.benefitParams.sort( (b1, b2) => b1.ORDER - b2.ORDER )
       }))
     );
 
@@ -148,15 +148,20 @@ class App extends Component {
   }
 
   calculate = () => {
+    const dateParams = this.state.BenefitParams
+      .filter( (param) => param.TYPE === 'D')
+      .map( (param) => param.NAME )
+      .filter( (name, index, names) => names.indexOf(name) === index );
+
     this.call({
       program: '/PELL/Stored Processes/calculateBenefits',
-      loadingMessage: 'Ellátások számítása',
+      loadingMessage: 'Számítás',
       tables: {
-        params: [this.state.params],
-        alap_adatok: this.state.customer.ALAP_ADATOK,
+        params: utils.dtFromJS2SAS([this.state.params], dateParams),
+        alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
         eu_adatok: this.state.customer.EU_ADATOK,
-        new_income: this.state.newIncome,
-        family: this.state.family,
+        new_income: utils.dttmFromJS2SAS(this.state.newIncome, ['KEZDESDATUM', 'VEGEDATUM']),
+        family: utils.dtFromJS2SAS(this.state.family, ['SZUL_DT']),
         benefits: this.state.selectedBenefits.map((benefit) => ({ benefit: benefit }))
       }
     },
@@ -171,7 +176,7 @@ class App extends Component {
         window.scrollTo(0, 0);
         this.setState({
           selectedTab: 'RESULT',
-          results: res.results,
+          results: utils.dtFromSAS2JS(res.results, ['ELLATAS_START_DT', 'ELLATAS_END_DT']),
           brm_inputs: brm_inputs
         });
       }
@@ -237,13 +242,15 @@ class App extends Component {
               {
                 this.state.selectedBenefits.length > 0 &&
                 <Fragment>
-                  {this.state.selectedBenefits.map((benefit) => (<BenefitParams
-                    key={benefit}
-                    benefit={benefit}
-                    benefitParams={this.state.benefitParams.filter((param) => param.ELLATAS_CD === benefit)}
-                    benefitDescription={this.state.benefits[benefit]}
-                    params={this.state.params}
-                    setParam={this.setParam} />))}
+                  {this.state.selectedBenefits.map((benefit) => (
+                    <BenefitParams
+                      key={benefit}
+                      benefit={benefit}
+                      benefitParams={this.state.benefitParams.filter((param) => param.ELLATAS_CD === benefit)}
+                      benefitDescription={this.state.benefits[benefit].GROUP}
+                      params={this.state.params}
+                      setParam={this.setParam} />
+                  ))}
 
                   <div id="bottom_container" style={{ position: 'relative', top: 180, width: '80%', margin: 'auto', background: '#e1e1e1', border: '1px solid #d1d1d1', padding: 0, paddingTop: 8, paddingBottom: 10, paddingLeft: 0 }} >
                     <table border="0" cellPadding="8" style={{ marginLeft: 20 }} >
