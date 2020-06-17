@@ -48,7 +48,7 @@ class App extends Component {
       loadingMessage: 'Adatok letöltése'
     },
       (res) => this.setState(() => ({
-        benefits: res.benefits.sort( (b1, b2) = b1.GROUP < b2.GROUP ? -1 : (b1.ELLATAS_NEV < b2.ELLATAS_NEV ? -1 : 1) ),
+        benefits: res.benefits.sort( (b1, b2) => b1.GROUP < b2.GROUP ? -1 : (b1.ELLATAS_NEV < b2.ELLATAS_NEV ? -1 : 1) ),
         benefitParams: res.benefitParams.sort( (b1, b2) => b1.ORDER - b2.ORDER )
       }))
     );
