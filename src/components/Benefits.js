@@ -4,7 +4,7 @@ class Benefits extends Component {
   handleChange = (event) => this.props.onChange(event.target.value);
 
   renderGroup = (groupName) => {
-    const group = this.props.benefits.filter( (benefit) => benefit.group === groupName );
+    const group = this.props.benefits.filter( (benefit) => benefit.GROUP === groupName );
 
     let rows = [];
     for (var i = 0; i < group.length; i=i+3) {
@@ -14,10 +14,10 @@ class Benefits extends Component {
             <label>
               <input
                 type="checkbox"
-                value={group[i].name}
-                checked={this.props.selectedBenefits[group[i].name]}
+                value={group[i].ELLATAS_KOD}
+                checked={this.props.selectedBenefits[group[i].ELLATAS_KOD]}
                 onChange={this.handleChange} />
-              {' '+group[i].label}
+              {' '+group[i].ELLATAS_NEV}
             </label>
           </td>
           {
@@ -26,10 +26,10 @@ class Benefits extends Component {
               <label>
                 <input
                   type="checkbox"
-                  value={group[i+1].name}
-                  checked={this.props.selectedBenefits[group[i+1].name]}
+                  value={group[i+1].ELLATAS_KOD}
+                  checked={this.props.selectedBenefits[group[i+1].ELLATAS_KOD]}
                   onChange={this.handleChange} />
-                {' '+group[i+1].label}
+                {' '+group[i+1].ELLATAS_NEV}
               </label>
             </td>
           }
@@ -39,10 +39,10 @@ class Benefits extends Component {
               <label>
                 <input
                   type="checkbox"
-                  value={group[i+2].name}
-                  checked={this.props.selectedBenefits[group[i+2].name]}
+                  value={group[i+2].ELLATAS_KOD}
+                  checked={this.props.selectedBenefits[group[i+2].ELLATAS_KOD]}
                   onChange={this.handleChange} />
-                {' '+group[i+2].label}
+                {' '+group[i+2].ELLATAS_NEV}
               </label>
             </td>
           }
@@ -70,7 +70,7 @@ class Benefits extends Component {
     return (
       <div id="benefit_container" style={{position:'relative', top:150, width:'80%', margin:'auto', background:'#e1e1e1', border:'1px solid #d1d1d1', padding:0, paddingBottom:0}} >
         {
-          this.props.benefits.map( (benefit) => benefit.group )
+          this.props.benefits.map( (benefit) => benefit.GROUP )
                              .filter( (group, index, groups) => groups.indexOf(group) === index )
                              .map(this.renderGroup)
         }

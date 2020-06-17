@@ -3,32 +3,32 @@ import DatePicker from './FormElements/DatePicker';
 
 class BenefitParams extends Component {
   renderParam = (param) => {
-    if (param.name.indexOf('_FLG')>-1) {
-      param.type = 'F';
+    if (param.NAME.indexOf('_FLG')>-1) {
+      param.TYPE = 'F';
     }
 
     let input = null;
 
-    switch (param.type) {
+    switch (param.TYPE) {
       case 'N':
         input = (
           <input
             type="text"
-            name={param.name}
+            name={param.NAME}
             className="cell_input"
-            value={this.props.params[param.name] ? this.props.params[param.name] : ''}
-            onChange={(event) => this.props.setParam({[param.name]: Number.parseFloat(event.target.value)})} />
+            value={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
+            onChange={(event) => this.props.setParam({[param.NAME]: Number.parseFloat(event.target.VALUE)})} />
         );
         break;
       case 'S':
-        const pairs = param.options.split(';');
+        const pairs = param.OPTIONS.split(';');
         input = (
           <select
-            name={param.name}
+            name={param.NAME}
             className="combobox"
             size="1"
-            value={this.props.params[param.name] ? this.props.params[param.name] : ''}
-            onChange={(event) => this.props.setParam({[param.name]: event.target.value})} >
+            value={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
+            onChange={(event) => this.props.setParam({[param.NAME]: event.target.value})} >
             <option></option>
             {pairs.map( (pair, index) => <option key={index} value={pair.split(':')[0]}> {pair.split(':')[1]} </option> )}
           </select>
@@ -38,29 +38,29 @@ class BenefitParams extends Component {
         input = (
           <input
             type="text"
-            name={param.name}
+            name={param.NAME}
             className="cell_input"
-            value={this.props.params[param.name] ? this.props.params[param.name] : ''}
-            onChange={(event) => this.props.setParam({[param.name]: event.target.value})} />
+            value={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
+            onChange={(event) => this.props.setParam({[param.NAME]: event.target.value})} />
         );
         break;
       case 'D':
         input = (
           <DatePicker
-            name={param.name}
+            name={param.NAME}
             className="cell_input"
-            date={this.props.params[param.name] ? this.props.params[param.name] : ''}
+            date={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
             onChange={this.props.setParam} />
         );
         break;
       case 'F':
         input = (
           <select
-            name={param.name}
+            name={param.NAME}
             className="combobox"
             size="1"
-            value={this.props.params[param.name] ? this.props.params[param.name] : ''}
-            onChange={(event) => this.props.setParam({[param.name]: event.target.value})} >
+            value={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
+            onChange={(event) => this.props.setParam({[param.NAME]: event.target.value})} >
             <option></option>
             <option value="1">Igen</option>
             <option value="0">Nem</option>
@@ -72,8 +72,8 @@ class BenefitParams extends Component {
     }
 
     return (
-      <tr key={param.name}>
-        <td className="cell_property_fix">{param.label}:</td>
+      <tr key={param.NAME}>
+        <td className="cell_property_fix">{param.LABEL}:</td>
         <td className="cell_value">
           {input}
         </td>

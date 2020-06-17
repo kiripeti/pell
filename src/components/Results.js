@@ -3,12 +3,12 @@ import Table from './Table';
 
 const Results = ({results}) => {
   const headers = [
-    { name: 'ELLATAS_NM', align: 'C', label: 'ELLATAS_NM' },
-    { name: 'ELLATAS_START_DT', align: 'C', label: 'ELLATAS_START_DT' },
-    { name: 'ELLATAS_END_DT', align: 'C', label: 'ELLATAS_END_DT' },
-    { name: 'ELLATAS_DAYS_NUM', align: 'C', label: 'ELLATAS_DAYS_NUM' },
-    { name: 'ELLATAS_AMOUNT', align: 'C', label: 'ELLATAS_AMOUNT' },
-    { name: 'ELLATAS_DESC', align: 'C', label: 'ELLATAS_DESC' }
+    { name: 'ELLATAS_NM',       align: 'C', label: 'Ellátás neve' },
+    { name: 'ELLATAS_START_DT', align: 'C', label: 'Ellátás Kezdete' },
+    { name: 'ELLATAS_END_DT',   align: 'C', label: 'Ellátás Vége' },
+    { name: 'ELLATAS_DAYS_NUM', align: 'C', label: 'Ellátás hossza' },
+    { name: 'ELLATAS_AMOUNT',   align: 'C', label: 'Ellátás összege' },
+    { name: 'ELLATAS_DESC',     align: 'C', label: 'Megjegyzés' }
   ];
 
   return (
