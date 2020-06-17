@@ -26,7 +26,7 @@ class BenefitParams extends Component {
             name={param.NAME}
             className="cell_input"
             value={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
-            onChange={handleNumeric} />
+            onChange={this.handleNumeric} />
         );
         break;
       case 'S':
