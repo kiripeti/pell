@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import h54s from 'h54s';
 
 import JkodInput from './components/JkodInput';
-import Login from './components/Login';
 import Loading from './components/Loading';
 import CustomerData from './components/CustomerData';
 import Benefits from './components/Benefits';
@@ -10,14 +9,11 @@ import BenefitParams from './components/BenefitParams';
 import DatePicker from './components/FormElements/DatePicker';
 import utils from './js/utils';
 
-import customer_data from './test_data/ugyfel_adat';
-
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isLogedIn: false,
       isLoading: false,
       loadingMessage: '',
       isCustomerLoaded: false,
@@ -34,27 +30,8 @@ class App extends Component {
         LEKERDEZES_DT: new Date()
       },
       selectedBenefits: [],
-      benefits: [
-        { name: 'ESZJ', label: 'Egészségügyi szolgáltatásra való jogosultság', group: 'Egészségügyi ellátás' },
-        { name: 'GYET', label: 'Gyermeknevelési támogatás', group: 'Egészségügyi ellátás' },
-        { name: 'NFA', label: 'Nagycsaládosok földgáz árkedvezménye', group: 'Családtámogatás' },
-      ].sort((e1, e2) => e1.group < e2.group ? -1 : (e1.label < e2.label ? -1 : 1)),
-      benefitParams: [
-        { order: 12, ellatas_cd: 'AD', name: 'TB_FLG', type: 'N', length: 8, format: '', label: 'Az állandó és tartós ápolásra, gondozásra szoruló ápolt tartósan beteg flag' },
-        { order: 11, ellatas_cd: 'AD', name: 'EGYEB_APOLT_FLG', type: 'N', length: 8, format: '', label: 'Van-e egyéb ápoltja az igénylőnek flag' },
-        { order: 10, ellatas_cd: 'AD', name: 'CSP_MAGASABB_FLG', type: 'N', length: 8, format: '', label: 'Magasabb összegű családi pótlékra jogosultat nevel flag' },
-        { order: 9, ellatas_cd: 'AD', name: 'BETEG_SZUL_DT', type: 'N', length: 8, format: '', label: 'A beteg születési dátuma' },
-        { order: 8, ellatas_cd: 'AD', name: 'SF_NEVEL', type: 'N', length: 8, format: '', label: 'Súlyosan fogyatékos gyermeket nevel flag' },
-        { order: 7, ellatas_cd: 'AD', name: 'KAPCSOLAT_FLG', type: 'N', length: 8, format: '', label: 'Az ápolthoz olyan kapcsolat fűzi, amivel jogosult az igénylésre (testvér, egyenesági rokon, nevelőszülő, amennyiben az igénylés előtti 10 évben minimum 3 évig gondozza) flag' },
-        { order: 6, ellatas_cd: 'AD', name: 'SF_FLG', type: 'N', length: 8, format: '', label: 'Az állandó és tartós ápoásra, gondozásra szoruló ápolt súlyosan fogyatékos flag' },
-        { order: 5, ellatas_cd: 'AD', name: 'EGYEB_APOLO_FLG', type: 'N', length: 8, format: '', label: 'Van-e egyéb ápoló az adott beteghez flag' },
-        { order: 4, ellatas_cd: 'AD', name: 'MMTV_CAT', type: 'C', length: 8, format: '', label: 'Az MMTV szerinti kategóriája "E", önellátásra képtelen' },
-        { order: 3, ellatas_cd: 'AD', name: 'DONTES_KIIR', type: 'N', length: 8, format: '', label: 'A jogosultsági döntést kiírjuk e vagy sem' },
-        { order: 2, ellatas_cd: 'AD', name: 'LEKERDEZES_DT', type: 'D', length: 8, format: 'YYMMDDP10.', label: 'A lekérdezés dátuma' },
-        { order: 1, ellatas_cd: 'AD', name: 'UFAZONOSITO', type: 'C', length: 32, format: '', label: 'Ügyfélazonosító kód (JKOD)' },
-        { order: 0, ellatas_cd: 'AD', name: 'TST1', type: 'S', length: 32, format: '', label: 'Ez a legördülő jó', options: '0:Apa;1:Anya' },
-        { order: 0, ellatas_cd: 'AD', name: 'TST2', type: 'S', length: 32, format: '', label: 'Ez meg nem', options: '' },
-      ].sort((p1, p2) => p1.order - p2.order),
+      benefits: [],
+      benefitParams: [],
       selectedTab: 'CUSTOMER',
       newIncome: [],
       family: [],
@@ -65,44 +42,16 @@ class App extends Component {
     this.sas = new h54s({ metadataRoot: '/PELL/Stored Processes/' });
   }
 
-  login = (user, pw) => {
-    if (!user || !pw) return;
-
-    this.setState(() => ({ isLoading: true, loadingMessage: 'Bejelentkezés' }));
-
-    this.sas.login(user, pw, (status) => {
-      let newState = {
-        isLoading: false
-      };
-
-      if (status === -1) {
-        //Wrong username or password
-        newState.loginMessage = 'Hibás felhasználónév vagy jelszó';
-        this.setState(() => newState);
-      } else if (status === -2) {
-        //Login is not working
-        newState.loginMessage = 'Bejelentkezés nem lehetséges';
-        this.setState(() => newState);
-      } else if (status === 200) {
-        this.call({
-          program: 'getBenefits',
-          loadingMessage: 'Adatok letöltése'
-        },
-          (res) => this.setState(() => ({
-            isLogedIn: true,
-            loginMessage: '',
-            benefits: res.benefits,
-            benefitParams: res.benefitParams
-          }))
-        );
-      } else {
-        //ajax call failed
-        //status is value of http request status code
-        newState.loginMessage = 'A szerver nem elérhető';
-        this.setState(() => newState);
-      }
-    });
-  }
+  componentDidMount = () => 
+    this.call({
+      program: 'getBenefits',
+      loadingMessage: 'Adatok letöltése'
+    },
+      (res) => this.setState(() => ({
+        benefits: res.benefits,
+        benefitParams: res.benefitParams
+      }))
+    );
 
   call = ({ program, loadingMessage, tables }, callback) => {
     this.setState(() => ({
@@ -128,6 +77,9 @@ class App extends Component {
         loadingMessage: ''
       }));
       if (err) {
+        if (err.type === 'notLoggedinError') {
+          window.href = '/pell';
+        }
         console.log(err);
         alert('Hiba lépett fel a feldolgozás során!');
       } else {
@@ -135,24 +87,6 @@ class App extends Component {
       }
     });
   }
-
-  /*
-  call({program, tableName, table, cb}) {
-    this.setState( () => ({isLoading: true}) );
-
-    const sasData = new h54s.SasData(table, tableName);
-
-    this.sas.call(program, sasData, (err, res) => {
-      this.setState( () => ({isLoading: false}));
-      if (err) {
-        console.log(err);
-        alert('Hiba lépett fel a feldolgozás során!');
-      } else {
-        cb(res);
-      }
-    });
-  }
-  */
 
   jkodClick = (jkod) => {
     this.setState(() => ({ jkod: jkod }));
@@ -177,32 +111,6 @@ class App extends Component {
       }
     );
   }
-
-  /*
-    jkodClick = () => {
-      this.setState(() => ({ isLoading: true }));
-      const jkod = this.state.jkod;
-      customer_data.ALAP_ADATOK = utils.dtFromSAS2JS(customer_data.ALAP_ADATOK, ['SZUL_DT']);
-  
-      customer_data.JOGVISZONY = customer_data.JOGVISZONY.map(row => ({
-        ...row,
-        ...{
-          KEZDESDATUM: 494380800,
-          VEGEDATUM: 504835200
-        }
-      }));
-  
-      customer_data.JOGVISZONY = utils.dttmFromSAS2JS(customer_data.JOGVISZONY, ['KEZDESDATUM', 'VEGEDATUM'])
-  
-      this.setState(prevState => ({
-        isLoading: false,
-        isCustomerLoaded: true,
-        selectedJkod: jkod,
-        customer: customer_data,
-        params: { ...prevState.params, ...{ UFAZONOSITO: jkod, jkod: jkod } }
-      }));
-    }
-  */
 
   updateCustomer = (type, index, property, data) =>
     this.setState((state) => {
@@ -273,28 +181,6 @@ class App extends Component {
     if (this.state.isLoading) {
       return (
         <Loading message={this.state.loadingMessage} />
-      );
-    }
-
-    if (!this.state.isLogedIn) {
-      return (
-        <div className="body">
-          <div className="content">
-            <div className="header">
-              <h2 style={{ color: '#CEC7BA', paddingBottom: 25 }}> Nincs bejelentkezve </h2>
-              <p style={{ fontSize: '11pt' }}>Adja meg felhasználónevét és jelszavát, majd kattintson a 'Bejelentkezés' gombra.</p>
-              {
-                this.state.loginMessage &&
-                <p>{this.state.loginMessage}</p>
-              }
-            </div>
-            <div className="request">
-              <div style={{ width: '80%', margin: 'auto', background: '#e1e1e1', border: '1px solid #d1d1d1', padding: 0, paddingTop: 5, paddingBottom: 5 }}>
-                <Login login={this.login} />
-              </div>
-            </div>
-          </div>
-        </div>
       );
     }
 
