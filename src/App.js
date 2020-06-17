@@ -39,12 +39,12 @@ class App extends Component {
       brm_inputs: {}
     };
 
-    this.sas = new h54s({ metadataRoot: '/PELL/Stored Processes/' });
+    this.sas = new h54s();
   }
 
-  componentDidMount = () => 
+  componentDidMount = () =>
     this.call({
-      program: 'getBenefits',
+      program: '/PELL/Stored Processes/getBenefits',
       loadingMessage: 'Adatok letöltése'
     },
       (res) => this.setState(() => ({
@@ -63,10 +63,11 @@ class App extends Component {
 
     if (tables && Object.keys(tables).length > 0) {
       const tableNames = Object.keys(tables);
-      sasData = new h54s.SasData(tables[tableNames[0]], tableNames[0]);
+      let tableName = tableNames[0];
+      sasData = new h54s.SasData(tables[tableName], tableName);
 
       for (let i = 1; i < tableNames.length; i++) {
-        const tableName = tableNames[i];
+        let tableName = tableNames[i];
         sasData.addTable(tables[tableName], tableName);
       }
     }
@@ -88,10 +89,10 @@ class App extends Component {
     });
   }
 
-  jkodClick = (jkod) => {
-    this.setState(() => ({ jkod: jkod }));
+  jkodClick = () => {
+    const jkod = this.state.jkod;
     this.call({
-      program: 'getCustomer',
+      program: '/PELL/Stored Processes/getCustomer',
       loadingMessage: 'Ügyfél betöltése',
       tables: { jkod: [{ jkod: jkod }] }
     },
@@ -106,7 +107,7 @@ class App extends Component {
             JOGVISZONY: utils.dttmFromSAS2JS(res.jogviszony, ['KEZDESDATUM', 'VEGEDATUM']),
             ALLSTAT: res.allstat
           },
-          params: { ...prevState.params, ...{ UFAZONOSITO: prevState.jkod } }
+          params: { ...prevState.params, ...{ UFAZONOSITO: prevState.jkod, JKOD: jkod } }
         }));
       }
     );
@@ -148,7 +149,7 @@ class App extends Component {
 
   calculate = () => {
     this.call({
-      program: 'calculateBenefits',
+      program: '/PELL/Stored Processes/calculateBenefits',
       loadingMessage: 'Ellátások számítása',
       tables: {
         params: [this.state.params],
