@@ -1,16 +1,8 @@
 import React, {Component} from 'react';
 import DatePicker from './FormElements/DatePicker';
+import Input from './FormElements/Input';
 
 class BenefitParams extends Component {
-  handleNumeric = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    if (!isNaN(value)) {
-      this.props.setParam({[name]: value});
-    }
-  }
-
   renderParam = (param) => {
     if (param.NAME.indexOf('_FLG')>-1 && param.TYPE !== 'S') {
       param.TYPE = 'F';
@@ -21,12 +13,12 @@ class BenefitParams extends Component {
     switch (param.TYPE) {
       case 'N':
         input = (
-          <input
-            type="text"
+          <Input
+            type="N"
             name={param.NAME}
             className="cell_input"
             value={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
-            onChange={this.handleNumeric} />
+            onChange={(value) => this.props.setParam({[param.NAME]: value})} />
         );
         break;
       case 'S':
@@ -47,12 +39,12 @@ class BenefitParams extends Component {
         if (pairs.length > 1) break;
       case 'C':
         input = (
-          <input
-            type="text"
+          <Input
+            type="C"
             name={param.NAME}
             className="cell_input"
             value={this.props.params[param.NAME] ? this.props.params[param.NAME] : ''}
-            onChange={(event) => this.props.setParam({[param.NAME]: event.target.value})} />
+            onChange={(value) => this.props.setParam({[param.NAME]: value})} />
         );
         break;
       case 'D':

@@ -12,7 +12,11 @@ class Table extends Component {
   generateRow(header, row, index) {
     return (
       <tr key={index} className={index%2 === 1 ? 'table_row_alt' : 'table_row'} >
-        {header.map( (column) => <td key={column.name+index} className={'table_cell_'+column.align} > {row[column.name]} </td> )}
+        {header.map( (column) => (
+          <td key={column.name+index} className={'table_cell_'+column.align} >
+            {row[column.name] instanceof Date ? row[column.name].toLocaleDateString('hu-HU') : row[column.name]}
+          </td> 
+        ))}
       </tr>
     );
   }

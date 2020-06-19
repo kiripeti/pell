@@ -27,7 +27,8 @@ class App extends Component {
         ALLSTAT: []
       },
       params: {
-        LEKERDEZES_DT: new Date()
+        LEKERDEZES_DT: new Date(),
+        DONTED_KIIR: 1
       },
       selectedBenefits: [],
       benefits: [],
@@ -39,12 +40,16 @@ class App extends Component {
       brm_inputs: {}
     };
 
-    this.sas = new h54s();
+    this.sas = new h54s({
+      metadataRoot:'/PELL/Stored Processes/',
+      debug: true,
+      maxXhrRetries: 0
+    });
   }
 
   componentDidMount = () =>
     this.call({
-      program: '/PELL/Stored Processes/getBenefits',
+      program: 'getBenefits',
       loadingMessage: 'Adatok letöltése'
     },
       (res) => this.setState(() => ({
@@ -91,8 +96,11 @@ class App extends Component {
 
   jkodClick = () => {
     const jkod = this.state.jkod;
+
+    if (jkod === '') return;
+
     this.call({
-      program: '/PELL/Stored Processes/getCustomer',
+      program: 'getCustomer',
       loadingMessage: 'Ügyfél betöltése',
       tables: { jkod: [{ jkod: jkod }] }
     },
@@ -148,16 +156,16 @@ class App extends Component {
   }
 
   calculate = () => {
-    const dateParams = this.state.BenefitParams
+    const dateParams = this.state.benefitParams
       .filter( (param) => param.TYPE === 'D')
       .map( (param) => param.NAME )
       .filter( (name, index, names) => names.indexOf(name) === index );
 
     this.call({
-      program: '/PELL/Stored Processes/calculateBenefits',
+      program: 'calculateBenefits',
       loadingMessage: 'Számítás',
       tables: {
-        params: utils.dtFromJS2SAS([this.state.params], dateParams),
+        params: utils.dtFromJS2SAS([this.state.params], ['LEKERDEZES_DT', ...dateParams]),
         alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
         eu_adatok: this.state.customer.EU_ADATOK,
         new_income: utils.dttmFromJS2SAS(this.state.newIncome, ['KEZDESDATUM', 'VEGEDATUM']),
@@ -247,7 +255,7 @@ class App extends Component {
                       key={benefit}
                       benefit={benefit}
                       benefitParams={this.state.benefitParams.filter((param) => param.ELLATAS_CD === benefit)}
-                      benefitDescription={this.state.benefits[benefit].GROUP}
+                      benefitDescription={this.state.benefits.filter((elem) => elem.ELLATAS_KOD === benefit)[0].ELLATAS_NEV}
                       params={this.state.params}
                       setParam={this.setParam} />
                   ))}
