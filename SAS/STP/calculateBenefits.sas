@@ -61,6 +61,8 @@
             run;
         %end;
     /* End of Manage FAMILY */
+    
+    %include "&jobs_dir./Ellatasok_szamitasa.sas";
 
     data results;
         ELLATAS_NM = 'valami';
