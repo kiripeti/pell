@@ -1,7 +1,7 @@
 import { fromSasDateTime, toSasDateTime } from 'h54s';
 
 const fromSASDate = (sasDate) => fromSasDateTime(sasDate * 24 * 60 * 60);
-const toSASDate = (jsDate) => Math.floor(toSasDateTime(jsDate) / 24 * 60 * 60);
+const toSASDate = (jsDate) => Math.floor(toSasDateTime(jsDate) / 24 / 60 / 60);
 const dtFromSAS2JS = (table, columns) => functionOnColumns(table, columns, fromSASDate);
 const dttmFromSAS2JS = (table, columns) => functionOnColumns(table, columns, fromSasDateTime);
 const dtFromJS2SAS = (table, columns) => functionOnColumns(table, columns, toSASDate);

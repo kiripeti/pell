@@ -7,45 +7,22 @@ class Benefits extends Component {
     const group = this.props.benefits.filter( (benefit) => benefit.GROUP === groupName );
 
     let rows = [];
-    for (var i = 0; i < group.length; i=i+3) {
+    const elemsInRow=3;
+    for (var i = 0; i < group.length; i=i+elemsInRow) {
       rows.push((
         <tr key={groupName+i}>
-          <td className="cell_text">
-            <label>
-              <input
-                type="checkbox"
-                value={group[i].ELLATAS_KOD}
-                checked={this.props.selectedBenefits[group[i].ELLATAS_KOD]}
-                onChange={this.handleChange} />
-              {' '+group[i].ELLATAS_NEV}
-            </label>
-          </td>
-          {
-            group[i+1] !== undefined &&
-            <td className="cell_text">
+          {(new Array(elemsInRow)).fill(0).map((e, i) => i).map(j => i+j).filter(j => j<group.length).map(j => (
+            <td key={groupName+j} className="cell_text" style={{width: ''+Math.round(100/elemsInRow)+'%'}}>
               <label>
                 <input
                   type="checkbox"
-                  value={group[i+1].ELLATAS_KOD}
-                  checked={this.props.selectedBenefits[group[i+1].ELLATAS_KOD]}
+                  value={group[j].ELLATAS_KOD}
+                  checked={this.props.selectedBenefits.indexOf(group[j].ELLATAS_KOD) > -1}
                   onChange={this.handleChange} />
-                {' '+group[i+1].ELLATAS_NEV}
+                {' '+group[j].ELLATAS_NEV}
               </label>
             </td>
-          }
-          {
-            group[i+2] !== undefined &&
-            <td className="cell_text">
-              <label>
-                <input
-                  type="checkbox"
-                  value={group[i+2].ELLATAS_KOD}
-                  checked={this.props.selectedBenefits[group[i+2].ELLATAS_KOD]}
-                  onChange={this.handleChange} />
-                {' '+group[i+2].ELLATAS_NEV}
-              </label>
-            </td>
-          }
+          ))}
         </tr>
       ));
     }

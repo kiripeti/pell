@@ -47,17 +47,6 @@ class App extends Component {
     });
   }
 
-  componentDidMount = () =>
-    this.call({
-      program: 'getBenefits',
-      loadingMessage: 'Adatok letöltése'
-    },
-      (res) => this.setState(() => ({
-        benefits: res.benefits.sort( (b1, b2) => b1.GROUP < b2.GROUP ? -1 : (b1.ELLATAS_NEV < b2.ELLATAS_NEV ? -1 : 1) ),
-        benefitParams: res.benefitParams.sort( (b1, b2) => b1.ORDER - b2.ORDER )
-      }))
-    );
-
   call = ({ program, loadingMessage, tables }, callback) => {
     this.setState(() => ({
       isLoading: true,
@@ -94,6 +83,17 @@ class App extends Component {
     });
   }
 
+  componentDidMount = () =>
+    this.call({
+      program: 'getBenefits',
+      loadingMessage: 'Adatok letöltése'
+    },
+      (res) => this.setState(() => ({
+        benefits: res.benefits.sort( (b1, b2) => b1.GROUP < b2.GROUP ? -1 : (b1.ELLATAS_NEV < b2.ELLATAS_NEV ? -1 : 1) ),
+        benefitParams: res.benefitParams.sort( (b1, b2) => b1.ORDER - b2.ORDER )
+      }))
+    );
+
   jkodClick = () => {
     const jkod = this.state.jkod;
 
@@ -119,40 +119,6 @@ class App extends Component {
         }));
       }
     );
-  }
-
-  updateCustomer = (type, index, property, data) =>
-    this.setState((state) => {
-      let customer = Object.assign({}, state.customer);
-      if (!customer[type][index]) {
-        customer[type][index] = {};
-      }
-      customer[type][index][property] = data;
-      return { customer: customer };
-    });
-
-  jkodChange = (jkod) => this.setState(() => ({ jkod: jkod }));
-  updateSelectedTab = (value) => this.setState({ selectedTab: value });
-  updateIncome = (newIncome) => this.setState(prevState => ({ newIncome: newIncome }));
-  updateFamily = (family) => this.setState(prevState => ({ family: family }));
-  setParam = (param) => this.setState(state => ({ params: { ...state.params, ...param } }));
-
-  handleBenefitChange = (benefit) => {
-    this.setState(prevState => {
-      let newState = {};
-
-      if (prevState.selectedBenefits.indexOf(benefit) > -1) {
-        newState = {
-          selectedBenefits: prevState.selectedBenefits.filter((element) => element !== benefit)
-        };
-      } else {
-        newState = {
-          selectedBenefits: [...prevState.selectedBenefits, benefit].sort()
-        };
-      }
-
-      return newState;
-    });
   }
 
   calculate = () => {
@@ -189,6 +155,40 @@ class App extends Component {
         });
       }
     );
+  }
+
+  jkodChange = (jkod) => this.setState(() => ({ jkod: jkod }));
+  updateSelectedTab = (value) => this.setState({ selectedTab: value });
+  updateIncome = (newIncome) => this.setState(prevState => ({ newIncome: newIncome }));
+  updateFamily = (family) => this.setState(prevState => ({ family: family }));
+  setParam = (param) => this.setState(state => ({ params: { ...state.params, ...param } }));
+
+  updateCustomer = (type, index, property, data) =>
+    this.setState((state) => {
+      let customer = Object.assign({}, state.customer);
+      if (!customer[type][index]) {
+        customer[type][index] = {};
+      }
+      customer[type][index][property] = data;
+      return { customer: customer };
+    });
+
+  handleBenefitChange = (benefit) => {
+    this.setState(prevState => {
+      let newState = {};
+
+      if (prevState.selectedBenefits.indexOf(benefit) > -1) {
+        newState = {
+          selectedBenefits: prevState.selectedBenefits.filter((element) => element !== benefit)
+        };
+      } else {
+        newState = {
+          selectedBenefits: [...prevState.selectedBenefits, benefit].sort()
+        };
+      }
+
+      return newState;
+    });
   }
 
   render() {
