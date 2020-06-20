@@ -34,6 +34,15 @@ const functionOnColumns = (table, columns, func) => (
   })
 );
 
+const removeEmptyKeys = (obj) => {
+  for (const key in obj) {
+    if (obj[key] == null || obj[key] === '') {
+      delete obj[key];
+    }
+  }
+  return obj;
+}
+
 export default {
   fromSASDate: fromSASDate,
   fromSasDateTime: fromSasDateTime,
@@ -43,5 +52,6 @@ export default {
   dttmFromSAS2JS: dttmFromSAS2JS,
   dtFromJS2SAS: dtFromJS2SAS,
   dttmFromJS2SAS: dttmFromJS2SAS,
-  functionOnColumns: functionOnColumns
+  functionOnColumns: functionOnColumns,
+  removeEmptyKeys: removeEmptyKeys
 };
