@@ -143,7 +143,7 @@ class App extends Component {
         let brm_inputs = {};
         let results = utils.dtFromSAS2JS(res.results, ['ELLATAS_START_DT', 'ELLATAS_END_DT']);
 
-        results.map((result) => {
+        results = results.map((result) => {
           const code = result['ELLATAS_CD'];
           const name = this.state.benefits.filter((benefit) => benefit['ELLATAS_KOD'] === code)[0]['ELLATAS_NEV'];
 
