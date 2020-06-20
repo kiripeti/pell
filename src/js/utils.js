@@ -1,7 +1,13 @@
-import { fromSasDateTime, toSasDateTime } from 'h54s';
+import { 
+  fromSasDateTime as h54sFromSASdttm,
+  toSasDateTime as h54sToSASdttm 
+} from 'h54s';
 
-const fromSASDate = (sasDate) => fromSasDateTime(sasDate * 24 * 60 * 60);
-const toSASDate = (jsDate) => Math.floor(toSasDateTime(jsDate) / 24 / 60 / 60);
+const fromSasDateTime = (sasDate) => sasDate ? h54sFromSASdttm(sasDate) : null;
+const fromSASDate = (sasDate) => sasDate ? fromSasDateTime(sasDate * 24 * 60 * 60) : null;
+const toSasDateTime = (jsDate) => jsDate ? h54sToSASdttm(jsDate) : null;
+const toSASDate = (jsDate) => jsDate ? Math.floor(toSasDateTime(jsDate) / 24 / 60 / 60) : null;
+
 const dtFromSAS2JS = (table, columns) => functionOnColumns(table, columns, fromSASDate);
 const dttmFromSAS2JS = (table, columns) => functionOnColumns(table, columns, fromSasDateTime);
 const dtFromJS2SAS = (table, columns) => functionOnColumns(table, columns, toSASDate);
@@ -21,7 +27,9 @@ const functionOnColumns = (table, columns, func) => (
 
 export default {
   fromSASDate: fromSASDate,
+  fromSasDateTime: fromSasDateTime,
   toSASDate: toSASDate,
+  toSasDateTime: toSasDateTime,
   dtFromSAS2JS: dtFromSAS2JS,
   dttmFromSAS2JS: dttmFromSAS2JS,
   dtFromJS2SAS: dtFromJS2SAS,
