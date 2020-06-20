@@ -62,17 +62,66 @@
         %end;
     /* End of Manage FAMILY */
     
-    %include "&jobs_dir./Ellatasok_szamitasa.sas";
+    /* Calculate Banefits*/
+        %include "&jobs_dir./Ellatasok_szamitasa.sas";
+    /* End of Calculate Benefits */
 
-    data results;
-        ELLATAS_NM = 'valami';
-        ELLATAS_START_DT = today();
-        ELLATAS_END_DT = today()+365;
-        ELLATAS_DAYS_NUM = 365;
-        ELLATAS_AMOUNT = 123456789;
-        ELLATAS_DESC = 'Ez egy fasza ellátás';
-    run;
+    /* Create Outputs */
+        data runid;
+            runid="&postfix";
+        run;
+
+        proc sql noprint;
+            select
+                benefit,
+                cats(benefit, '_input_', "&postfix") as brm_input_tables,
+                cats('pelltmp.', benefit, '_', "&postfix") as brm_output_tables
+            into 
+                :benefit_codes separated by ' ',
+                :brm_input_tables separated by ' ',
+                :brm_output_tables separated by ' '
+            from
+                BENEFITS;
+        quit;
+
+        %macro appen_results;
+            data results;
+                ellatas_cd="%qscan(&benefit_codes, 1)";
+                set %qscan(&brm_output_tables, 1);
+            run;
+
+            %let benefit_count=%sysfunc(countw(&benefit_codes));
+
+            %do i=2 %to &benefit_count;
+                %let table=%qscan(&brm_output_tables, &i);
+                %let benefit_code=%qscan(&benefit_codes, 1&i;
+
+                data res_&benefit_code;
+                    ellatas_cd="&benefit_code";
+                    set &table;
+                run;
+
+                proc append
+                    base=results
+                    data=res_&benefit_code;
+                run;
+            %end;
+        %mend;
+        %appen_results;
+
+        %macro add_inputs;
+            %let benefit_count=%sysfunc(countw(&benefit_codes));
+            %do i=1 %to &benefit_count;
+                %let table=%qscan(&brm_inpu_tables, &i);
+                %let benefit_code=%qscan(&benefit_codes, 1&i;
+                %bafOutDataset(brm_input_&benefit_code, pelltmp, &table)
+            %end;
+        %mend;
+    /* End of Create Outputs */
 
 %bafheader()
+    %bafOutDataset(runid, work, runid)
+    %bafOutDataset(params, work, params)
     %bafOutDataset(results, work, results)
+    %add_inputs
 %bafFooter()
