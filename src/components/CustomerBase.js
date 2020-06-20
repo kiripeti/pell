@@ -9,6 +9,7 @@ class CustomerBase extends Component {
     return (
       <div id="t1_content" style={{width:'100%', height:'100%', top:0, position:'absolute', textAlign:'center'}} >
         <div id="data1" style={{margin:'0px auto', width:'100%', height:'100%', textAlign:'center', background:'white', marginTop:2}}>
+          {JSON.stringify(this.props.eu)}
           <table style={{margin:'0 auto', width:'100%', height:'100%'}}>
             <tbody>
               <tr>
