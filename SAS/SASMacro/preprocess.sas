@@ -13,6 +13,10 @@
         run;
 
         data _null_;
+            call symputx('date', &LEKERDEZES_DT, 'G');
+        run;
+
+        data _null_;
             call symputx('dttm', dhms(&date, 23, 59, 59), 'G');
         run;
     %end;
