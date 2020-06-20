@@ -57,12 +57,15 @@ class App extends Component {
 
     if (tables && Object.keys(tables).length > 0) {
       const tableNames = Object.keys(tables);
+
       let tableName = tableNames[0];
-      sasData = new h54s.SasData(tables[tableName], tableName);
+      let data = utils.removeEmptyKeys(tables[tableName]);
+      sasData = new h54s.SasData(data, tableName);
 
       for (let i = 1; i < tableNames.length; i++) {
         let tableName = tableNames[i];
-        sasData.addTable(tables[tableName], tableName);
+        let data = utils.removeEmptyKeys(tables[tableName]);
+        sasData.addTable(data, tableName);
       }
     }
 
@@ -112,10 +115,14 @@ class App extends Component {
             ALAP_ADATOK: utils.dtFromSAS2JS(res.alap_adatok, ['SZUL_DT']),
             EU_ADATOK: res.eu_adatok,
             EV_ELEMZES: res.ev_elemzes,
-            JOGVISZONY: utils.dttmFromSAS2JS(res.jogviszony, ['KEZDESDATUM', 'VEGEDATUM']),
+            JOGVISZONY: utils.functionOnColumns(
+              res.jogviszony,
+              ['KEZDESDATUM', 'VEGEDATUM'],
+              (sasDateTime) => utils.fromSasDateTime(sasDateTime).toLocaleDateString('hu-HU')
+            ),
             ALLSTAT: res.allstat
           },
-          params: { ...prevState.params, ...{ UFAZONOSITO: prevState.jkod, JKOD: jkod } }
+          params: { ...prevState.params, ...{ UFAZONOSITO: jkod, JKOD: jkod } }
         }));
       }
     );
@@ -126,9 +133,6 @@ class App extends Component {
       .filter( (param) => param.TYPE === 'D')
       .map( (param) => param.NAME )
       .filter( (name, index, names) => names.indexOf(name) === index );
-    
-    let eu_adatok = this.state.customer.EU_ADATOK[0];
-    utils.removeEmptyKeys(eu_adatok);
 
     this.call({
       program: 'calculateBenefits',
@@ -136,7 +140,7 @@ class App extends Component {
       tables: {
         params: utils.dtFromJS2SAS([this.state.params], ['LEKERDEZES_DT', ...dateParams]),
         alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
-        eu_adatok: [eu_adatok],
+        eu_adatok: this.state.customer.EU_ADATOK,
         new_income: utils.dttmFromJS2SAS(this.state.newIncome, ['KEZDESDATUM', 'VEGEDATUM']),
         family: utils.dtFromJS2SAS(this.state.family, ['SZUL_DT']),
         benefits: this.state.selectedBenefits.map((benefit) => ({ benefit: benefit }))

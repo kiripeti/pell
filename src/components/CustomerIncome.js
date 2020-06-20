@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import RadioButton from './FormElements/RadioButton';
 import DatePicker from './FormElements/DatePicker';
 import Table from './Table';
-import utils from '../js/utils';
 
 class CustomerIncome extends Component {
   constructor(props) {
@@ -140,14 +139,12 @@ class CustomerIncome extends Component {
           });
           return newRow;
         });
-      case 'detailed':
-        return utils.functionOnColumns(this.props.detailed, ['KEZDESDATUM', 'VEGEDATUM'], (date) => date.toLocaleDateString('hu-HU'));
       default:
         return this.props[this.state.aggregation_level];
     }
   }
 
-  render(props) {
+  render() {
     return (
       <div id="t2_content" style={{width:'100%', height:'100%', top:0, position:'absolute', textAlign:'left'}}>
         <div style={{padding:0, fontSize:'15pt', background:'#ece3c0', marginTop:2, width:"100%"}}>

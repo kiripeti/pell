@@ -34,13 +34,21 @@ const functionOnColumns = (table, columns, func) => (
   })
 );
 
-const removeEmptyKeys = (obj) => {
+const removeEmptyKeysFromOcjet = (obj) => {
   for (const key in obj) {
     if (obj[key] == null || obj[key] === '') {
       delete obj[key];
     }
   }
   return obj;
+}
+
+const removeEmptyKeys = (obj) => {
+  if (obj instanceof Array) {
+    return obj.map(removeEmptyKeysFromOcjet);
+  } else {
+    return removeEmptyKeysFromOcjet(obj)
+  }
 }
 
 export default {
