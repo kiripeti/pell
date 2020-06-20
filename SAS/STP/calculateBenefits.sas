@@ -34,19 +34,19 @@
 
     /* Manage ALAP_ADATOK */
         data pelltmp.ALAP_ADATOK_&postfix;
-            set dm.UGYFEL_ALAPADATOK(where=(0=1)) %if &alap_adatok ne  %hten ALAP_ADATOK;;
+            set dm.UGYFEL_ALAPADATOK(where=(0=1)) %if %sysfunc(exist(ALAP_ADATOK)) %then %do; ALAP_ADATOK; %end;;
         run;
     /* End of Manage ALAP_ADATOK */
 
     /* Manage EU_ADATOK */
         data pelltmp.EU_ADATOK_&postfix;
-            set dm.UGYFEL_EU_ADATOK(where=(0=1)) %if &eu_adatok ne  %then EU_ADATOK;;
+            set dm.UGYFEL_EU_ADATOK(where=(0=1)) %if %sysfunc(exist(EU_ADATOK)) %then %do; EU_ADATOK; %end;;
         run;
     /* End of Manage EU_ADATOK */
 
     /* Manage NEW_INCOME */
         data pelltmp.NEW_INCOME_&postfix;
-            set dm.JOGVISZONY_TELJES(where=(0=1)) %if &new_income ne  %then NEW_INCOME;;
+            set dm.JOGVISZONY_TELJES(where=(0=1)) %if %sysfunc(exist(NEW_INCOME)) %then %do; NEW_INCOME; %end;;
         run;
     /* End of Manage NEW_INCOME */
 
