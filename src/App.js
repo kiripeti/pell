@@ -141,6 +141,15 @@ class App extends Component {
     },
       (res) => {
         let brm_inputs = {};
+        let results = utils.dtFromSAS2JS(res.results, ['ELLATAS_START_DT', 'ELLATAS_END_DT']);
+
+        results.map((result) => {
+          const code = result['ELLATAS_CD'];
+          const name = this.state.benefits.filter((benefit) => benefit['ELLATAS_KOD'] === code)[0]['ELLATAS_NEV'];
+
+          return {...result, ...{['ELLATAS_NM']: name}};
+        });
+
         this.state.selectedBenefits.forEach((benefit) => {
           if (res['brm_input_' + benefit]) {
             brm_inputs[benefit] = res['brm_input_' + benefit];
@@ -150,7 +159,7 @@ class App extends Component {
         window.scrollTo(0, 0);
         this.setState({
           selectedTab: 'RESULT',
-          results: utils.dtFromSAS2JS(res.results, ['ELLATAS_START_DT', 'ELLATAS_END_DT']),
+          results: results,
           brm_inputs: brm_inputs
         });
       }
