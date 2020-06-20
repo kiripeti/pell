@@ -86,6 +86,7 @@
 
         %macro append_results;
             data results;
+                length ellatas_cd $10;
                 ellatas_cd="%qscan(&benefit_codes,1,|)";
                 set %qscan(&brm_output_tables,1,|);
             run;
@@ -97,6 +98,7 @@
                 %let benefit_code=%qscan(&benefit_codes,&i,|);
 
                 data res;
+                    length ellatas_cd $10;
                     ellatas_cd="&benefit_code";
                     set &table;
                 run;
