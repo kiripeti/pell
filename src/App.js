@@ -126,6 +126,9 @@ class App extends Component {
       .filter( (param) => param.TYPE === 'D')
       .map( (param) => param.NAME )
       .filter( (name, index, names) => names.indexOf(name) === index );
+    
+    let eu_adatok = this.state.customer.EU_ADATOK[0];
+    utils.removeEmptyKeys(eu_adatok);
 
     this.call({
       program: 'calculateBenefits',
@@ -133,7 +136,7 @@ class App extends Component {
       tables: {
         params: utils.dtFromJS2SAS([this.state.params], ['LEKERDEZES_DT', ...dateParams]),
         alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
-        eu_adatok: utils.removeEmptyKeys(this.state.customer.EU_ADATOK),
+        eu_adatok: [eu_adatok],
         new_income: utils.dttmFromJS2SAS(this.state.newIncome, ['KEZDESDATUM', 'VEGEDATUM']),
         family: utils.dtFromJS2SAS(this.state.family, ['SZUL_DT']),
         benefits: this.state.selectedBenefits.map((benefit) => ({ benefit: benefit }))
