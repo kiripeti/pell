@@ -6,11 +6,8 @@ HTDOC=/sas/decman/Lev1/Web/WebServer/htdocs
 curl https://codeload.github.com/kiripeti/pell/zip/master > pell-master.zip
 unzip pell-master.zip
 
-cp -v pell-master/SAS/SASMacro/init_stp.sas ${SASE}/SASMacro/init_stp.sas
-cp -v pell-master/SAS/SASMacro/preprocess.sas ${SASE}/SASMacro/preprocess.sas
-cp -v pell-master/SAS/STP/calculateBenefits.sas ${SASE}/SASCode/STP/calculateBenefits.sas
-cp -v pell-master/SAS/STP/getBenefits.sas ${SASE}/SASCode/STP/getBenefits.sas
-cp -v pell-master/SAS/STP/getCustomer.sas ${SASE}/SASCode/STP/getCustomer.sas
+cp -Rv pell-master/SAS/SASMacro ${SASE}/SASMacro
+cp -Rv pell-master/SAS/STP ${SASE}/SASCode/STP
 
 rm -R ${HTDOC}/pell-react
 cp -Rv pell-master/build ${HTDOC}/pell-react
