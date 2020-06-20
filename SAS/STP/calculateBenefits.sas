@@ -96,14 +96,14 @@
                 %let table=%qscan(&brm_output_tables,&i,|);
                 %let benefit_code=%qscan(&benefit_codes,&i,|);
 
-                data res_&benefit_code;
+                data res;
                     ellatas_cd="&benefit_code";
                     set &table;
                 run;
 
                 proc append
                     base=results
-                    data=res_&benefit_code;
+                    data=res;
                 run;
             %end;
         %mend;
