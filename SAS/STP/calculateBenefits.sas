@@ -34,26 +34,32 @@
 
     /* Manage ALAP_ADATOK */
         data pelltmp.ALAP_ADATOK_&postfix;
-            set dm.ALAP_ADATOK(where=(0=1)) ALAP_ADATOK;
+            set dm.UGYFEL_ALAPADATOK(where=(0=1)) %if &alap_adatok ne  %hten ALAP_ADATOK;;
         run;
     /* End of Manage ALAP_ADATOK */
 
     /* Manage EU_ADATOK */
         data pelltmp.EU_ADATOK_&postfix;
-            set dm.EU_ADATOK(where=(0=1)) EU_ADATOK;
+            set dm.UGYFEL_EU_ADATOK(where=(0=1)) %if &eu_adatok ne  %then EU_ADATOK;;
         run;
     /* End of Manage EU_ADATOK */
 
     /* Manage NEW_INCOME */
         data pelltmp.NEW_INCOME_&postfix;
-            set dm.JOGISZONY_TELJES(where=(0=1)) NEW_INCOME;
+            set dm.JOGVISZONY_TELJES(where=(0=1)) %if &new_income ne  %then NEW_INCOME;;
         run;
     /* End of Manage NEW_INCOME */
 
     /* Manage FAMILY */
-        data pelltmp.FAMILY_&postfix;
-            set FAMILY;
-        run;
+        %if &family ne  %then %do;
+            data pelltmp.FAMILY_&postfix;
+                set FAMILY;
+            run;
+        %end; %else %do;
+            data pelltmp.FAMILY_&postfix;
+                length jkod szul_dt type 8;
+            run;
+        %end;
     /* End of Manage FAMILY */
 
     data results;

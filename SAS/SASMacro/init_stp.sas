@@ -7,6 +7,7 @@
         call symputx('stp_log', catx('/', 'StoredProcessServer', 'Logs'), 'G');
     run;
 
+    %global postfix;
     %let postfix=&user.%sysfunc(time(), B8601TM6);
 
     proc printto log="&stp_log./&stp_name.-&postfix..log" new;
