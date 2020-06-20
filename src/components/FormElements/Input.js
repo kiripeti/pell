@@ -5,8 +5,10 @@ const Input = ({name, value, type, className, onChange}) => {
   
   if (type === 'N') {
     onChangeHandler = (event) => {
-      if (!isNaN(event.target.value) && !isNaN(parseFloat(event.target.value))) {
-        onChange(parseFloat(event.target.value));
+      if (!isNaN(event.target.value)) {
+        const parsedVal = parseFloat(event.target.value);
+        const val = isNaN(parsedVal) ? '' : parsedVal;
+        onChange(val);
       }
     }
   } else {
