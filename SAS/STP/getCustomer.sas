@@ -2,7 +2,7 @@
 
 %bafgetdatasets();
 
-    init_stp(getCustomer);
+    %init_stp(getCustomer);
 
     data _null_;
         set jkod;

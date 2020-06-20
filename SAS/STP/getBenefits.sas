@@ -1,14 +1,13 @@
 %include '/sas/decman/Lev1/SASApp/SASEnvironment/SASCode/H54S/h54s.sas';
 
-    init_stp(getBenefits);
+    %init_stp(getBenefits);
 
     data benefits;
-        set dm.ellatasok;
+        set params.ellatasok;
     run;
 
     data benefit_params;
         set params.ugyfel_inputok;
-        if options=. then options='';
     run;
 
 %bafheader()
