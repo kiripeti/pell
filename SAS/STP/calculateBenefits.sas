@@ -90,7 +90,7 @@
                 set %qscan(&brm_output_tables,1,|);
             run;
 
-            %let benefit_count=%sysfunc(countw(&benefit_codes));
+            %let benefit_count=%sysfunc(countw(&benefit_codes,|));
 
             %do i=2 %to &benefit_count;
                 %let table=%qscan(&brm_output_tables,&i,|);
@@ -110,7 +110,7 @@
         %append_results;
 
         %macro add_inputs;
-            %let benefit_count=%sysfunc(countw(&benefit_codes));
+            %let benefit_count=%sysfunc(countw(&benefit_codes,|));
             %do i=1 %to &benefit_count;
                 %let table=%qscan(&brm_input_tables,&i,|);
                 %let benefit_code=%qscan(&benefit_codes,&i,|);

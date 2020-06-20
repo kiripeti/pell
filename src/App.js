@@ -28,7 +28,7 @@ class App extends Component {
       },
       params: {
         LEKERDEZES_DT: new Date(),
-        DONTED_KIIR: 1
+        DONTES_KIIR: 1
       },
       selectedBenefits: [],
       benefits: [],
