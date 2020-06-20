@@ -6,8 +6,8 @@ HTDOC=/sas/decman/Lev1/Web/WebServer/htdocs
 curl https://codeload.github.com/kiripeti/pell/zip/master > pell-master.zip
 unzip pell-master.zip
 
-cp -Rv pell-master/SAS/SASMacro ${SASE}/SASMacro
-cp -Rv pell-master/SAS/STP ${SASE}/SASCode/STP
+cp -Rv pell-master/SAS/SASMacro ${SASE}
+cp -Rv pell-master/SAS/STP ${SASE}/SASCode
 
 rm -R ${HTDOC}/pell-react
 cp -Rv pell-master/build ${HTDOC}/pell-react
