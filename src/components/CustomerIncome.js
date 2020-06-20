@@ -48,6 +48,7 @@ class CustomerIncome extends Component {
       new:[
         {name: 'SELECTED',                  align: 'C', label: ''},
         {name: 'TARGYEV',                   align: 'C', label: 'Tárgyév'},
+        {name: 'ALKMIN',                    align: 'L', label: 'ALKMIN'},
         {name: 'KEZDESDATUM',               align: 'C', label: 'Jogviszony kezdete'},
         {name: 'VEGEDATUM',                 align: 'C', label: 'Jogviszony vége'},
         {name: 'OSZTONAP',                  align: 'C', label: 'Osztónap'},

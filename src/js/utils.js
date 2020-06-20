@@ -16,11 +16,20 @@ const dttmFromJS2SAS = (table, columns) => functionOnColumns(table, columns, toS
 const functionOnColumns = (table, columns, func) => (
   table.map((row, index) => {
     let modCols = {};
-    columns.forEach((column) => {
-      if (row.hasOwnProperty(column)) {
-        modCols[column] = func(row[column], index);
+
+    if (columns === '_ALL_') {
+      for (const column in row) {
+        if (row.hasOwnProperty(column)) {
+          modCols[column] = func(row[column], index);
+        }
       }
-    });
+    } else {
+      columns.forEach((column) => {
+        if (row.hasOwnProperty(column)) {
+          modCols[column] = func(row[column], index);
+        }
+      });
+  }
     return { ...row, ...modCols };
   })
 );

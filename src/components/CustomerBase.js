@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import DatePicker from './FormElements/DatePicker';
+import Input from './FormElements/Input';
 
 class CustomerBase extends Component {
   changeData = (type, property) => ( (event) => this.props.updateCustomer(type, 0, property, event.target.value) );
@@ -26,7 +27,12 @@ class CustomerBase extends Component {
                         <td className="cell_spacer"></td>
                         <td className="cell_property">Egészségügyi állapot:</td>
                         <td className="cell_value">
-                          <input type="text" name="EG_ALLAPOT_PCT" className="cell_input" value={this.props.eu.EU_ALLAPOT ? this.props.eu.EU_ALLAPOT : ''} onChange={this.changeData('EU_ADATOK', 'EU_ALLAPOT')} />
+                          <Input
+                            type="N"
+                            name="EU_ALLAPOT"
+                            className="cell_input"
+                            value={this.props.eu.EU_ALLAPOT != null ? this.props.eu.EU_ALLAPOT : ''}
+                            onChange={(value) => this.props.updateCustomer('EU_ADATOK', 0, 'EU_ALLAPOT', value)} />
                           &nbsp;%
                         </td>
                         <td className="cell_spacer"></td>
@@ -47,7 +53,12 @@ class CustomerBase extends Component {
                         <td className="cell_spacer"></td>
                         <td className="cell_property">Rehabilitálható flag:</td>
                         <td className="cell_value">
-                          <input type="text" name="REHABILITALHATO_FLG" className="cell_input" value={this.props.eu.REHABILITALHATO_FL ? this.props.eu.REHABILITALHATO_FL : ''} onChange={this.changeData('EU_ADATOK', 'REHABILITALHATO_FL')} />
+                          <Input
+                            type="N"
+                            name="REHABILITALHATO_FL"
+                            className="cell_input"
+                            value={this.props.eu['REHABILITALHATO_FL'] != null ? this.props.eu['REHABILITALHATO_FL'] : ''}
+                            onChange={(value) => this.props.updateCustomer('EU_ADATOK', 0, 'REHABILITALHATO_FL', value)} />
                         </td>
                         <td className="cell_spacer">
                         </td>
@@ -64,7 +75,12 @@ class CustomerBase extends Component {
                         <td colSpan="3"></td>
                         <td className="cell_property">Önellátásra képes flag:</td>
                         <td className="cell_value">
-                          <input type="text" name="ONELLATAS_FL" className="cell_input" value={this.props.eu.ONELLATAS_FL ? this.props.eu.ONELLATAS_FL : ''} onChange={this.changeData('EU_ADATOK', 'ONELLATAS_FL')} />
+                          <Input
+                            type="N"
+                            name="ONELLATAS_FL"
+                            className="cell_input"
+                            value={this.props.eu['ONELLATAS_FL'] != null ? this.props.eu['ONELLATAS_FL'] : ''}
+                            onChange={(value) => this.props.updateCustomer('EU_ADATOK', 0, 'ONELLATAS_FL', value)} />
                         </td>
                       </tr>
                       <tr>

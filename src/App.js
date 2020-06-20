@@ -133,7 +133,7 @@ class App extends Component {
       tables: {
         params: utils.dtFromJS2SAS([this.state.params], ['LEKERDEZES_DT', ...dateParams]),
         alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
-        eu_adatok: this.state.customer.EU_ADATOK,
+        eu_adatok: utils.functionOnColumns(this.state.customer.EU_ADATOK, '_ALL_', (value) => value === '' ? null : value ),
         new_income: utils.dttmFromJS2SAS(this.state.newIncome, ['KEZDESDATUM', 'VEGEDATUM']),
         family: utils.dtFromJS2SAS(this.state.family, ['SZUL_DT']),
         benefits: this.state.selectedBenefits.map((benefit) => ({ benefit: benefit }))
