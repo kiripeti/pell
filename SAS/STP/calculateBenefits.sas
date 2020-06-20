@@ -77,24 +77,24 @@
                 cats(benefit, '_input_', "&postfix") as brm_input_tables,
                 cats('pelltmp.', benefit, '_', "&postfix") as brm_output_tables
             into 
-                :benefit_codes separated by ' ',
-                :brm_input_tables separated by ' ',
-                :brm_output_tables separated by ' '
+                :benefit_codes separated by '|',
+                :brm_input_tables separated by '|',
+                :brm_output_tables separated by '|'
             from
                 BENEFITS;
         quit;
 
-        %macro appen_results;
+        %macro append_results;
             data results;
-                ellatas_cd="%qscan(&benefit_codes, 1)";
-                set %qscan(&brm_output_tables, 1);
+                ellatas_cd="%qscan(&benefit_codes,1,|)";
+                set %qscan(&brm_output_tables,1,|);
             run;
 
             %let benefit_count=%sysfunc(countw(&benefit_codes));
 
             %do i=2 %to &benefit_count;
-                %let table=%qscan(&brm_output_tables, &i);
-                %let benefit_code=%qscan(&benefit_codes, 1&i;
+                %let table=%qscan(&brm_output_tables,&i,|);
+                %let benefit_code=%qscan(&benefit_codes,&i,|);
 
                 data res_&benefit_code;
                     ellatas_cd="&benefit_code";
@@ -107,13 +107,13 @@
                 run;
             %end;
         %mend;
-        %appen_results;
+        %append_results;
 
         %macro add_inputs;
             %let benefit_count=%sysfunc(countw(&benefit_codes));
             %do i=1 %to &benefit_count;
-                %let table=%qscan(&brm_inpu_tables, &i);
-                %let benefit_code=%qscan(&benefit_codes, 1&i;
+                %let table=%qscan(&brm_input_tables,&i,|);
+                %let benefit_code=%qscan(&benefit_codes,&i,|);
                 %bafOutDataset(brm_input_&benefit_code, pelltmp, &table)
             %end;
         %mend;
