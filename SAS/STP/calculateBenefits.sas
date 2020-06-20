@@ -51,7 +51,7 @@
     /* End of Manage NEW_INCOME */
 
     /* Manage FAMILY */
-        %if &family ne  %then %do;
+        %if %sysfunc(exist(FAMILY)) %then %do;
             data pelltmp.FAMILY_&postfix;
                 set FAMILY;
             run;
