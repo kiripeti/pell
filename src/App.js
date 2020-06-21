@@ -37,7 +37,7 @@ class App extends Component {
     }
   }
 
-  renderMenuItem = (coed) => {
+  renderMenuItem = (code) => {
     const className = code === this.state.selectedMenu
       ? 'nav-item item-210 deeper parent'
       : 'nav-item item-207';
