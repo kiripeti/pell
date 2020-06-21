@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d4231850701205607864e367c2b8569c",
+    "revision": "5b689ff93638ddc941ce57a15aa571f7",
     "url": "/pell-react/index.html"
   },
   {
-    "revision": "d7e065cab9a2889449d0",
+    "revision": "398f66d49ad34193a71d",
     "url": "/pell-react/static/css/2.a1b7a17e.chunk.css"
   },
   {
-    "revision": "856bf326ea4bdd75da75",
+    "revision": "a821982f637795c50489",
     "url": "/pell-react/static/css/main.3165873f.chunk.css"
   },
   {
-    "revision": "d7e065cab9a2889449d0",
-    "url": "/pell-react/static/js/2.6c536154.chunk.js"
+    "revision": "398f66d49ad34193a71d",
+    "url": "/pell-react/static/js/2.2cda4d1d.chunk.js"
   },
   {
     "revision": "3a5359d431b8190dc2f36e4703f39768",
-    "url": "/pell-react/static/js/2.6c536154.chunk.js.LICENSE.txt"
+    "url": "/pell-react/static/js/2.2cda4d1d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "856bf326ea4bdd75da75",
-    "url": "/pell-react/static/js/main.290bd8bf.chunk.js"
+    "revision": "a821982f637795c50489",
+    "url": "/pell-react/static/js/main.6f3a56b0.chunk.js"
   },
   {
     "revision": "ab42450af6285eddc032",
