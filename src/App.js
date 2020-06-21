@@ -16,16 +16,16 @@ class App extends Component {
           label: 'Beállítások'
         }
       },
-      selectedMenu: 'BENEFIT'
+      selectedMenu: 'SETTINGS'
     };
   }
 
-  selectMenu = (event) => this.setState(() => ({
-    selectedMenu: event.target.name
+  selectMenu = (code) => this.setState(() => ({
+    selectedMenu: code
   }))
 
-  content = () => {
-    switch (this.state.selectedMenu) {
+  content = (code) => {
+    switch (code) {
       case 'BENEFIT':
         return <CalculateBenefits />;
 
@@ -33,7 +33,7 @@ class App extends Component {
         return <Settings />
 
       default:
-        break;
+        return null;
     }
   }
 
@@ -52,7 +52,7 @@ class App extends Component {
 
     return (
       <li key={code} className={className}>
-        <a style={style} className={linkClass} name={code} onClick={this.selectMenu}>
+        <a style={style} className={linkClass} name={code} onClick={() => this.selectMenu(code)}>
           {this.state.menuDetailes[code].label}
         </a>
       </li>
@@ -74,7 +74,7 @@ class App extends Component {
 
         <div className="body">
           <div className="content">
-            {this.content()}
+            {this.content(this.state.selectedMenu)}
           </div>
         </div>
       </Fragment>
