@@ -21,7 +21,7 @@ class Table extends Component {
     );
   }
 
-  render(props) {
+  render() {
     return (
       <table id={this.props.id} style={{width:'100%', padding:10, overflow:'auto', marginTop:2}} >
         <tbody>

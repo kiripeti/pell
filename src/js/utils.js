@@ -1,4 +1,4 @@
-import { 
+import h54s, { 
   fromSasDateTime as h54sFromSASdttm,
   toSasDateTime as h54sToSASdttm 
 } from 'h54s';
@@ -48,6 +48,48 @@ const removeEmptyKeys = (obj) => {
     return obj.map(removeEmptyKeysFromOcjet);
   } else {
     return removeEmptyKeysFromOcjet(obj)
+  }
+}
+
+export class SAS {
+  sas = new h54s({
+    metadataRoot:'/PELL/Stored Processes/',
+    debug: true,
+    maxXhrRetries: 0
+  });
+
+  call = ({ program, tables, preprocess, success, postprocess }) => {
+    if (preprocess) preprocess();
+
+    let sasData = null;
+
+    if (tables && Object.keys(tables).length > 0) {
+      const tableNames = Object.keys(tables);
+
+      let tableName = tableNames[0];
+      let data = removeEmptyKeys(tables[tableName]);
+      sasData = new h54s.SasData(data, tableName);
+
+      for (let i = 1; i < tableNames.length; i++) {
+        let tableName = tableNames[i];
+        let data = removeEmptyKeys(tables[tableName]);
+        sasData.addTable(data, tableName);
+      }
+    }
+
+    this.sas.call(program, sasData, (err, res) => {
+      if (err) {
+        if (err.type === 'notLoggedinError') {
+          window.location.href = '/pell';
+        }
+        console.log(err);
+        alert('Hiba lépett fel a feldolgozás során!');
+      } else {
+        success(res);
+      }
+
+      if (postprocess) postprocess();
+    });
   }
 }
 

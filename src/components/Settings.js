@@ -14,16 +14,18 @@ const Settings = (props) => {
       label: 'Ügyfél inputok',
       description: 'Az ügyfél inputok testre szabása'
     },
+    /*
     'OTHER': {
       label: 'Egyéb beállítások',
       description: ''
     }
+    */
   };
 
   return (
     <div>
       <SettingsTab tabs={menuItems} selectedTab={selectedTab} selectTab={setSelectedTab} />
-      <SettingsContent  />
+      <SettingsContent code={selectedTab} />
     </div>
   );
 }
