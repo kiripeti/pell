@@ -23,8 +23,8 @@ class SettingsContent extends Component {
         isLoading: true
       })),
       success: (res) => this.setState({
-        ['BENEFITS']: res.benefits.sort( (b1, b2) => b1.GROUP < b2.GROUP ? -1 : (b1.ELLATAS_NEV < b2.ELLATAS_NEV ? -1 : 1) ),
-        ['PARAMS']: res.benefitParams.sort( (b1, b2) => b1.ORDER - b2.ORDER )
+        ['BENEFITS']: res.benefits.sort( (b1, b2) => b1['ELLATAS_KOD'] < b2['ELLATAS_KOD'] ? -1 :  1),
+        ['PARAMS']: res.benefitParams.sort( (b1, b2) => b1['ELLATAS_KOD'] < b2['ELLATAS_KOD'] ? -1 :  b1.ORDER - b2.ORDER )
       }),
       postprocess: () => this.setState(() => ({
         isLoading: false
@@ -39,14 +39,14 @@ class SettingsContent extends Component {
 
     const headers = {
       ['BENEFITS']: [
+        {name: 'ELLATAS_KOD', align: 'c', label: 'Ellátás kód'},
         {name: 'GROUP',       align: 'c', label: 'Ellátás csoport'},
-        {name: 'ELLATAS_NEV', align: 'c', label: 'Ellátás név'},
-        {name: 'ELLATAS_KOD', align: 'c', label: 'Ellátás kód'}
+        {name: 'ELLATAS_NEV', align: 'c', label: 'Ellátás név'}
       ],
 
       ['PARAMS']:[
-        {name: 'ORDER',       align: 'C', label: 'Sorszám'},
         {name: 'ELLATAS_CD',  align: 'C', label: 'Ellátás kód'},
+        {name: 'ORDER',       align: 'C', label: 'Sorszám'},
         {name: 'NAME',        align: 'C', label: 'Input név'},
         {name: 'TYPE',        align: 'C', label: 'Input típus'},
         {name: 'LABEL',       align: 'C', label: 'Input felirat'},
