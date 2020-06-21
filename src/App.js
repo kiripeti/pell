@@ -20,17 +20,43 @@ class App extends Component {
     };
   }
 
+  selectMenu = (event) => this.setState(() => ({
+    selectedMenu: event.target.name
+  }))
+
   content = () => {
     switch (this.state.selectedMenu) {
       case 'BENEFIT':
         return <CalculateBenefits />;
-      
+
       case 'SETTINGS':
         return <Settings />
-    
+
       default:
         break;
     }
+  }
+
+  renderMenuItem = (coed) => {
+    const className = code === this.state.selectedMenu
+      ? 'nav-item item-210 deeper parent'
+      : 'nav-item item-207';
+
+    const style = code === this.state.selectedMenu
+      ? { color: '#deb306' }
+      : {};
+
+    const linkClass = code === this.state.selectedMenu
+      ? ''
+      : 'nav-link';
+
+    return (
+      <li key={code} className={className}>
+        <a style={style} className={linkClass} name={code} onClick={this.selectMenu}>
+          {this.state.menuDetailes[code].label}
+        </a>
+      </li>
+    );
   }
 
   render() {
@@ -40,15 +66,7 @@ class App extends Component {
           <div className="container">
             <div className="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul className="menu navbar-nav mr-auto" id="mainmenu" style={{ paddingTop: 2, paddingBottom: 2 }}>
-                {
-                  this.state.menu.map( code => 
-                    <li key={code} className="nav-item item-210 deeper parent">
-                      <a style={{ color: '#deb306' }}>
-                        {this.state.menuDetailes[code].label}
-                      </a>
-                    </li>
-                  )
-                }
+                {this.state.menu.map(this.renderMenuItem)}
               </ul>
             </div>
           </div>
