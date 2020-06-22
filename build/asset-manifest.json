@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/pell-react/static/css/main.3165873f.chunk.css",
-    "main.js": "/pell-react/static/js/main.d5df200d.chunk.js",
-    "main.js.map": "/pell-react/static/js/main.d5df200d.chunk.js.map",
+    "main.js": "/pell-react/static/js/main.38b33fed.chunk.js",
+    "main.js.map": "/pell-react/static/js/main.38b33fed.chunk.js.map",
     "runtime-main.js": "/pell-react/static/js/runtime-main.346265af.js",
     "runtime-main.js.map": "/pell-react/static/js/runtime-main.346265af.js.map",
     "static/css/2.a1b7a17e.chunk.css": "/pell-react/static/css/2.a1b7a17e.chunk.css",
     "static/js/2.a05d4331.chunk.js": "/pell-react/static/js/2.a05d4331.chunk.js",
     "static/js/2.a05d4331.chunk.js.map": "/pell-react/static/js/2.a05d4331.chunk.js.map",
     "index.html": "/pell-react/index.html",
-    "precache-manifest.61e14596b73ef0655843f1ac9bbbbe0d.js": "/pell-react/precache-manifest.61e14596b73ef0655843f1ac9bbbbe0d.js",
+    "precache-manifest.19077898f98d07491be3607375eb6693.js": "/pell-react/precache-manifest.19077898f98d07491be3607375eb6693.js",
     "service-worker.js": "/pell-react/service-worker.js",
     "static/css/2.a1b7a17e.chunk.css.map": "/pell-react/static/css/2.a1b7a17e.chunk.css.map",
     "static/css/main.3165873f.chunk.css.map": "/pell-react/static/css/main.3165873f.chunk.css.map",
@@ -20,6 +20,6 @@
     "static/css/2.a1b7a17e.chunk.css",
     "static/js/2.a05d4331.chunk.js",
     "static/css/main.3165873f.chunk.css",
-    "static/js/main.d5df200d.chunk.js"
+    "static/js/main.38b33fed.chunk.js"
   ]
 }

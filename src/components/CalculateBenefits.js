@@ -18,7 +18,6 @@ class CalculateBenefits extends Component {
       loadingMessage: '',
       isCustomerLoaded: false,
       jkod: '',
-      selectedJkod: '',
       customer: {
         ALAP_ADATOK: [],
         EU_ADATOK: [],
@@ -137,7 +136,7 @@ class CalculateBenefits extends Component {
     const family = utils
       .dtFromJS2SAS(this.state.family, ['SZUL_DT'])
       .map((member) => ({
-        ...member, ...{['JKOD']: this.state.selectedJkod}
+        ...member, ...{['JKOD']: this.state.jkod}
       }));
 
     this.call({
