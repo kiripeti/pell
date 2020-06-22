@@ -133,6 +133,12 @@ class CalculateBenefits extends Component {
       .filter( (param) => param.TYPE === 'D')
       .map( (param) => param.NAME )
       .filter( (name, index, names) => names.indexOf(name) === index );
+    
+    const family = utils
+      .dtFromJS2SAS(this.state.family, ['SZUL_DT'])
+      .map((member) => ({
+        ...member, ...{['JKOD']: this.state.selectedJkod}
+      }));
 
     this.call({
       program: 'calculateBenefits',
@@ -142,7 +148,7 @@ class CalculateBenefits extends Component {
         alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
         eu_adatok: this.state.customer.EU_ADATOK,
         new_income: utils.dttmFromJS2SAS(this.state.newIncome, ['KEZDESDATUM', 'VEGEDATUM']),
-        family: utils.dtFromJS2SAS(this.state.family, ['SZUL_DT']),
+        family: family,
         benefits: this.state.selectedBenefits.map((benefit) => ({ benefit: benefit }))
       }
     },

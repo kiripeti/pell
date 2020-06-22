@@ -12,10 +12,10 @@ class CustomerFamily extends Component {
     }
 
     this.headers = [
-      {name: 'SELECTED', align: 'C', label: ''},
-      {name: 'JKOD',     align: 'C', label: 'Azonosító'},
-      {name: 'SZUL_DT',  align: 'C', label: 'Születési dátum'},
-      {name: 'TYPE',     align: 'C', label: 'Kapcsolat jellege'}
+      {name: 'SELECTED',     align: 'C', label: ''},
+      {name: 'FAMILY_JKOD',  align: 'C', label: 'Azonosító'},
+      {name: 'SZUL_DT',      align: 'C', label: 'Születési dátum'},
+      {name: 'TYPE',         align: 'C', label: 'Kapcsolat jellege'}
     ];
 
     this.addRow = this.addRow.bind(this);
@@ -65,7 +65,7 @@ class CustomerFamily extends Component {
             onChange={(value) => this.setState({selectedRow: parseInt(value)})} />
         );
         break;
-      case 'JKOD':
+      case 'FAMILY_JKOD':
         input = (
           <input
             type="text"

@@ -12,6 +12,11 @@
             call symputx(name, value, 'G');
         run;
 
+        %if %symexist(LEKERDEZES_DT) eq 0 %then %do;
+            %global LEKERDEZES_DT;
+            %let LEKERDEZES_DT=today();
+        %end;
+
         data _null_;
             call symputx('date', &LEKERDEZES_DT, 'G');
         run;
