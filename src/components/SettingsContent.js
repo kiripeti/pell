@@ -116,40 +116,47 @@ class SettingsContent extends Component {
     }
 
     return (
-      <div className="more" style={{ height: 250, verticalAlign: 'top', textTransform: 'none' }}>
-        <div style={{ padding: 0, fontSize: '15pt', background: '#ece3c0', marginTop: 2, width: "100%" }}>
-          <table width="100%" border="0" cellSpacing="5" cellPadding="5">
-            <tbody>
-              <tr style={{ height: 45 }}>
-                <td style={{ fontSize: '11pt', whiteSpace: 'nowrap' }}>
-                  <Select
-                    name="GROUP"
-                    defaultOption={{ value: null, label: 'Minden csoport' }}
-                    onChange={this.selectGroup}
-                    value={this.state.selectedGroup}
-                    options={this.getGroupsForSelect()} />
-                </td>
-                <td className="cell_spacer">
-                </td>
-                <td style={{ fontSize: '11pt', whiteSpace: 'nowrap' }}>
-                  <Select
-                    name="BENEFIT"
-                    defaultOption={{ value: null, label: 'Minden ellátás' }}
-                    onChange={this.selectBenefit}
-                    value={this.state.selectedBenefit}
-                    options={this.getBenefitsForSelect()} />
-                </td>
-                <td style={{ width: '100%' }} align='right'>
-                  <div id="btns" style={{ paddingRight: 10, paddingBottom: 5 }}>
-                    <input type="button" className="button" value=" Mentés " id="newRowBtn" onClick={this.save} />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <Table header={headers[this.props.code]} data={this.filterData(this.state[this.props.code])} />
+      <div className="more" style={{height:250, verticalAlign:'top', textTransform:'none'}}>
+        <div id="t2_content" style={{width:'100%', height:'100%', top:0, position:'absolute', textAlign:'left'}}>
+          <div style={{padding:0, fontSize:'15pt', background:'#ece3c0', marginTop:2, width:"100%"}}>
+            {JSON.stringify({selectedBenefit: this.state.selectedBenefit, selectedGroup: this.state.selectedGroup})}
+            <table width="100%" border="0" cellSpacing="5" cellPadding="5">
+              <tbody>
+                <tr style={{ height: 45 }}>
+                  <td style={{ fontSize: '11pt', whiteSpace: 'nowrap' }}>
+                    <Select
+                      name="GROUP"
+                      defaultOption={{ value: null, label: 'Minden csoport' }}
+                      onChange={this.selectGroup}
+                      value={this.state.selectedGroup}
+                      options={this.getGroupsForSelect()} />
+                  </td>
+                  <td className="cell_spacer">
+                  </td>
+                  <td style={{ fontSize: '11pt', whiteSpace: 'nowrap' }}>
+                    <Select
+                      name="BENEFIT"
+                      defaultOption={{ value: null, label: 'Minden ellátás' }}
+                      onChange={this.selectBenefit}
+                      value={this.state.selectedBenefit}
+                      options={this.getBenefitsForSelect()} />
+                  </td>
+                  <td style={{ width: '100%' }} align='right'>
+                    <div id="btns" style={{ paddingRight: 10, paddingBottom: 5 }}>
+                      <input type="button" className="button" value=" Mentés " id="newRowBtn" onClick={this.save} />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="data2_container" style={{margin:'0px auto', width:'100%', bottom:0, top:40, position:'absolute',  textAlign:'left', overflow:'auto'}} >
+            <div style={{height:'100%', padding:0}} >
+              <div id="data2" style={{margin:'0px auto', height:'100%', position:'relative', width:'100%', textAlign:'center', overflow:'auto', display:'block'}} >
+                <Table header={headers[this.props.code]} data={this.filterData(this.state[this.props.code])} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
