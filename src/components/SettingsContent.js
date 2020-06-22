@@ -74,6 +74,24 @@ class SettingsContent extends Component {
     );
   });
 
+  getGroupsForSelect = () => {
+    return this.state['BENEFITS']
+      .sort((b1, b2) => b1['GROUP'] < b2['GROUP'] ? -1 : 1)
+      .reduce( (groupObject, benefit) => ({
+        ...groupObject,
+        ...{[benefit['GROUP']]: benefit['GROUP']}
+      }), {})
+  }
+
+  getBenefitsForSelect = () => {
+    return this.state['BENEFITS']
+      .sort((b1, b2) => b1['ELLATAS_NEV'] < b2['ELLATAS_NEV'] ? -1 : 1)
+      .reduce( (benefitObject, benefit) => ({
+        ...benefitObject,
+        ...{[benefit['ELLATAS_KOD']]: benefit['ELLATAS_NEV']}
+      }), {})
+  }
+
   render() {
     if (this.state.isLoading) {
       return <Loading message={this.state.loadingMessage} />
@@ -97,7 +115,7 @@ class SettingsContent extends Component {
     }
 
     return (
-      <Fragment>
+      <div className="more" style={{width:'80%', height:250, verticalAlign:'top', textTransform:'none'}}>
         <div style={{ padding: 0, fontSize: '15pt', background: '#ece3c0', marginTop: 2, width: "100%" }}>
           <table width="100%" border="0" cellSpacing="5" cellPadding="5">
             <tbody>
@@ -108,7 +126,7 @@ class SettingsContent extends Component {
                     defaultOption={{ value: '', label: 'Minden csoport' }}
                     onChange={this.selectGroup}
                     value={this.state.selectedGroup}
-                    options={this.state['BENEFITS'].map(benefit => benefit['GROUP']).filter((group, index, groups) => groups.indexOf(group) === index)} />
+                    options={this.getGroupsForSelect()} />
                 </td>
                 <td className="cell_spacer">
                 </td>
@@ -118,7 +136,7 @@ class SettingsContent extends Component {
                     defaultOption={{ value: '', label: 'Minden ellátás' }}
                     onChange={this.selectBenefit}
                     value={this.state.selectedBenefit}
-                    options={this.state['BENEFITS'].map(benefit => benefit['ELLATAS_KOD']).filter((code, index, codes) => codes.indexOf(code) === index)} />
+                    options={this.getBenefitsForSelect()} />
                 </td>
                 <td style={{ width: '100%' }} align='right'>
                   <div id="btns" style={{ paddingRight: 10, paddingBottom: 5 }}>
@@ -132,7 +150,7 @@ class SettingsContent extends Component {
         <div style={{ width: '80%', margin: '0 auto' }}>
           <Table header={headers[this.props.code]} data={this.filterData(this.state[this.props.code])} />
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
