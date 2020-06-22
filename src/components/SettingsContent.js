@@ -116,7 +116,7 @@ class SettingsContent extends Component {
     }
 
     return (
-      <div className="more" style={{height:250, verticalAlign:'top', textTransform:'none'}}>
+      <div className="more" style={{height:750, verticalAlign:'top', textTransform:'none'}}>
         <div id="t2_content" style={{width:'100%', height:'100%', top:0, position:'absolute', textAlign:'left'}}>
           <div style={{padding:0, fontSize:'15pt', background:'#ece3c0', marginTop:2, width:"100%"}}>
             <table width="100%" border="0" cellSpacing="5" cellPadding="5">
@@ -125,7 +125,7 @@ class SettingsContent extends Component {
                   <td style={{ fontSize: '11pt', whiteSpace: 'nowrap' }}>
                     <Select
                       name="GROUP"
-                      defaultOption={{ value: null, label: 'Minden csoport' }}
+                      defaultOption={{ value: '', label: 'Minden csoport' }}
                       onChange={this.selectGroup}
                       value={this.state.selectedGroup}
                       options={this.getGroupsForSelect()} />
@@ -135,7 +135,7 @@ class SettingsContent extends Component {
                   <td style={{ fontSize: '11pt', whiteSpace: 'nowrap' }}>
                     <Select
                       name="BENEFIT"
-                      defaultOption={{ value: null, label: 'Minden ellátás' }}
+                      defaultOption={{ value: '', label: 'Minden ellátás' }}
                       onChange={this.selectBenefit}
                       value={this.state.selectedBenefit}
                       options={this.getBenefitsForSelect()} />
