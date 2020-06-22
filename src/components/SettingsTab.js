@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 const SettingsTab = ({ tabs, selectedTab, selectTab }) => {
   const defaultStyle = { borderLeft: 0, background: 'white' };
@@ -14,9 +14,9 @@ const SettingsTab = ({ tabs, selectedTab, selectTab }) => {
   );
 
   return (
-    <ul className="tabs" id="tab_container">
+    <Fragment>
       {menuItems}
-    </ul>
+    </Fragment>
   );
 }
 

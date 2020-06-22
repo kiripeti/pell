@@ -64,13 +64,13 @@ class SettingsContent extends Component {
     let keep = true;
 
     if (this.props.code === 'BENEFITS') {
-      keep = this.state.selectedGroup === '' || this.state.selectedGroup === row['GROUP'];
+      keep = this.state.selectedGroup == null || this.state.selectedGroup === row['GROUP'];
     } else {
-      keep = this.state.selectedGroup === '' || this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
+      keep = this.state.selectedGroup == null || this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
     }
 
     return keep && (
-      this.state.selectedBenefit === '' || this.state.selectedGroup === row['ELLATAS_CD'] || this.state.selectedGroup === row['ELLATAS_KOD']
+      this.state.selectedBenefit == null || this.state.selectedBenefit === row['ELLATAS_CD'] || this.state.selectedBenefit === row['ELLATAS_KOD']
     );
   });
 
@@ -115,7 +115,7 @@ class SettingsContent extends Component {
     }
 
     return (
-      <div className="more" style={{width:'80%', height:250, verticalAlign:'top', textTransform:'none'}}>
+      <div className="more" style={{height:250, verticalAlign:'top', textTransform:'none'}}>
         <div style={{ padding: 0, fontSize: '15pt', background: '#ece3c0', marginTop: 2, width: "100%" }}>
           <table width="100%" border="0" cellSpacing="5" cellPadding="5">
             <tbody>

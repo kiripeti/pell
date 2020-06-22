@@ -23,10 +23,10 @@ const Settings = (props) => {
   };
 
   return (
-    <div>
+    <ul className="tabs" id="tab_container">
       <SettingsTab tabs={menuItems} selectedTab={selectedTab} selectTab={setSelectedTab} />
       <SettingsContent code={selectedTab} />
-    </div>
+      </ul>
   );
 }
 
