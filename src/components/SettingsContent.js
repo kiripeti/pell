@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { SAS } from '../js/utils';
 import Loading from './Loading';
 import Table from './Table';
@@ -11,8 +11,8 @@ class SettingsContent extends Component {
     this.state = {
       isLoading: true,
       loadingMessage: '',
-      ['BENEFITS']: [],
-      ['PARAMS']: []
+      'BENEFITS': [],
+      'PARAMS': []
     }
 
     this.sas = new SAS();
@@ -23,17 +23,13 @@ class SettingsContent extends Component {
   reload = () => {
     this.sas.call({
       program: 'getBenefits',
-      tables: {
-        ['BENEFITS']: this.state['BENEFITS'],
-        ['PARAMS']: this.state['PARAMS']
-      },
       preprocess: () => this.setState(() => ({
         isLoading: true,
         loadingMessage: 'Betöltés'
       })),
       success: (res) => this.setState({
-        ['BENEFITS']: res.benefits.sort((b1, b2) => b1['ELLATAS_KOD'] < b2['ELLATAS_KOD'] ? -1 : 1),
-        ['PARAMS']: res.benefitParams.sort((b1, b2) => b1['ORDER'] < b2['ORDER'] ? -1 : b1['ELLATAS_KOD'] < b2['ELLATAS_KOD'] ? -1 : 1)
+        'BENEFITS': res.benefits.sort((b1, b2) => b1['ELLATAS_KOD'] < b2['ELLATAS_KOD'] ? -1 : 1),
+        'PARAMS': res.benefitParams.sort((b1, b2) => b1['ORDER'] < b2['ORDER'] ? -1 : b1['ELLATAS_KOD'] < b2['ELLATAS_KOD'] ? -1 : 1)
       }),
       postprocess: () => this.setState(() => ({
         isLoading: false
@@ -44,6 +40,10 @@ class SettingsContent extends Component {
   save = () => {
     this.sas.call({
       program: 'setBenefits',
+      tables: {
+        'BENEFITS': this.state['BENEFITS'],
+        'PARAMS': this.state['PARAMS']
+      },
       preprocess: () => this.setState(() => ({
         isLoading: true,
         loadingMessage: 'Mentés'
@@ -64,13 +64,13 @@ class SettingsContent extends Component {
     let keep = true;
 
     if (this.props.code === 'BENEFITS') {
-      keep = this.state.selectedGroup == null || this.state.selectedGroup == '' || this.state.selectedGroup === row['GROUP'];
+      keep = this.state.selectedGroup == null || this.state.selectedGroup === '' || this.state.selectedGroup === row['GROUP'];
     } else {
-      keep = this.state.selectedGroup == null || this.state.selectedGroup == '' || this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
+      keep = this.state.selectedGroup == null || this.state.selectedGroup === '' || this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
     }
 
     return keep && (
-      this.state.selectedBenefit == null || this.state.selectedBenefit == '' || this.state.selectedBenefit === row['ELLATAS_CD'] || this.state.selectedBenefit === row['ELLATAS_KOD']
+      this.state.selectedBenefit == null || this.state.selectedBenefit === '' || this.state.selectedBenefit === row['ELLATAS_CD'] || this.state.selectedBenefit === row['ELLATAS_KOD']
     );
   });
 
@@ -85,7 +85,7 @@ class SettingsContent extends Component {
 
   getBenefitsForSelect = () => {
     return this.state['BENEFITS']
-      .filter(benefit => this.state.selectedGroup == null || this.state.selectedGroup == '' || this.state.selectedGroup === benefit['GROUP'])
+      .filter(benefit => this.state.selectedGroup == null || this.state.selectedGroup === '' || this.state.selectedGroup === benefit['GROUP'])
       .sort((b1, b2) => b1['ELLATAS_NEV'] < b2['ELLATAS_NEV'] ? -1 : 1)
       .reduce((benefitObject, benefit) => ({
         ...benefitObject,
@@ -99,13 +99,13 @@ class SettingsContent extends Component {
     }
 
     const headers = {
-      ['BENEFITS']: [
+      'BENEFITS': [
         { name: 'ELLATAS_KOD', align: 'c', label: 'Ellátás kód' },
         { name: 'GROUP', align: 'c', label: 'Ellátás csoport' },
         { name: 'ELLATAS_NEV', align: 'c', label: 'Ellátás név' }
       ],
 
-      ['PARAMS']: [
+      'PARAMS': [
         { name: 'ELLATAS_CD', align: 'C', label: 'Ellátás kód' },
         { name: 'ORDER', align: 'C', label: 'Sorszám' },
         { name: 'NAME', align: 'C', label: 'Input név' },
