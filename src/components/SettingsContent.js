@@ -64,13 +64,13 @@ class SettingsContent extends Component {
     let keep = true;
 
     if (this.props.code === 'BENEFITS') {
-      keep = this.state.selectedGroup == null || this.state.selectedGroup === row['GROUP'];
+      keep = this.state.selectedGroup == null || this.state.selectedGroup == '' || this.state.selectedGroup === row['GROUP'];
     } else {
-      keep = this.state.selectedGroup == null || this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
+      keep = this.state.selectedGroup == null || this.state.selectedGroup == '' || this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
     }
 
     return keep && (
-      this.state.selectedBenefit == null || this.state.selectedBenefit === row['ELLATAS_CD'] || this.state.selectedBenefit === row['ELLATAS_KOD']
+      this.state.selectedBenefit == null || this.state.selectedBenefit == '' || this.state.selectedBenefit === row['ELLATAS_CD'] || this.state.selectedBenefit === row['ELLATAS_KOD']
     );
   });
 
@@ -85,7 +85,7 @@ class SettingsContent extends Component {
 
   getBenefitsForSelect = () => {
     return this.state['BENEFITS']
-      .filter(benefit => this.state.selectedGroup == null || this.state.selectedGroup === benefit['GROUP'])
+      .filter(benefit => this.state.selectedGroup == null || this.state.selectedGroup == '' || this.state.selectedGroup === benefit['GROUP'])
       .sort((b1, b2) => b1['ELLATAS_NEV'] < b2['ELLATAS_NEV'] ? -1 : 1)
       .reduce((benefitObject, benefit) => ({
         ...benefitObject,
