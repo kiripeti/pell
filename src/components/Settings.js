@@ -26,7 +26,7 @@ const Settings = (props) => {
     <ul className="tabs" id="tab_container">
       <SettingsTab tabs={menuItems} selectedTab={selectedTab} selectTab={setSelectedTab} />
       <SettingsContent code={selectedTab} />
-      </ul>
+    </ul>
   );
 }
 

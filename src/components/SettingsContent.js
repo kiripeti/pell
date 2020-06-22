@@ -77,18 +77,19 @@ class SettingsContent extends Component {
   getGroupsForSelect = () => {
     return this.state['BENEFITS']
       .sort((b1, b2) => b1['GROUP'] < b2['GROUP'] ? -1 : 1)
-      .reduce( (groupObject, benefit) => ({
+      .reduce((groupObject, benefit) => ({
         ...groupObject,
-        ...{[benefit['GROUP']]: benefit['GROUP']}
+        ...{ [benefit['GROUP']]: benefit['GROUP'] }
       }), {})
   }
 
   getBenefitsForSelect = () => {
     return this.state['BENEFITS']
+      .filter(benefit => this.state.selectedGroup == null || this.state.selectedGroup === benefit['GROUP'])
       .sort((b1, b2) => b1['ELLATAS_NEV'] < b2['ELLATAS_NEV'] ? -1 : 1)
-      .reduce( (benefitObject, benefit) => ({
+      .reduce((benefitObject, benefit) => ({
         ...benefitObject,
-        ...{[benefit['ELLATAS_KOD']]: benefit['ELLATAS_NEV']}
+        ...{ [benefit['ELLATAS_KOD']]: benefit['ELLATAS_NEV'] }
       }), {})
   }
 
@@ -100,22 +101,22 @@ class SettingsContent extends Component {
     const headers = {
       ['BENEFITS']: [
         { name: 'ELLATAS_KOD', align: 'c', label: 'Ellátás kód' },
-        { name: 'GROUP',       align: 'c', label: 'Ellátás csoport' },
+        { name: 'GROUP', align: 'c', label: 'Ellátás csoport' },
         { name: 'ELLATAS_NEV', align: 'c', label: 'Ellátás név' }
       ],
 
       ['PARAMS']: [
-        { name: 'ELLATAS_CD',  align: 'C', label: 'Ellátás kód' },
-        { name: 'ORDER',       align: 'C', label: 'Sorszám' },
-        { name: 'NAME',        align: 'C', label: 'Input név' },
-        { name: 'TYPE',        align: 'C', label: 'Input típus' },
-        { name: 'LABEL',       align: 'C', label: 'Input felirat' },
-        { name: 'OPTIONS',     align: 'C', label: 'Legördülő elemei' }
+        { name: 'ELLATAS_CD', align: 'C', label: 'Ellátás kód' },
+        { name: 'ORDER', align: 'C', label: 'Sorszám' },
+        { name: 'NAME', align: 'C', label: 'Input név' },
+        { name: 'TYPE', align: 'C', label: 'Input típus' },
+        { name: 'LABEL', align: 'C', label: 'Input felirat' },
+        { name: 'OPTIONS', align: 'C', label: 'Legördülő elemei' }
       ]
     }
 
     return (
-      <div className="more" style={{height:250, verticalAlign:'top', textTransform:'none'}}>
+      <div className="more" style={{ height: 250, verticalAlign: 'top', textTransform: 'none' }}>
         <div style={{ padding: 0, fontSize: '15pt', background: '#ece3c0', marginTop: 2, width: "100%" }}>
           <table width="100%" border="0" cellSpacing="5" cellPadding="5">
             <tbody>
@@ -123,7 +124,7 @@ class SettingsContent extends Component {
                 <td style={{ fontSize: '11pt', whiteSpace: 'nowrap' }}>
                   <Select
                     name="GROUP"
-                    defaultOption={{ value: '', label: 'Minden csoport' }}
+                    defaultOption={{ value: null, label: 'Minden csoport' }}
                     onChange={this.selectGroup}
                     value={this.state.selectedGroup}
                     options={this.getGroupsForSelect()} />
@@ -133,7 +134,7 @@ class SettingsContent extends Component {
                 <td style={{ fontSize: '11pt', whiteSpace: 'nowrap' }}>
                   <Select
                     name="BENEFIT"
-                    defaultOption={{ value: '', label: 'Minden ellátás' }}
+                    defaultOption={{ value: null, label: 'Minden ellátás' }}
                     onChange={this.selectBenefit}
                     value={this.state.selectedBenefit}
                     options={this.getBenefitsForSelect()} />
@@ -147,7 +148,7 @@ class SettingsContent extends Component {
             </tbody>
           </table>
         </div>
-        <div style={{ width: '80%', margin: '0 auto' }}>
+        <div>
           <Table header={headers[this.props.code]} data={this.filterData(this.state[this.props.code])} />
         </div>
       </div>
