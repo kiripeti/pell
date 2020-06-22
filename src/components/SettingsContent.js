@@ -10,6 +10,7 @@ class SettingsContent extends Component {
 
     this.state = {
       isLoading: true,
+      loadingMessage: '',
       ['BENEFITS']: [],
       ['PARAMS']: []
     }
@@ -17,11 +18,18 @@ class SettingsContent extends Component {
     this.sas = new SAS();
   }
 
-  componentDidMount = () => {
+  componentDidMount = () => this.reload()
+
+  reload = () => {
     this.sas.call({
       program: 'getBenefits',
+      tables: {
+        ['BENEFITS']: this.state['BENEFITS'],
+        ['PARAMS']: this.state['PARAMS']
+      },
       preprocess: () => this.setState(() => ({
-        isLoading: true
+        isLoading: true,
+        loadingMessage: 'Betöltés'
       })),
       success: (res) => this.setState({
         ['BENEFITS']: res.benefits.sort((b1, b2) => b1['ELLATAS_KOD'] < b2['ELLATAS_KOD'] ? -1 : 1),
@@ -30,7 +38,18 @@ class SettingsContent extends Component {
       postprocess: () => this.setState(() => ({
         isLoading: false
       }))
-    })
+    });
+  }
+
+  save = () => {
+    this.sas.call({
+      program: 'setBenefits',
+      preprocess: () => this.setState(() => ({
+        isLoading: true,
+        loadingMessage: 'Mentés'
+      })),
+      success: () => this.reload
+    });
   }
 
   selectGroup = (group) => this.setState(() => ({
@@ -41,25 +60,39 @@ class SettingsContent extends Component {
     selectedBenefit: benefit
   }))
 
+  filterData = (data) => data.filter((row) => {
+    let keep = true;
+
+    if (this.props.code === 'BENEFITS') {
+      keep = this.state.selectedGroup === '' || this.state.selectedGroup === row['GROUP'];
+    } else {
+      keep = this.state.selectedGroup === '' || this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
+    }
+
+    return keep && (
+      this.state.selectedBenefit === '' || this.state.selectedGroup === row['ELLATAS_CD'] || this.state.selectedGroup === row['ELLATAS_KOD']
+    );
+  });
+
   render() {
     if (this.state.isLoading) {
-      return <Loading message="Betöltés" />
+      return <Loading message={this.state.loadingMessage} />
     }
 
     const headers = {
       ['BENEFITS']: [
         { name: 'ELLATAS_KOD', align: 'c', label: 'Ellátás kód' },
-        { name: 'GROUP', align: 'c', label: 'Ellátás csoport' },
+        { name: 'GROUP',       align: 'c', label: 'Ellátás csoport' },
         { name: 'ELLATAS_NEV', align: 'c', label: 'Ellátás név' }
       ],
 
       ['PARAMS']: [
-        { name: 'ELLATAS_CD', align: 'C', label: 'Ellátás kód' },
-        { name: 'ORDER', align: 'C', label: 'Sorszám' },
-        { name: 'NAME', align: 'C', label: 'Input név' },
-        { name: 'TYPE', align: 'C', label: 'Input típus' },
-        { name: 'LABEL', align: 'C', label: 'Input felirat' },
-        { name: 'OPTIONS', align: 'C', label: 'Legördülő elemei' }
+        { name: 'ELLATAS_CD',  align: 'C', label: 'Ellátás kód' },
+        { name: 'ORDER',       align: 'C', label: 'Sorszám' },
+        { name: 'NAME',        align: 'C', label: 'Input név' },
+        { name: 'TYPE',        align: 'C', label: 'Input típus' },
+        { name: 'LABEL',       align: 'C', label: 'Input felirat' },
+        { name: 'OPTIONS',     align: 'C', label: 'Legördülő elemei' }
       ]
     }
 
@@ -88,13 +121,16 @@ class SettingsContent extends Component {
                     options={this.state['BENEFITS'].map(benefit => benefit['ELLATAS_KOD']).filter((code, index, codes) => codes.indexOf(code) === index)} />
                 </td>
                 <td style={{ width: '100%' }} align='right'>
+                  <div id="btns" style={{ paddingRight: 10, paddingBottom: 5 }}>
+                    <input type="button" className="button" value=" Mentés " id="newRowBtn" onClick={this.save} />
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
         <div style={{ width: '80%', margin: '0 auto' }}>
-          <Table header={headers[this.props.code]} data={this.state[this.props.code]} />
+          <Table header={headers[this.props.code]} data={this.filterData(this.state[this.props.code])} />
         </div>
       </Fragment>
     );
