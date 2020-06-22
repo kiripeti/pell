@@ -119,7 +119,6 @@ class SettingsContent extends Component {
       <div className="more" style={{height:250, verticalAlign:'top', textTransform:'none'}}>
         <div id="t2_content" style={{width:'100%', height:'100%', top:0, position:'absolute', textAlign:'left'}}>
           <div style={{padding:0, fontSize:'15pt', background:'#ece3c0', marginTop:2, width:"100%"}}>
-            {JSON.stringify({selectedBenefit: this.state.selectedBenefit, selectedGroup: this.state.selectedGroup})}
             <table width="100%" border="0" cellSpacing="5" cellPadding="5">
               <tbody>
                 <tr style={{ height: 45 }}>
@@ -141,6 +140,7 @@ class SettingsContent extends Component {
                       value={this.state.selectedBenefit}
                       options={this.getBenefitsForSelect()} />
                   </td>
+                  <td>{JSON.stringify({selectedBenefit: this.state.selectedBenefit, selectedGroup: this.state.selectedGroup})}</td>
                   <td style={{ width: '100%' }} align='right'>
                     <div id="btns" style={{ paddingRight: 10, paddingBottom: 5 }}>
                       <input type="button" className="button" value=" Mentés " id="newRowBtn" onClick={this.save} />
