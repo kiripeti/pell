@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SettingsTab from './SettingsTab';
 import SettingsContent from './SettingsContent';
 
-const Settings = (props) => {
+const Settings = ({isDebug}) => {
   const [selectedTab, setSelectedTab] = useState('BENEFITS');
 
   const menuItems = {
@@ -25,7 +25,7 @@ const Settings = (props) => {
   return (
     <ul className="tabs" id="tab_container">
       <SettingsTab tabs={menuItems} selectedTab={selectedTab} selectTab={setSelectedTab} />
-      <SettingsContent code={selectedTab} />
+      <SettingsContent code={selectedTab} isDebug={isDebug} />
     </ul>
   );
 }

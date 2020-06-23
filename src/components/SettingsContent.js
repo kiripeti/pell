@@ -3,7 +3,7 @@ import { SAS } from '../js/utils';
 import Loading from './Loading';
 import Table from './Table';
 import Select from './FormElements/Select';
-import Input from './FormElements/Input'
+import Input from './FormElements/Input';
 
 class SettingsContent extends Component {
   constructor(props) {
@@ -68,13 +68,20 @@ class SettingsContent extends Component {
     let keep = true;
 
     if (this.props.code === 'BENEFITS') {
-      keep = this.state.selectedGroup == null || this.state.selectedGroup === '' || this.state.selectedGroup === row['GROUP'];
+      keep = this.state.selectedGroup == null ||
+             this.state.selectedGroup === ''  || 
+             this.state.selectedGroup === row['GROUP'];
     } else {
-      keep = this.state.selectedGroup == null || this.state.selectedGroup === '' || this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
+      keep = this.state.selectedGroup == null ||
+             this.state.selectedGroup === ''  || 
+             this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
     }
 
     return keep && (
-      this.state.selectedBenefit == null || this.state.selectedBenefit === '' || this.state.selectedBenefit === row['ELLATAS_CD'] || this.state.selectedBenefit === row['ELLATAS_KOD']
+      this.state.selectedBenefit == null ||
+      this.state.selectedBenefit === '' ||
+      this.state.selectedBenefit === row['ELLATAS_CD'] ||
+      this.state.selectedBenefit === row['ELLATAS_KOD']
     );
   });
 
@@ -97,7 +104,28 @@ class SettingsContent extends Component {
       }), {})
   }
 
+  handleChange = (key, property, value) => {
+    const index = this.state[this.props.code].findIndex((row) =>
+      row['ELLATAS_KOD'] === key['ELLATAS_KOD'] &&
+      row['ELLATAS_CD'] === key['ELLATAS_CD'] &&
+      row['NAME'] === key['NAME']
+    );
+
+    const data = this.state[this.props.code].slice();
+    data[index][property] = value;
+
+    this.setState(() => ({
+      [this.props.code]: data
+    }))
+  }
+
   prepareCell = (row, column) => {
+    const key = {
+      'ELLATAS_KOD': row['ELLATAS_KOD'],
+      'ELLATAS_CD': row['ELLATAS_CD'],
+      'NAME': row['NAME']
+    };
+
     switch (column) {
       case 'ELLATAS_KOD':
       case 'ELLATAS_CD':
@@ -112,7 +140,8 @@ class SettingsContent extends Component {
         return (
           <Input
             type="C"
-            value={row[column]} />
+            value={row[column]}
+            onChange={(value) => this.handleChange(key, column, value)} />
         );
 
 
@@ -120,16 +149,18 @@ class SettingsContent extends Component {
         return (
           <Input
             type="N"
-            value={row[column]} />
+            value={row[column]}
+            onChange={(value) => this.handleChange(key, column, value)} />
         );
-      
+
       case 'TYPE':
         return (
           <Select
             name="TYPE"
             defaultOption={{ value: 'N', label: 'Numerikus' }}
             value={row[column]}
-            options={{'C': 'Karakteres', 'D': 'Dátum', 'S': 'Legördülő'}} />
+            options={{ 'C': 'Karakteres', 'D': 'Dátum', 'S': 'Legördülő' }}
+            onChange={(value) => this.handleChange(key, column, value)} />
         );
     }
   }
@@ -139,9 +170,7 @@ class SettingsContent extends Component {
     ...{ [column]: this.prepareCell(row, column) }
   }), {})
 
-  prepareData = () => {
-    this.filterData(this.state[this.props.code]).map(this.prepareRow);
-  }
+  prepareData = () => this.filterData(this.state[this.props.code]).map(this.prepareRow)
 
   headers = {
     'BENEFITS': [
@@ -193,7 +222,6 @@ class SettingsContent extends Component {
                       value={this.state.selectedBenefit}
                       options={this.getBenefitsForSelect()} />
                   </td>
-                  <td>{JSON.stringify({ selectedBenefit: this.state.selectedBenefit, selectedGroup: this.state.selectedGroup })}</td>
                   <td style={{ width: '100%' }} align='right'>
                     <div id="btns" style={{ paddingRight: 10, paddingBottom: 5 }}>
                       <input type="button" className="button" value=" Mentés " id="newRowBtn" onClick={this.save} />

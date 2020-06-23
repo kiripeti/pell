@@ -16,7 +16,8 @@ class App extends Component {
           label: 'Beállítások'
         }
       },
-      selectedMenu: 'SETTINGS'
+      selectedMenu: 'SETTINGS',
+      isDebug: true
     };
   }
 
@@ -24,13 +25,17 @@ class App extends Component {
     selectedMenu: code
   }))
 
+  debugChange = (bool) => this.state(() => ({
+    isDebug: bool
+  }))
+
   content = (code) => {
     switch (code) {
       case 'BENEFIT':
-        return <CalculateBenefits />;
+        return <CalculateBenefits isDebug={this.state.isDebug} debugChange={this.debugChange} />;
 
       case 'SETTINGS':
-        return <Settings />
+        return <Settings isDebug={this.state.isDebug} debugChange={this.debugChange} />
 
       default:
         return null;
