@@ -19,7 +19,7 @@ class CalculateBenefits extends Component {
       loadingMessage: '',
       isCustomerLoaded: false,
       jkod: '',
-      isDebug: false,
+      isDebug: true,
       customer: {
         ALAP_ADATOK: [],
         EU_ADATOK: [],
@@ -43,7 +43,7 @@ class CalculateBenefits extends Component {
 
     this.sas = new h54s({
       metadataRoot:'/PELL/Stored Processes/',
-      debug: true,
+      debug: this.state.isDebug,
       maxXhrRetries: 0
     });
   }
@@ -187,6 +187,16 @@ class CalculateBenefits extends Component {
   updateFamily = (family) => this.setState(prevState => ({ family: family }));
   setParam = (param) => this.setState(state => ({ params: { ...state.params, ...param } }));
 
+  setDebug = (bool) => {
+    if (bool) {
+      this.sas.setDebugMode();
+    } else {
+      this.sas.unsetDebugMode();
+    }
+
+    this.setState(() => ({isDebug: bool}));
+  }
+
   updateCustomer = (type, index, property, data) =>
     this.setState((state) => {
       let customer = Object.assign({}, state.customer);
@@ -283,7 +293,7 @@ class CalculateBenefits extends Component {
                     <td className="cell_text">
                       <CheckBox
                         checked={this.state.isDebug}
-                        onChange={(isDebug) => this.setState(() => ({isDebug: isDebug}))}
+                        onChange={this.setDebug}
                         label="" />
                     </td>
                   </tr>
