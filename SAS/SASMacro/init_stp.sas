@@ -10,6 +10,21 @@
     %global postfix;
     %let postfix=&user.%sysfunc(time(), B8601TM6);
 
-    proc printto log="&stp_log./&stp_name.-&postfix..log" new;
-    run;
+    %if %sysfunc(exist(debug)) %then %do;
+        data _null_;
+            set debug;
+            call symputx('debug', debug, 'G');
+        run;
+    %end; %else %do;
+        data _null_;
+            call symputx('debug', 0, 'G');
+        run;
+    %end;
+
+    %if &debug %then %do;
+        %let postfix=&user;
+    %end; %else %do;
+        proc printto log="&stp_log./&stp_name.-&postfix..log" new;
+        run;
+    %end;
 %mend;

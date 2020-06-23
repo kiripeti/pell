@@ -127,3 +127,12 @@
     %bafOutDataset(results, work, results)
     %add_inputs
 %bafFooter()
+
+%if &debug %then %do;
+    proc delete
+        data =
+            %sysfunc(tranwrd(&brm_output_tables,|,%str( )))
+            pelltmp.%sysfunc(tranwrd(&brm_input_tables,|,%str( pelltmp.)))
+            ;
+    run;
+%end;

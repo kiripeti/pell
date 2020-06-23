@@ -46,6 +46,7 @@ class CustomerIncome extends Component {
 
       new:[
         {name: 'SELECTED',                  align: 'C', label: ''},
+        {name: 'JKOD',                      align: 'C', label: 'Aznosító'},
         {name: 'TARGYEV',                   align: 'C', label: 'Tárgyév'},
         {name: 'ALKMIN',                    align: 'L', label: 'ALKMIN'},
         {name: 'KEZDESDATUM',               align: 'C', label: 'Jogviszony kezdete'},
@@ -77,6 +78,7 @@ class CustomerIncome extends Component {
         newRow[column.name] = null;
       }
     });
+    newRow['JKOD'] = this.props.yearly[0]['JKOD'];
 
     this.props.updateIncome([
       newRow,

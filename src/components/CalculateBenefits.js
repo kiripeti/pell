@@ -8,6 +8,7 @@ import Benefits from './Benefits';
 import BenefitParams from './BenefitParams';
 import DatePicker from './FormElements/DatePicker';
 import utils from '../js/utils';
+import CheckBox from './FormElements/CheckBox';
 
 class CalculateBenefits extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class CalculateBenefits extends Component {
       loadingMessage: '',
       isCustomerLoaded: false,
       jkod: '',
-      selectedJkod: '',
+      isDebug: true,
       customer: {
         ALAP_ADATOK: [],
         EU_ADATOK: [],
@@ -42,7 +43,7 @@ class CalculateBenefits extends Component {
 
     this.sas = new h54s({
       metadataRoot:'/PELL/Stored Processes/',
-      debug: true,
+      debug: this.state.isDebug,
       maxXhrRetries: 0
     });
   }
@@ -133,16 +134,23 @@ class CalculateBenefits extends Component {
       .filter( (param) => param.TYPE === 'D')
       .map( (param) => param.NAME )
       .filter( (name, index, names) => names.indexOf(name) === index );
+    
+    const family = utils
+      .dtFromJS2SAS(this.state.family, ['SZUL_DT'])
+      .map((member) => ({
+        ...member, ...{['JKOD']: this.state.jkod}
+      }));
 
     this.call({
       program: 'calculateBenefits',
       loadingMessage: 'Számítás',
       tables: {
+        debug: [{debug: this.state.isDebug ? 1 : 0}],
         params: utils.dtFromJS2SAS([this.state.params], ['LEKERDEZES_DT', ...dateParams]),
         alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
         eu_adatok: this.state.customer.EU_ADATOK,
         new_income: utils.dttmFromJS2SAS(this.state.newIncome, ['KEZDESDATUM', 'VEGEDATUM']),
-        family: utils.dtFromJS2SAS(this.state.family, ['SZUL_DT']),
+        family: family,
         benefits: this.state.selectedBenefits.map((benefit) => ({ benefit: benefit }))
       }
     },
@@ -178,6 +186,16 @@ class CalculateBenefits extends Component {
   updateIncome = (newIncome) => this.setState(prevState => ({ newIncome: newIncome }));
   updateFamily = (family) => this.setState(prevState => ({ family: family }));
   setParam = (param) => this.setState(state => ({ params: { ...state.params, ...param } }));
+
+  setDebug = (bool) => {
+    if (bool) {
+      this.sas.setDebugMode();
+    } else {
+      this.sas.unsetDebugMode();
+    }
+
+    this.setState(() => ({isDebug: bool}));
+  }
 
   updateCustomer = (type, index, property, data) =>
     this.setState((state) => {
@@ -267,6 +285,16 @@ class CalculateBenefits extends Component {
                         name='LEKERDEZES_DT'
                         date={this.state.params.LEKERDEZES_DT}
                         onChange={this.setParam} />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="cell_text">Teszt futtatás:</td>
+                    <td className="cell_spacer"></td>
+                    <td className="cell_text">
+                      <CheckBox
+                        checked={this.state.isDebug}
+                        onChange={this.setDebug}
+                        label="" />
                     </td>
                   </tr>
                   <tr>
