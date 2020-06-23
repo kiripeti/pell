@@ -3,6 +3,7 @@ import { SAS } from '../js/utils';
 import Loading from './Loading';
 import Table from './Table';
 import Select from './FormElements/Select';
+import Input from './FormElements/Input'
 
 class SettingsContent extends Component {
   constructor(props) {
@@ -96,37 +97,66 @@ class SettingsContent extends Component {
       }), {})
   }
 
-  prepareData = () => {
-    this.filterData(this.state[this.props.code]).map((row) => {
-      let inputs = {};
-      
-      this.headers.filter( h => h.editable ).forEach(column => {
-        inputs[column] = (
-          
-        );
-      });
+  prepareCell = (row, column) => {
+    switch (column) {
+      case 'ELLATAS_KOD':
+      case 'ELLATAS_CD':
+      case 'NAME':
+        return row[column];
 
-      return {
-        ...row,
-        ...inputs
-      };
-    });
+
+      case 'GROUP':
+      case 'ELLATAS_NEV':
+      case 'LABEL':
+      case 'OPTIONS':
+        return (
+          <Input
+            type="C"
+            value={row[column]} />
+        );
+
+
+      case 'ORDER':
+        return (
+          <Input
+            type="N"
+            value={row[column]} />
+        );
+      
+      case 'TYPE':
+        return (
+          <Select
+            name="TYPE"
+            defaultOption={{ value: 'N', label: 'Numerikus' }}
+            value={row[column]}
+            options={{'C': 'Karakteres', 'D': 'Dátum', 'S': 'Legördülő'}} />
+        );
+    }
+  }
+
+  prepareRow = (row) => Object.keys(row).reduce((newRow, column) => ({
+    ...newRow,
+    ...{ [column]: this.prepareCell(row, column) }
+  }), {})
+
+  prepareData = () => {
+    this.filterData(this.state[this.props.code]).map(this.prepareRow);
   }
 
   headers = {
     'BENEFITS': [
-      { name: 'ELLATAS_KOD', align: 'c', label: 'Ellátás kód', editable: false },
-      { name: 'GROUP', align: 'c', label: 'Ellátás csoport', editable: true },
-      { name: 'ELLATAS_NEV', align: 'c', label: 'Ellátás név', editable: true }
+      { name: 'ELLATAS_KOD', align: 'c', label: 'Ellátás kód' },
+      { name: 'GROUP', align: 'c', label: 'Ellátás csoport' },
+      { name: 'ELLATAS_NEV', align: 'c', label: 'Ellátás név' }
     ],
 
     'PARAMS': [
-      { name: 'ELLATAS_CD', align: 'C', label: 'Ellátás kód', editable: false },
-      { name: 'ORDER', align: 'C', label: 'Sorszám', editable: true },
-      { name: 'NAME', align: 'C', label: 'Input név', editable: false },
-      { name: 'TYPE', align: 'C', label: 'Input típus', editable: true },
-      { name: 'LABEL', align: 'C', label: 'Input felirat', editable: true },
-      { name: 'OPTIONS', align: 'C', label: 'Legördülő elemei', editable: true }
+      { name: 'ELLATAS_CD', align: 'C', label: 'Ellátás kód' },
+      { name: 'ORDER', align: 'C', label: 'Sorszám' },
+      { name: 'NAME', align: 'C', label: 'Input név' },
+      { name: 'TYPE', align: 'C', label: 'Input típus' },
+      { name: 'LABEL', align: 'C', label: 'Input felirat' },
+      { name: 'OPTIONS', align: 'C', label: 'Legördülő elemei' }
     ]
   }
 
@@ -136,9 +166,9 @@ class SettingsContent extends Component {
     }
 
     return (
-      <div className="more" style={{height:500, verticalAlign:'top', textTransform:'none'}}>
-        <div id="t2_content" style={{width:'100%', height:'100%', top:0, position:'absolute', textAlign:'left'}}>
-          <div style={{padding:0, fontSize:'15pt', background:'#ece3c0', marginTop:2, width:"100%"}}>
+      <div className="more" style={{ height: 500, verticalAlign: 'top', textTransform: 'none' }}>
+        <div id="t2_content" style={{ width: '100%', height: '100%', top: 0, position: 'absolute', textAlign: 'left' }}>
+          <div style={{ padding: 0, fontSize: '15pt', background: '#ece3c0', marginTop: 2, width: "100%" }}>
             <table width="100%" border="0" cellSpacing="5" cellPadding="5">
               <tbody>
                 <tr style={{ height: 45 }}>
@@ -163,7 +193,7 @@ class SettingsContent extends Component {
                       value={this.state.selectedBenefit}
                       options={this.getBenefitsForSelect()} />
                   </td>
-                  <td>{JSON.stringify({selectedBenefit: this.state.selectedBenefit, selectedGroup: this.state.selectedGroup})}</td>
+                  <td>{JSON.stringify({ selectedBenefit: this.state.selectedBenefit, selectedGroup: this.state.selectedGroup })}</td>
                   <td style={{ width: '100%' }} align='right'>
                     <div id="btns" style={{ paddingRight: 10, paddingBottom: 5 }}>
                       <input type="button" className="button" value=" Mentés " id="newRowBtn" onClick={this.save} />
@@ -173,9 +203,9 @@ class SettingsContent extends Component {
               </tbody>
             </table>
           </div>
-          <div id="data2_container" style={{margin:'0px auto', width:'100%', bottom:0, top:40, position:'absolute',  textAlign:'left', overflow:'auto'}} >
-            <div style={{height:'100%', padding:0}} >
-              <div id="data2" style={{margin:'0px auto', height:'100%', position:'relative', width:'100%', textAlign:'center', overflow:'auto', display:'block'}} >
+          <div id="data2_container" style={{ margin: '0px auto', width: '100%', bottom: 0, top: 40, position: 'absolute', textAlign: 'left', overflow: 'auto' }} >
+            <div style={{ height: '100%', padding: 0 }} >
+              <div id="data2" style={{ margin: '0px auto', height: '100%', position: 'relative', width: '100%', textAlign: 'center', overflow: 'auto', display: 'block' }} >
                 <Table header={this.headers[this.props.code]} data={this.prepareData()} />
               </div>
             </div>
