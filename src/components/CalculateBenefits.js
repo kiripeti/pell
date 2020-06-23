@@ -8,6 +8,7 @@ import Benefits from './Benefits';
 import BenefitParams from './BenefitParams';
 import DatePicker from './FormElements/DatePicker';
 import utils from '../js/utils';
+import CheckBox from './FormElements/CheckBox';
 
 class CalculateBenefits extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class CalculateBenefits extends Component {
       loadingMessage: '',
       isCustomerLoaded: false,
       jkod: '',
+      isDebug: false,
       customer: {
         ALAP_ADATOK: [],
         EU_ADATOK: [],
@@ -143,6 +145,7 @@ class CalculateBenefits extends Component {
       program: 'calculateBenefits',
       loadingMessage: 'Számítás',
       tables: {
+        debug: [{debug: this.state.isDebug ? 1 : 0}],
         params: utils.dtFromJS2SAS([this.state.params], ['LEKERDEZES_DT', ...dateParams]),
         alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
         eu_adatok: this.state.customer.EU_ADATOK,
@@ -272,6 +275,16 @@ class CalculateBenefits extends Component {
                         name='LEKERDEZES_DT'
                         date={this.state.params.LEKERDEZES_DT}
                         onChange={this.setParam} />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="cell_text">Teszt futtatás:</td>
+                    <td className="cell_spacer"></td>
+                    <td className="cell_text">
+                      <CheckBox
+                        checked={this.state.isDebug}
+                        onChange={(isDebug) => this.setState(() => ({isDebug: isDebug}))}
+                        label="" />
                     </td>
                   </tr>
                   <tr>
