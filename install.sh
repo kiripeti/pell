@@ -16,6 +16,7 @@ unzip pell-${TAG}.zip
 
 cp -Rv pell-${TAG}/SAS/SASMacro ${SASE}
 cp -Rv pell-${TAG}/SAS/STP ${SASE}/SASCode
+cp -Rv pell-${TAG}/SAS/H54S ${SASE}/SASCode
 
 rm -R ${WEBAPP_TARGET}
 cp -Rv pell-${TAG}/build ${WEBAPP_TARGET}
