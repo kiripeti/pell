@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import CalculateBenefits from './components/CalculateBenefits';
 import Settings from './components/Settings';
+import pkg from '../package.json'
 
 class App extends Component {
   constructor(props) {
@@ -19,6 +20,8 @@ class App extends Component {
       selectedMenu: 'BENEFIT',
       isDebug: true
     };
+
+    this.version = pkg.version;
   }
 
   selectMenu = (code) => this.setState(() => ({
@@ -57,9 +60,7 @@ class App extends Component {
 
     return (
       <li key={code} className={className} style={{ cursor: 'pointer' }}>
-        <a style={style} className={linkClass} name={code} onClick={() => this.selectMenu(code)}>
-          {this.state.menuDetailes[code].label}
-        </a>
+        {this.version}
       </li>
     );
   }
@@ -72,6 +73,9 @@ class App extends Component {
             <div className="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul className="menu navbar-nav mr-auto" id="mainmenu" style={{ paddingTop: 2, paddingBottom: 2 }}>
                 {this.state.menu.map(this.renderMenuItem)}
+                <li className="nav-item item-207" >
+                  {this.version}
+                </li>
               </ul>
             </div>
           </div>
