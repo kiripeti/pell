@@ -16,7 +16,7 @@ class App extends Component {
           label: 'Beállítások'
         }
       },
-      selectedMenu: 'SETTINGS',
+      selectedMenu: 'BENEFIT',
       isDebug: true
     };
   }
