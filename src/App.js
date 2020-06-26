@@ -60,7 +60,9 @@ class App extends Component {
 
     return (
       <li key={code} className={className} style={{ cursor: 'pointer' }}>
-        {this.version}
+        <a style={style} className={linkClass} name={code} onClick={() => this.selectMenu(code)}>
+          {this.state.menuDetailes[code].label}
+        </a>
       </li>
     );
   }
@@ -72,10 +74,12 @@ class App extends Component {
           <div className="container">
             <div className="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul className="menu navbar-nav mr-auto" id="mainmenu" style={{ paddingTop: 2, paddingBottom: 2 }}>
-                {this.state.menu.map(this.renderMenuItem)}
                 <li className="nav-item item-207" >
-                  {this.version}
+                  <span style={{ color: 'white' }} >
+                    {this.version}
+                  </span>
                 </li>
+                {this.state.menu.map(this.renderMenuItem)}
               </ul>
             </div>
           </div>
