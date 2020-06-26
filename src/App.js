@@ -56,7 +56,7 @@ class App extends Component {
       : 'nav-link';
 
     return (
-      <li key={code} className={className}>
+      <li key={code} className={className} style={{ cursor: 'pointer' }}>
         <a style={style} className={linkClass} name={code} onClick={() => this.selectMenu(code)}>
           {this.state.menuDetailes[code].label}
         </a>
