@@ -4,11 +4,11 @@
 
     %init_stp(setBenefits);
 
-    data params.ellatasok_tst;
+    data params.ellatasok;
         set BENEFITS;
     run;
 
-    data params.ugyfel_inputok_tst;
+    data params.ugyfel_inputok;
         set PARAMS;
     run;
 
