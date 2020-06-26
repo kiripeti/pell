@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import CustomerBase from './CustomerBase';
 import CustomerIncome from './CustomerIncome';
 import CustomerBenefits from './CustomerBenefits';
@@ -12,7 +12,7 @@ class CustomerContent extends Component {
     switch (this.props.selected) {
       case 'CUSTOMER':
         const alap = this.props.data.ALAP_ADATOK[0] ? this.props.data.ALAP_ADATOK[0] : {};
-        const eu   = this.props.data.EU_ADATOK[0]   ? this.props.data.EU_ADATOK[0]   : {};
+        const eu = this.props.data.EU_ADATOK[0] ? this.props.data.EU_ADATOK[0] : {};
         content = (
           <CustomerBase
             base={alap}
@@ -55,7 +55,7 @@ class CustomerContent extends Component {
     }
 
     return (
-      <div className="more" style={{height:250, verticalAlign:'top', textTransform:'none'}}>
+      <div className="more" style={{ height: 400, verticalAlign: 'top', textTransform: 'none' }}>
         {content}
       </div>
     );
