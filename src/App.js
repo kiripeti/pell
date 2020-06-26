@@ -76,7 +76,7 @@ class App extends Component {
               <ul className="menu navbar-nav mr-auto" id="mainmenu" style={{ paddingTop: 2, paddingBottom: 2 }}>
                 <li className="nav-item item-207" >
                   <span style={{ color: 'white' }} >
-                    {this.version}
+                    {'v' + this.version}
                   </span>
                 </li>
                 {this.state.menu.map(this.renderMenuItem)}
