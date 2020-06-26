@@ -7,7 +7,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      menu: ['BENEFIT'],
+      menu: ['BENEFIT', 'SETTINGS'],
       menuDetailes: {
         'BENEFIT': {
           label: 'Egységes ügyfélkép'
@@ -16,7 +16,8 @@ class App extends Component {
           label: 'Beállítások'
         }
       },
-      selectedMenu: 'BENEFIT'
+      selectedMenu: 'BENEFIT',
+      isDebug: true
     };
   }
 
@@ -24,13 +25,17 @@ class App extends Component {
     selectedMenu: code
   }))
 
+  debugChange = (bool) => this.state(() => ({
+    isDebug: bool
+  }))
+
   content = (code) => {
     switch (code) {
       case 'BENEFIT':
-        return <CalculateBenefits />;
+        return <CalculateBenefits isDebug={this.state.isDebug} debugChange={this.debugChange} />;
 
       case 'SETTINGS':
-        return <Settings />
+        return <Settings isDebug={this.state.isDebug} debugChange={this.debugChange} />
 
       default:
         return null;
@@ -51,7 +56,7 @@ class App extends Component {
       : 'nav-link';
 
     return (
-      <li key={code} className={className}>
+      <li key={code} className={className} style={{ cursor: 'pointer' }}>
         <a style={style} className={linkClass} name={code} onClick={() => this.selectMenu(code)}>
           {this.state.menuDetailes[code].label}
         </a>

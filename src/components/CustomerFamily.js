@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import RadioButton from './FormElements/RadioButton';
 import DatePicker from './FormElements/DatePicker';
 import Table from './Table';
@@ -62,7 +62,7 @@ class CustomerFamily extends Component {
             value={index}
             selectedValue={this.state.selectedRow}
             label=""
-            onChange={(value) => this.setState({selectedRow: parseInt(value)})} />
+            onChange={(value) => this.setState({ selectedRow: parseInt(value) })} />
         );
         break;
       case 'FAMILY_JKOD':
@@ -86,13 +86,14 @@ class CustomerFamily extends Component {
           <select
             name={column.name}
             className="combobox"
-            style={{width:168, background:'white', border:'1px black solid'}}
+            style={{ width: 168, background: 'white', border: '1px black solid' }}
             size="1"
             value={this.props.family[index][column.name] ? this.props.family[index][column.name] : ''}
             onChange={(event) => this.updateFamily(index, column.name, parseInt(event.target.value))} >
             <option></option>
-            <option value="1">Házastárs</option>
-            <option value="2">Gyermek</option>
+            <option value="1">Szülő</option>
+            <option value="2">Házastárs</option>
+            <option value="3">Gyermek</option>
           </select>
         );
         break;
@@ -104,7 +105,7 @@ class CustomerFamily extends Component {
   }
 
   prepareData() {
-    return this.props.family.map( (row, index) => {
+    return this.props.family.map((row, index) => {
       let newRow = {};
       this.headers.forEach((column) => {
         newRow[column.name] = this.columnToInput(column, index);
@@ -115,13 +116,13 @@ class CustomerFamily extends Component {
 
   render(props) {
     return (
-      <div id="t2_content" style={{width:'100%', height:'100%', top:0, position:'absolute', textAlign:'left'}}>
-        <div style={{padding:0, fontSize:'15pt', background:'#ece3c0', marginTop:2, width:"100%"}}>
+      <div id="t2_content" style={{ width: '100%', height: '100%', top: 0, position: 'absolute', textAlign: 'left' }}>
+        <div style={{ padding: 0, fontSize: '15pt', background: '#ece3c0', marginTop: 2, width: "100%" }}>
           <table width="100%" border="0" cellSpacing="5" cellPadding="5">
             <tbody>
-              <tr style={{height:45}}>
-                <td style={{width:'100%'}} align='right'>
-                  <div id="btns" style={{paddingRight:10, paddingBottom:5}}>
+              <tr style={{ height: 45 }}>
+                <td style={{ width: '100%' }} align='right'>
+                  <div id="btns" style={{ paddingRight: 10, paddingBottom: 5 }}>
                     <input type="button" className="button" value=" Új családtag " id="newRowBtn" onClick={this.addRow} />
                     <input type="button" className="button_disabled" value=" Családtag törlése" id="delRowBtn" onClick={this.removeRow} />
                   </div>
@@ -130,9 +131,9 @@ class CustomerFamily extends Component {
             </tbody>
           </table>
         </div>
-        <div id="data2_container" style={{margin:'0px auto', width:'100%', bottom:0, top:40, position:'absolute',  textAlign:'left', overflow:'auto'}} >
-          <div style={{height:'100%', padding:0}} >
-            <div id="data2" style={{margin:'0px auto', height:'100%', position:'relative', width:'100%', textAlign:'center', overflow:'auto', display:'block'}} >
+        <div id="data2_container" style={{ margin: '0px auto', width: '100%', bottom: 0, top: 40, position: 'absolute', textAlign: 'left', overflow: 'auto' }} >
+          <div style={{ height: '100%', padding: 0 }} >
+            <div id="data2" style={{ margin: '0px auto', height: '100%', position: 'relative', width: '100%', textAlign: 'center', overflow: 'auto', display: 'block' }} >
               <Table header={this.headers} data={this.prepareData()} />
             </div>
           </div>

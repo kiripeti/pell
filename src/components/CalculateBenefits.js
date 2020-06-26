@@ -19,7 +19,6 @@ class CalculateBenefits extends Component {
       loadingMessage: '',
       isCustomerLoaded: false,
       jkod: '',
-      isDebug: true,
       customer: {
         ALAP_ADATOK: [],
         EU_ADATOK: [],
@@ -43,7 +42,7 @@ class CalculateBenefits extends Component {
 
     this.sas = new h54s({
       metadataRoot:'/PELL/Stored Processes/',
-      debug: this.state.isDebug,
+      debug: this.props.isDebug,
       maxXhrRetries: 0
     });
   }
@@ -194,7 +193,7 @@ class CalculateBenefits extends Component {
       this.sas.unsetDebugMode();
     }
 
-    this.setState(() => ({isDebug: bool}));
+    this.props.debugChange(bool);
   }
 
   updateCustomer = (type, index, property, data) =>

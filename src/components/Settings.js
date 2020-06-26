@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SettingsTab from './SettingsTab';
 import SettingsContent from './SettingsContent';
 
-const Settings = (props) => {
+const Settings = ({isDebug}) => {
   const [selectedTab, setSelectedTab] = useState('BENEFITS');
 
   const menuItems = {
@@ -14,17 +14,19 @@ const Settings = (props) => {
       label: 'Ügyfél inputok',
       description: 'Az ügyfél inputok testre szabása'
     },
+    /*
     'OTHER': {
       label: 'Egyéb beállítások',
       description: ''
     }
+    */
   };
 
   return (
-    <div>
+    <ul className="tabs" id="tab_container">
       <SettingsTab tabs={menuItems} selectedTab={selectedTab} selectTab={setSelectedTab} />
-      <SettingsContent  />
-    </div>
+      <SettingsContent code={selectedTab} isDebug={isDebug} />
+    </ul>
   );
 }
 
