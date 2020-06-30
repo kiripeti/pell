@@ -41,7 +41,7 @@ class CalculateBenefits extends Component {
     };
 
     this.sas = new h54s({
-      metadataRoot:'/PELL/Stored Processes/',
+      metadataRoot: '/PELL/Stored Processes/',
       debug: this.props.isDebug,
       maxXhrRetries: 0
     });
@@ -92,8 +92,8 @@ class CalculateBenefits extends Component {
       loadingMessage: 'Adatok letöltése'
     },
       (res) => this.setState(() => ({
-        benefits: res.benefits.sort( (b1, b2) => b1.GROUP < b2.GROUP ? -1 : (b1.ELLATAS_NEV < b2.ELLATAS_NEV ? -1 : 1) ),
-        benefitParams: res.benefitParams.sort( (b1, b2) => b1.ORDER - b2.ORDER )
+        benefits: res.benefits.sort((b1, b2) => b1.GROUP < b2.GROUP ? -1 : (b1.ELLATAS_NEV < b2.ELLATAS_NEV ? -1 : 1)),
+        benefitParams: res.benefitParams.sort((b1, b2) => b1.ORDER - b2.ORDER)
       }))
     );
 
@@ -130,21 +130,21 @@ class CalculateBenefits extends Component {
 
   calculate = () => {
     const dateParams = this.state.benefitParams
-      .filter( (param) => param.TYPE === 'D')
-      .map( (param) => param.NAME )
-      .filter( (name, index, names) => names.indexOf(name) === index );
-    
+      .filter((param) => param.TYPE === 'D')
+      .map((param) => param.NAME)
+      .filter((name, index, names) => names.indexOf(name) === index);
+
     const family = utils
       .dtFromJS2SAS(this.state.family, ['SZUL_DT'])
       .map((member) => ({
-        ...member, ...{['JKOD']: this.state.jkod}
+        ...member, ...{ ['JKOD']: this.state.jkod }
       }));
 
     this.call({
       program: 'calculateBenefits',
       loadingMessage: 'Számítás',
       tables: {
-        debug: [{debug: this.state.isDebug ? 1 : 0}],
+        debug: [{ debug: this.props.isDebug ? 1 : 0 }],
         params: utils.dtFromJS2SAS([this.state.params], ['LEKERDEZES_DT', ...dateParams]),
         alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
         eu_adatok: this.state.customer.EU_ADATOK,
@@ -161,7 +161,7 @@ class CalculateBenefits extends Component {
           const code = result['ELLATAS_CD'];
           const name = this.state.benefits.filter((benefit) => benefit['ELLATAS_KOD'] === code)[0]['ELLATAS_NEV'];
 
-          return {...result, ...{['ELLATAS_NM']: name}};
+          return { ...result, ...{ ['ELLATAS_NM']: name } };
         });
 
         this.state.selectedBenefits.forEach((benefit) => {
@@ -233,81 +233,81 @@ class CalculateBenefits extends Component {
 
     return (
       <Fragment>
-      <div className="header">
-        <h2 style={{ color: '#CEC7BA', paddingBottom: 25 }}> Egységes ügyfélkép </h2>
-        <p style={{ fontSize: '11pt' }}>A jogosultsági történet alapján milyen elletások vehetők igénybe.</p>
-      </div>
-      <div className="request">
-        <JkodInput jkod={this.state.jkod} onChange={this.jkodChange} onClick={this.jkodClick} />
-        {
-          this.state.isCustomerLoaded &&
-          <Fragment>
-            <CustomerData
-              selectedTab={this.state.selectedTab}
-              customer={this.state.customer}
-              newIncome={this.state.newIncome}
-              family={this.state.family}
-              results={this.state.results}
-              params={this.state.params}
-              updateCustomer={this.updateCustomer}
-              updateSelectedTab={this.updateSelectedTab}
-              updateIncome={this.updateIncome}
-              updateFamily={this.updateFamily}
-              setParam={this.setParam} />
-            <Benefits
-              onChange={this.handleBenefitChange}
-              benefits={this.state.benefits}
-              selectedBenefits={this.state.selectedBenefits} />
-          </Fragment>
-        }
-        {
-          this.state.selectedBenefits.length > 0 &&
-          <Fragment>
-            {this.state.selectedBenefits.map((benefit) => (
-              <BenefitParams
-                key={benefit}
-                benefit={benefit}
-                benefitParams={this.state.benefitParams.filter((param) => param.ELLATAS_CD === benefit)}
-                benefitDescription={this.state.benefits.filter((elem) => elem.ELLATAS_KOD === benefit)[0].ELLATAS_NEV}
+        <div className="header">
+          <h2 style={{ color: '#CEC7BA', paddingBottom: 25 }}> Egységes ügyfélkép </h2>
+          <p style={{ fontSize: '11pt' }}>A jogosultsági történet alapján milyen elletások vehetők igénybe.</p>
+        </div>
+        <div className="request">
+          <JkodInput jkod={this.state.jkod} onChange={this.jkodChange} onClick={this.jkodClick} />
+          {
+            this.state.isCustomerLoaded &&
+            <Fragment>
+              <CustomerData
+                selectedTab={this.state.selectedTab}
+                customer={this.state.customer}
+                newIncome={this.state.newIncome}
+                family={this.state.family}
+                results={this.state.results}
                 params={this.state.params}
+                updateCustomer={this.updateCustomer}
+                updateSelectedTab={this.updateSelectedTab}
+                updateIncome={this.updateIncome}
+                updateFamily={this.updateFamily}
                 setParam={this.setParam} />
-            ))}
+              <Benefits
+                onChange={this.handleBenefitChange}
+                benefits={this.state.benefits}
+                selectedBenefits={this.state.selectedBenefits} />
+            </Fragment>
+          }
+          {
+            this.state.selectedBenefits.length > 0 &&
+            <Fragment>
+              {this.state.selectedBenefits.map((benefit) => (
+                <BenefitParams
+                  key={benefit}
+                  benefit={benefit}
+                  benefitParams={this.state.benefitParams.filter((param) => param.ELLATAS_CD === benefit)}
+                  benefitDescription={this.state.benefits.filter((elem) => elem.ELLATAS_KOD === benefit)[0].ELLATAS_NEV}
+                  params={this.state.params}
+                  setParam={this.setParam} />
+              ))}
 
-            <div id="bottom_container" style={{ position: 'relative', top: 180, width: '80%', margin: 'auto', background: '#e1e1e1', border: '1px solid #d1d1d1', padding: 0, paddingTop: 8, paddingBottom: 10, paddingLeft: 0 }} >
-              <table border="0" cellPadding="8" style={{ marginLeft: 20 }} >
-                <tbody>
-                  <tr>
-                    <td className="cell_text">Vizsgált időpont:</td>
-                    <td className="cell_spacer"></td>
-                    <td className="cell_text">
-                      <DatePicker
-                        name='LEKERDEZES_DT'
-                        date={this.state.params.LEKERDEZES_DT}
-                        onChange={this.setParam} />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="cell_text">Teszt futtatás:</td>
-                    <td className="cell_spacer"></td>
-                    <td className="cell_text">
-                      <CheckBox
-                        checked={this.state.isDebug}
-                        onChange={this.setDebug}
-                        label="" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="2"></td>
-                    <td>
-                      <input type="button" className="button" style={{ marginLeft: 0 }} value=" Számol " onClick={this.calculate} />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </Fragment>
-        }
-      </div>
+              <div id="bottom_container" style={{ position: 'relative', top: 180, width: '80%', margin: 'auto', background: '#e1e1e1', border: '1px solid #d1d1d1', padding: 0, paddingTop: 8, paddingBottom: 10, paddingLeft: 0 }} >
+                <table border="0" cellPadding="8" style={{ marginLeft: 20 }} >
+                  <tbody>
+                    <tr>
+                      <td className="cell_text">Vizsgált időpont:</td>
+                      <td className="cell_spacer"></td>
+                      <td className="cell_text">
+                        <DatePicker
+                          name='LEKERDEZES_DT'
+                          date={this.state.params.LEKERDEZES_DT}
+                          onChange={this.setParam} />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="cell_text">Teszt futtatás:</td>
+                      <td className="cell_spacer"></td>
+                      <td className="cell_text">
+                        <CheckBox
+                          checked={this.props.isDebug}
+                          onChange={this.setDebug}
+                          label="" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan="2"></td>
+                      <td>
+                        <input type="button" className="button" style={{ marginLeft: 0 }} value=" Számol " onClick={this.calculate} />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Fragment>
+          }
+        </div>
       </Fragment>
     );
   }
