@@ -68,13 +68,20 @@ class SettingsContent extends Component {
     let keep = true;
 
     if (this.props.code === 'BENEFITS') {
-      keep = this.state.selectedGroup == null ||
-             this.state.selectedGroup === ''  || 
-             this.state.selectedGroup === row['GROUP'];
+      keep =
+        this.state.selectedGroup == null ||
+        this.state.selectedGroup === '' ||
+        this.state.selectedGroup === row['GROUP'];
     } else {
-      keep = this.state.selectedGroup == null ||
-             this.state.selectedGroup === ''  || 
-             this.state.selectedGroup === this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD'])['GROUP']
+      const benefit = this.state['BENEFITS'].find((benefit) => benefit['ELLATAS_KOD'] === row['ELLATAS_CD']);
+
+      keep =
+        this.state.selectedGroup == null ||
+        this.state.selectedGroup === '' ||
+        (
+          benefit != null &&
+          this.state.selectedGroup === benefit['GROUP']
+        )
     }
 
     return keep && (
