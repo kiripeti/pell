@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import RadioButton from './FormElements/RadioButton';
 import DatePicker from './FormElements/DatePicker';
+import Select from './FormElements/Select';
 import Table from './Table';
 
 class CustomerIncome extends Component {
@@ -48,11 +49,12 @@ class CustomerIncome extends Component {
         {name: 'SELECTED',                  align: 'C', label: ''},
         {name: 'JKOD',                      align: 'C', label: 'Aznosító'},
         {name: 'TARGYEV',                   align: 'C', label: 'Tárgyév'},
-        {name: 'ALKMIN',                    align: 'L', label: 'ALKMIN'},
+        {name: 'ALKMIN',                    align: 'C', label: 'ALKMIN'},
         {name: 'KEZDESDATUM',               align: 'C', label: 'Jogviszony kezdete'},
         {name: 'VEGEDATUM',                 align: 'C', label: 'Jogviszony vége'},
         {name: 'OSZTONAP',                  align: 'C', label: 'Osztónap'},
-        {name: 'NYUGDIJBIZTOSITASIJARULEK', align: 'C', label: 'Jövedelem'}
+        {name: 'NYUGDIJBIZTOSITASIJARULEK', align: 'C', label: 'Jövedelem'},
+        {name: 'FORRAS_TABLA',              align: 'C', label: 'Típus'}
       ]
     };
 
@@ -79,6 +81,7 @@ class CustomerIncome extends Component {
       }
     });
     newRow['JKOD'] = this.props.yearly[0]['JKOD'];
+    newRow['FORRAS_TABLA'] = 'VALODI';
 
     this.props.updateIncome([
       newRow,
@@ -116,6 +119,18 @@ class CustomerIncome extends Component {
             name={column.name}
             date={this.props.new[index][column.name] ? this.props.new[index][column.name] : ''}
             onChange={(dateObject) => this.updateIncome(index, column.name, dateObject[column.name])} />
+        );
+        break;
+      case 'FORRAS_TABLA':
+        input = (
+          <Select 
+            name='FORRAS_TABLA'
+            value={this.props.new[index][column.name]}
+            onChange={(value) => this.updateIncome(index, column.name, value)}
+            options={{
+              'VALODI': 'Valódi',
+              'PSZEUDO': 'Pszeudó'}}
+          />
         );
         break;
       default:
