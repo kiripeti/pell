@@ -7,7 +7,7 @@ const Input = ({name, value, type, className, onChange}) => {
     onChangeHandler = (event) => {
       if (!isNaN(event.target.value)) {
         const parsedVal = parseFloat(event.target.value);
-        const val = isNaN(parsedVal) ? '' : parsedVal;
+        const val = isNaN(parsedVal) ? '' : event.target.value;
         onChange(val);
       }
     }
