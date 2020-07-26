@@ -53,16 +53,12 @@ class CalculateBenefits extends Component {
       loadingMessage: loadingMessage ? loadingMessage : 'Kérem várjon'
     }));
 
-    let sasData = null;
+    let sasData = new h54s.SasData([{ debug: this.props.isDebug ? 1 : 0 }], 'debug');;
 
     if (tables && Object.keys(tables).length > 0) {
       const tableNames = Object.keys(tables);
 
-      let tableName = tableNames[0];
-      let data = utils.removeEmptyKeys(tables[tableName]);
-      sasData = new h54s.SasData(data, tableName);
-
-      for (let i = 1; i < tableNames.length; i++) {
+      for (let i = 0; i < tableNames.length; i++) {
         let tableName = tableNames[i];
         let data = utils.removeEmptyKeys(tables[tableName]);
         sasData.addTable(data, tableName);
@@ -144,7 +140,6 @@ class CalculateBenefits extends Component {
       program: 'calculateBenefits',
       loadingMessage: 'Számítás',
       tables: {
-        debug: [{ debug: this.props.isDebug ? 1 : 0 }],
         params: utils.dtFromJS2SAS([this.state.params], ['LEKERDEZES_DT', ...dateParams]),
         alap_adatok: utils.dtFromJS2SAS(this.state.customer.ALAP_ADATOK, ['SZUL_DT']),
         eu_adatok: this.state.customer.EU_ADATOK,
