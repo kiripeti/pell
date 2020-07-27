@@ -57,7 +57,7 @@
             run;
         %end; %else %do;
             data pelltmp.I_FAMILY_&postfix;
-                length jkod szul_dt type 8;
+                length family_jkod szul_dt type 8 jkod $10.;
             run;
         %end;
     /* End of Manage FAMILY */
