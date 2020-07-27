@@ -21,6 +21,16 @@ class BenefitParams extends Component {
             onChange={(value) => this.props.setParam({[param.NAME]: value})} />
         );
         break;
+      case 'F':
+        input = (
+          <Input
+            type="F"
+            name={param.NAME}
+            className="cell_input"
+            value={this.props.params[param.NAME] != null ? this.props.params[param.NAME] : ''}
+            onChange={(value) => this.props.setParam({[param.NAME]: value})} />
+        );
+        break;
       case 'S':
         const pairs = param.OPTIONS.split(';');
         input = (
