@@ -9,7 +9,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      menu: ['BENEFIT', 'SETTINGS'],
+      menu: ['BENEFIT', 'SCENARIO', 'SETTINGS'],
       menuDetailes: {
         'BENEFIT': {
           label: 'Egységes ügyfélkép'
@@ -21,7 +21,7 @@ class App extends Component {
           label: 'Beállítások'
         }
       },
-      selectedMenu: 'BENEFIT',
+      selectedMenu: 'SCENARIO',
       isDebug: true
     };
 

@@ -13,13 +13,7 @@ const Settings = ({isDebug}) => {
     'PARAMS': {
       label: 'Ügyfél inputok',
       description: 'Az ügyfél inputok testre szabása'
-    },
-    /*
-    'OTHER': {
-      label: 'Egyéb beállítások',
-      description: ''
     }
-    */
   };
 
   return (

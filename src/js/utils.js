@@ -58,33 +58,33 @@ export class SAS {
     maxXhrRetries: 0
   });
 
-  call = ({ program, tables, preprocess, success, postprocess }) => {
+  call = ({ program, tables, preprocess, success, postprocess, isDebug }) => {
     if (preprocess) preprocess();
 
-    let sasData = null;
+    let sasData = new h54s.SasData([{ debug: isDebug ? 1 : 0 }], 'debug');
 
     if (tables && Object.keys(tables).length > 0) {
       const tableNames = Object.keys(tables);
 
-      let tableName = tableNames[0];
-      let data = removeEmptyKeys(tables[tableName]);
-      sasData = new h54s.SasData(data, tableName);
-
-      for (let i = 1; i < tableNames.length; i++) {
+      for (let i = 0; i < tableNames.length; i++) {
         let tableName = tableNames[i];
         let data = removeEmptyKeys(tables[tableName]);
         sasData.addTable(data, tableName);
       }
     }
 
+    if (isDebug) console.log(sasData);
+
     this.sas.call(program, sasData, (err, res) => {
       if (err) {
         if (err.type === 'notLoggedinError') {
-          window.location.href = '/pell';
+          alert('A munkamenet lejárt! Frissítse az oldalt a bejelentkezéshez.');
+        } else {
+          console.log(err);
+          alert('Hiba lépett fel a feldolgozás során!');
         }
-        console.log(err);
-        alert('Hiba lépett fel a feldolgozás során!');
       } else {
+        if (isDebug) console.log(res);
         success(res);
       }
 
