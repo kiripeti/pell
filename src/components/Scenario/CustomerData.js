@@ -12,11 +12,8 @@ class CustomerData extends Component {
         <CustomerContent
           selected={this.props.selectedTab}
           data={this.props.customer}
-          newIncome={this.props.newIncome}
-          updateIncome={this.props.updateIncome}
           family={this.props.family}
           updateFamily={this.props.updateFamily}
-          results={this.props.results}
           updateCustomer={this.props.updateCustomer}
           setParam={this.props.setParam}
           params={this.props.params} />

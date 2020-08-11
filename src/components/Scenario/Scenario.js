@@ -72,7 +72,6 @@ class Scenario extends Component {
 
   jkodChange = (jkod) => this.setState(() => ({ jkod: jkod }));
   updateSelectedTab = (value) => this.setState({ selectedTab: value });
-  updateIncome = (newIncome) => this.setState(prevState => ({ newIncome: newIncome }));
   updateFamily = (family) => this.setState(prevState => ({ family: family }));
   setParam = (param) => this.setState(state => ({ params: { ...state.params, ...param } }));
 
@@ -111,7 +110,6 @@ class Scenario extends Component {
                 params={this.state.params}
                 updateCustomer={this.updateCustomer}
                 updateSelectedTab={this.updateSelectedTab}
-                updateIncome={this.updateIncome}
                 updateFamily={this.updateFamily}
                 setParam={this.setParam} />
             </Fragment>

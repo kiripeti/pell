@@ -24,9 +24,7 @@ class CustomerContent extends Component {
         content = (
           <CustomerIncome
             yearly={this.props.data.EV_ELEMZES}
-            detailed={this.props.data.JOGVISZONY}
-            new={this.props.newIncome}
-            updateIncome={this.props.updateIncome} />
+            detailed={this.props.data.JOGVISZONY} />
         );
         break;
       case 'FAMILY':

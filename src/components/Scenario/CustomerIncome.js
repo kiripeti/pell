@@ -9,8 +9,7 @@ class CustomerIncome extends Component {
     super(props);
 
     this.state = {
-      aggregation_level: 'yearly',
-      selectedRow: 0
+      aggregation_level: 'yearly'
     }
 
     this.headers ={
@@ -43,18 +42,6 @@ class CustomerIncome extends Component {
         {name: 'MINOSEG_JEL',               align: 'L', label: 'MINOSEG_JEL'},
         {name: 'MUNKAIDO',                  align: 'L', label: 'MUNKAIDO'},
         {name: 'FORRAS_TABLA',              align: 'L', label: 'FORRAS_TABLA'}
-      ],
-
-      new:[
-        {name: 'SELECTED',                  align: 'C', label: ''},
-        {name: 'JKOD',                      align: 'C', label: 'Aznosító'},
-        {name: 'TARGYEV',                   align: 'C', label: 'Tárgyév'},
-        {name: 'ALKMIN',                    align: 'C', label: 'ALKMIN'},
-        {name: 'KEZDESDATUM',               align: 'C', label: 'Jogviszony kezdete'},
-        {name: 'VEGEDATUM',                 align: 'C', label: 'Jogviszony vége'},
-        {name: 'OSZTONAP',                  align: 'C', label: 'Osztónap'},
-        {name: 'NYUGDIJBIZTOSITASIJARULEK', align: 'C', label: 'Jövedelem'},
-        {name: 'FORRAS_TABLA',              align: 'C', label: 'Típus'}
       ]
     };
 
@@ -65,37 +52,6 @@ class CustomerIncome extends Component {
 
   radioChange(value) {
     this.setState({aggregation_level: value});
-  }
-
-  updateIncome(index, property, value) {
-    const newIncome = this.props.new.slice();
-    newIncome[index][property] = value;
-    this.props.updateIncome(newIncome);
-  }
-
-  addIncome() {
-    let newRow = {};
-    this.headers.new.forEach((column) => {
-      if (column.name !== 'SELECTED') {
-        newRow[column.name] = null;
-      }
-    });
-    newRow['JKOD'] = this.props.yearly[0]['JKOD'];
-    newRow['FORRAS_TABLA'] = 'VALODI';
-
-    this.props.updateIncome([
-      newRow,
-      ...this.props.new
-    ]);
-  }
-
-  removeIncome() {
-    const newIncome = this.props.new.slice();
-    const index = this.state.selectedRow;
-
-    newIncome.splice(index, 1);
-
-    this.props.updateIncome(newIncome);
   }
 
   columnToInput(column, index) {
@@ -147,18 +103,7 @@ class CustomerIncome extends Component {
   }
 
   prepareData(aggregation_level) {
-    switch (aggregation_level) {
-      case 'new':
-        return this.props.new.map( (row, index) => {
-          let newRow = {};
-          this.headers.new.forEach((column) => {
-            newRow[column.name] = this.columnToInput(column, index);
-          });
-          return newRow;
-        });
-      default:
-        return this.props[this.state.aggregation_level];
-    }
+    return this.props[this.state.aggregation_level];
   }
 
   render() {
@@ -186,24 +131,7 @@ class CustomerIncome extends Component {
                     label="Részletes adatok"
                     onChange={this.radioChange} />
                 </td>
-                <td className="cell_spacer">
-                </td>
-                <td style={{fontSize:'11pt', whiteSpace: 'nowrap'}}>
-                  <RadioButton
-                    name="aggregation_level"
-                    value="new"
-                    selectedValue={this.state.aggregation_level}
-                    label="Jogviszony hozzáadása"
-                    onChange={this.radioChange} />
-                </td>
                 <td style={{width:'100%'}} align='right'>
-                  {
-                    this.state.aggregation_level === 'new' &&
-                    <div id="btns" style={{paddingRight:10, paddingBottom:5}}>
-                      <input type="button" className="button" value=" Új jogviszony " id="newRowBtn" onClick={this.addIncome} />
-                      <input type="button" className="button_disabled" value=" Jogviszony törlése" id="delRowBtn" onClick={this.removeIncome} />
-                    </div>
-                  }
                 </td>
               </tr>
             </tbody>
