@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import CalculateBenefits from './components/CalculateBenefits';
+import Scenario from './components/Scenario/Scenario';
 import Settings from './components/Settings';
 import pkg from '../package.json'
 
@@ -12,6 +13,9 @@ class App extends Component {
       menuDetailes: {
         'BENEFIT': {
           label: 'Egységes ügyfélkép'
+        },
+        'SCENARIO': {
+          label: 'Szcenárióelemzés'
         },
         'SETTINGS': {
           label: 'Beállítások'
@@ -37,8 +41,11 @@ class App extends Component {
       case 'BENEFIT':
         return <CalculateBenefits isDebug={this.state.isDebug} debugChange={this.debugChange} />;
 
+      case 'SCENARIO':
+        return <Scenario isDebug={this.state.isDebug} debugChange={this.debugChange} />;
+
       case 'SETTINGS':
-        return <Settings isDebug={this.state.isDebug} debugChange={this.debugChange} />
+        return <Settings isDebug={this.state.isDebug} debugChange={this.debugChange} />;
 
       default:
         return null;
