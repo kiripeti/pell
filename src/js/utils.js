@@ -4,7 +4,8 @@ import h54s, {
 } from 'h54s';
 
 import customer_data from '../test_data/ugyfel_adat';
-import { benefits, benefitParams } from '../test_data/benefits';
+import { benefits } from '../test_data/benefits';
+import { events } from '../test_data/getEvents';
 
 const dev = true;
 
@@ -58,10 +59,8 @@ const removeEmptyKeys = (obj) => {
 
 const action = {
   'getCustomer': customer_data,
-  'getBenefits': {
-    benefits: benefits,
-    benefitParams: benefitParams
-  }
+  'getBenefits': benefits,
+  'getEvents': events
 };
 
 export class SAS {

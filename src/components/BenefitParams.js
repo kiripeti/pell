@@ -5,7 +5,7 @@ import Input from './FormElements/Input';
 class BenefitParams extends Component {
   renderParam = (param) => {
     if (param.NAME.indexOf('_FLG')>-1 && param.TYPE !== 'S') {
-      param.TYPE = 'F';
+      param.TYPE = 'FL';
     }
 
     let input = null;
@@ -66,7 +66,7 @@ class BenefitParams extends Component {
             onChange={this.props.setParam} />
         );
         break;
-      case 'F':
+      case 'FL':
         input = (
           <select
             name={param.NAME}

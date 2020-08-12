@@ -39,7 +39,7 @@ class CustomerContent extends Component {
     }
 
     return (
-      <div className="more" style={{ height: 400, verticalAlign: 'top', textTransform: 'none' }}>
+      <div className="more" style={{ height: 250, verticalAlign: 'top', textTransform: 'none' }}>
         {content}
       </div>
     );
