@@ -1,7 +1,12 @@
-import h54s, { 
+import h54s, {
   fromSasDateTime as h54sFromSASdttm,
-  toSasDateTime as h54sToSASdttm 
+  toSasDateTime as h54sToSASdttm
 } from 'h54s';
+
+import customer_data from '../test_data/ugyfel_adat';
+import { benefits, benefitParams } from '../test_data/benefits';
+
+const dev = true;
 
 const fromSasDateTime = (sasDate) => sasDate ? h54sFromSASdttm(sasDate) : null;
 const fromSASDate = (sasDate) => sasDate ? fromSasDateTime(sasDate * 24 * 60 * 60) : null;
@@ -29,7 +34,7 @@ const functionOnColumns = (table, columns, func) => (
           modCols[column] = func(row[column], index);
         }
       });
-  }
+    }
     return { ...row, ...modCols };
   })
 );
@@ -51,14 +56,29 @@ const removeEmptyKeys = (obj) => {
   }
 }
 
+const action = {
+  'getCustomer': customer_data,
+  'getBenefits': {
+    benefits: benefits,
+    benefitParams: benefitParams
+  }
+};
+
 export class SAS {
   sas = new h54s({
-    metadataRoot:'/PELL/Stored Processes/',
+    metadataRoot: '/PELL/Stored Processes/',
     debug: true,
     maxXhrRetries: 0
   });
 
   call = ({ program, tables, preprocess, success, postprocess, isDebug }) => {
+    if (dev) {
+      if (preprocess) preprocess();
+      success(action[program])
+      if (postprocess) postprocess();
+      return;
+    }
+
     if (preprocess) preprocess();
 
     let sasData = new h54s.SasData([{ debug: isDebug ? 1 : 0 }], 'debug');

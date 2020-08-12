@@ -1,20 +1,20 @@
 ﻿var customer_data = {
   "JKOD": 53640,
-  "ALAP_ADATOK": [
+  "alap_adatok": [
     {
       "SZUL_DT": -8035,
       "NEM": "N"
     }
   ],
-  "EU_ADATOK": [/*
+  "eu_adatok": [
     {
       "EU_ALLAPOT": 56,
       "REHABILITALHATO_FL": null,
       "ONELLATAS_FL": "",
       "KMPX_MIN": "B1"
     }
-  */],
-  "EV_ELEMZES": [
+  ],
+  "ev_elemzes": [
     {
       "EV": 1975,
       "ALKMINKOD": "45",
@@ -450,7 +450,7 @@
       "SZOLG_APOLASI_DIJ_NAP": 0
     }
   ],
-  "ALLSTAT": [
+  "allstat": [
     {
       "TSZ": 404590556,
       "OSSZK": 26011,
@@ -477,7 +477,7 @@
       "SZULEV": null
     }
   ],
-  "JOGVISZONY": [
+  "jogviszony": [
     {
       "TARGYEV": 1975,
       "FOGLALKOZTATO_AZON": 2363278,
