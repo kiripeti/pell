@@ -85,6 +85,19 @@ class Events extends Component {
     this.props.eventListUpdate({ eventList: eventList, benefitList: benefitList });
   }
 
+  removeEvent = (index) => {
+    const eventList = this.props.eventList.slice();
+    eventList.splice(index, 1);
+
+    const benefitList = eventList
+      .map(event => this.state.eventBenefits.filter(eb => eb.EVENT_CD === event.event_cd).map(eb => eb.BENEFIT_CD))
+      .flat()
+      .filter((elem, index, array) => array.indexOf(elem) === index);
+
+    this.setState({ benefitList: benefitList });
+    this.props.eventListUpdate({ eventList: eventList, benefitList: benefitList });
+  }
+
   updateEventList = (index, name, value) => {
     let eventList = this.props.eventList.slice();
     eventList[index]['event_params'][name] = value;
@@ -216,6 +229,7 @@ class Events extends Component {
             <div key={event.event_cd + index}>
               <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 13, textTransform: 'uppercase', paddingTop: 10 }} >
                 {index + 1}. Életesemény: {this.state.events.filter((e) => e.EVENT_CD === event.event_cd)[0].EVENT_DESC}
+                <input type="button" className="button" style={{ marginLeft: 10 }} value=" Törlés " onClick={() => this.removeEvent(index)} />
               </div>
               <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
                 <table width="100%" border="0" cellPadding="8" >
