@@ -21,7 +21,7 @@ export const events = {
             "EVENT_DESC": "Szülő halála"
         },
         {
-            "EVENT_CD": "OZVEGY",
+            "EVENT_CD": "OZV",
             "EVENT_DESC": "Házastárs halála"
         },
         {
@@ -207,7 +207,7 @@ export const events = {
             "OPTIONS": ""
         },
         {
-            "EVENT_CD": "OZVEGY",
+            "EVENT_CD": "OZV",
             "ORDER": 1,
             "NAME": "UTOLSO_BER_FLG",
             "TYPE": "N",
@@ -292,8 +292,8 @@ export const events = {
             "ORDER": 1
         },
         {
-            "EVENT_CD": "OZVEGY",
-            "BENEFIT_CD": "OZVEGY",
+            "EVENT_CD": "OZV",
+            "BENEFIT_CD": "OZV",
             "ORDER": 1
         }
     ],
