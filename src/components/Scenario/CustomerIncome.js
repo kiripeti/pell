@@ -46,8 +46,6 @@ class CustomerIncome extends Component {
     };
 
     this.radioChange = this.radioChange.bind(this);
-    this.addIncome = this.addIncome.bind(this);
-    this.removeIncome = this.removeIncome.bind(this);
   }
 
   radioChange(value) {

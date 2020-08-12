@@ -15,6 +15,7 @@ class Scenario extends Component {
       isCustomerLoaded: false,
       jkod: '',
       selectedTab: 'CUSTOMER',
+      family: []
     };
 
     this.sas = new SAS();
@@ -28,7 +29,7 @@ class Scenario extends Component {
         isLoading: true,
         loadingMessage: 'Betöltés'
       })),
-      success: (res) => alert('Siker!'),
+      success: (res) => {},
       postprocess: () => {
         this.setState(() => ({
           isLoading: false
