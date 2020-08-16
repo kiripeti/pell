@@ -79,13 +79,7 @@ export class SAS {
         [tableName]: dtFromJS2SASAllColumn(tables[tableName])
       }), {}) : null;
 
-    if (dev) {
-      if (preprocess) preprocess();
-      console.log('tables:', tables);
-      success(action[program])
-      if (postprocess) postprocess();
-      return;
-    }
+    if (isDebug) console.log('tables', tables);
 
     if (preprocess) preprocess();
 
@@ -101,19 +95,22 @@ export class SAS {
       }
     }
 
-    if (isDebug) console.log(sasData);
-
     this.sas.call(program, sasData, (err, res) => {
-      if (err) {
-        if (err.type === 'notLoggedinError') {
-          alert('A munkamenet lejárt! Frissítse az oldalt a bejelentkezéshez.');
-        } else {
-          console.log(err);
-          alert('Hiba lépett fel a feldolgozás során!');
-        }
+      if (dev) {
+        success(action[program])
       } else {
-        if (isDebug) console.log(res);
-        success(res);
+        if (err) {
+          if (err.type === 'notLoggedinError') {
+            alert('A munkamenet lejárt! Frissítse az oldalt a bejelentkezéshez.');
+          } else {
+            console.log(err);
+            alert('Hiba lépett fel a feldolgozás során!');
+          }
+        } else {
+          if (isDebug) console.log('response', res);
+          success(res);
+        }
+
       }
 
       if (postprocess) postprocess();

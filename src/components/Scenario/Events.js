@@ -80,6 +80,7 @@ class Events extends Component {
       ...this.props.eventList,
       {
         event_cd: this.state.selectedEvent,
+        event_desc: this.state.events.filter((e) => e.EVENT_CD === this.state.selectedEvent)[0].EVENT_DESC,
         event_params: {},
         event_params_descriptor: this.state.eventParams
           .filter((param) => (param.EVENT_CD === this.state.selectedEvent)),
@@ -265,7 +266,7 @@ class Events extends Component {
               <div id="benefit_container" style={{ position: 'relative', top: 180 + index * 30, width: '80%', margin: 'auto', background: '#deb306', border: '1px solid #d1d1d1', padding: 0, paddingBottom: 0 }} >
                 <div key={event.event_cd + index}>
                   <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 14, textTransform: 'uppercase', paddingTop: 10 }} >
-                    {index + 1}. Életesemény: {this.state.events.filter((e) => e.EVENT_CD === event.event_cd)[0].EVENT_DESC}
+                    {index + 1}. Életesemény: {event.event_desc}
                     <input type="button" className="button" style={{ marginLeft: 10 }} value=" Törlés " onClick={() => this.removeEvent(index)} />
                     {
                       event.benefits.length > 0 &&
