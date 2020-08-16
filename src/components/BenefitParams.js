@@ -94,9 +94,10 @@ class BenefitParams extends Component {
     );
   }
 
-  render(props) {
+  render() {
+    const top = this.props.top ? this.props.top : 180;
     return (
-      <div id="rehab_container" style={{position:'relative', top:180, width:'80%', margin:'auto', background:'#e1e1e1', border:'1px solid #d1d1d1', padding:0, paddingTop:8, paddingBottom:0}} >
+      <div id="rehab_container" style={{position:'relative', top: top, width:'80%', margin:'auto', background:'#e1e1e1', border:'1px solid #d1d1d1', padding:0, paddingTop:8, paddingBottom:0}} >
         <div style={{paddingLeft:20, paddingBottom:8, fontSize:13, textTransform:'uppercase'}} >
           {this.props.benefitDescription + ' paraméterei'}
         </div>

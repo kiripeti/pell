@@ -27,4 +27,8 @@
         proc printto log="&stp_log./&stp_name.-&postfix..log" new;
         run;
     %end;
+
+    data runid;
+        runid="&postfix";
+    run;
 %mend;

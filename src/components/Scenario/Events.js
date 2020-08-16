@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { SAS } from '../../js/utils';
 import Select from '../FormElements/Select';
 import Input from '../FormElements/Input';
 import DatePicker from '../FormElements/DatePicker';
+import BenefitParams from '../BenefitParams';
 
 class Events extends Component {
   constructor(props) {
@@ -19,6 +20,27 @@ class Events extends Component {
     this.sas = new SAS();
   }
 
+  getBenefits = () =>
+    this.sas.call({
+      program: 'getBenefits',
+      isDebug: this.props.isDebug,
+      preprocess: () => this.setState(() => ({
+        isLoading: true,
+        loadingMessage: 'Betöltés'
+      })),
+      success: (res) => {
+        this.setState(() => ({
+          benefits: res.benefits,
+          benefitParams: res.benefitParams
+        }));
+      },
+      postprocess: () => {
+        this.setState(() => ({
+          isLoading: false
+        }));
+      }
+    });
+
   componentDidMount = () =>
     this.sas.call({
       program: 'getEvents',
@@ -33,25 +55,7 @@ class Events extends Component {
           eventParams: res.eventParams,
           eventBenefits: res.eventBenefits
         }));
-        this.sas.call({
-          program: 'getBenefits',
-          isDebug: this.props.isDebug,
-          preprocess: () => this.setState(() => ({
-            isLoading: true,
-            loadingMessage: 'Betöltés'
-          })),
-          success: (res) => {
-            this.setState(() => ({
-              benefits: res.benefits,
-              benefitParams: res.benefitParams
-            }));
-          },
-          postprocess: () => {
-            this.setState(() => ({
-              isLoading: false
-            }));
-          }
-        });
+        this.getBenefits();
       },
       postprocess: () => {
         this.setState(() => ({
@@ -61,18 +65,34 @@ class Events extends Component {
     });
 
   addEvent = () => {
+    if (!this.state.selectedEvent) return;
+
+    const benefits = this.state.eventBenefits
+      .filter(event => event.EVENT_CD === this.state.selectedEvent)
+      .map(event => event.BENEFIT_CD);
+    
+    const benefit_params_descriptor = this.state.benefitParams
+      .filter(param => benefits.indexOf(param.ELLATAS_CD) > -1)
+      .filter(param => param.SCEN_FLG === 1)
+      .sort((p1, p2) => p1.ORDER < p2.ORDER ? -1 : 1);
+
     const eventList = [
       ...this.props.eventList,
       {
         event_cd: this.state.selectedEvent,
-        event_params: this.state.eventParams
-          .filter((param) => (param.EVENT_CD === this.state.selectedEvent))
-          .reduce((prev, param) => ({
-            ...prev,
-            [param.NAME]: ''
-          }), {}),
+        event_params: {},
         event_params_descriptor: this.state.eventParams
-          .filter((param) => (param.EVENT_CD === this.state.selectedEvent))
+          .filter((param) => (param.EVENT_CD === this.state.selectedEvent)),
+        benefits: this.state.benefits
+          .filter(benefit => benefits.indexOf(benefit.ELLATAS_KOD) > -1)
+          .sort((b1, b2) => b1.ELLATAS_KOD < b2.ELLATAS_KOD ? -1 : 1),
+        benefit_params: benefit_params_descriptor
+          .reduce((params, param) => {
+            if (param.DEFAULT) params[param.NAME] = param.DEFAULT;
+            return params;
+          }, {}),
+        benefit_params_descriptor: benefit_params_descriptor,
+        show_benefit_params: true
       }
     ];
 
@@ -82,7 +102,7 @@ class Events extends Component {
       .filter((elem, index, array) => array.indexOf(elem) === index);
 
     this.setState({ benefitList: benefitList });
-    this.props.eventListUpdate({ eventList: eventList, benefitList: benefitList });
+    this.props.eventListUpdate({ eventList: eventList });
   }
 
   removeEvent = (index) => {
@@ -95,14 +115,27 @@ class Events extends Component {
       .filter((elem, index, array) => array.indexOf(elem) === index);
 
     this.setState({ benefitList: benefitList });
-    this.props.eventListUpdate({ eventList: eventList, benefitList: benefitList });
+    this.props.eventListUpdate({ eventList: eventList });
   }
 
-  updateEventList = (index, name, value) => {
-    let eventList = this.props.eventList.slice();
-    eventList[index]['event_params'][name] = value;
-    this.props.eventListUpdate({ eventList: eventList, benefitList: this.state.benefitList });
+  toggleBenefitShow = (index) => {
+    const eventList = this.props.eventList.slice();
+    eventList[index].show_benefit_params = !eventList[index].show_benefit_params;
+
+    this.props.eventListUpdate({ eventList: eventList });
   }
+
+  updateEventList = (index, property, name, value) => {
+    let eventList = this.props.eventList.slice();
+    eventList[index][property][name] = value;
+    this.props.eventListUpdate({ eventList: eventList });
+  }
+
+  setBenefitParam = (index, property) => 
+    obj => {
+      const key = Object.getOwnPropertyNames(obj)[0];
+      this.updateEventList(index, property, key, obj[key]);
+    }
 
   renderParam = (event, index) => {
     return (param) => {
@@ -120,7 +153,7 @@ class Events extends Component {
               name={param.NAME}
               className="cell_input"
               value={event.event_params[param.NAME] != null ? event.event_params[param.NAME] : ''}
-              onChange={(value) => this.updateEventList(index, param.NAME, value)} />
+              onChange={(value) => this.updateEventList(index, 'event_params', param.NAME, value)} />
           );
           break;
         case 'F':
@@ -130,7 +163,7 @@ class Events extends Component {
               name={param.NAME}
               className="cell_input"
               value={event.event_params[param.NAME] != null ? event.event_params[param.NAME] : ''}
-              onChange={(value) => this.updateEventList(index, param.NAME, value)} />
+              onChange={(value) => this.updateEventList(index, 'event_params', param.NAME, value)} />
           );
           break;
         case 'S':
@@ -141,7 +174,7 @@ class Events extends Component {
               className="combobox"
               size="1"
               value={event.event_params[param.NAME] ? event.event_params[param.NAME] : ''}
-              onChange={(event) => this.updateEventList(index, param.NAME, event.target.value)} >
+              onChange={(event) => this.updateEventList(index, 'event_params', param.NAME, event.target.value)} >
               <option></option>
               {pairs.map((pair, index) => (
                 <option key={index} value={pair.split(':')[0]}> {pair.split(':')[1]} </option>
@@ -156,7 +189,7 @@ class Events extends Component {
               name={param.NAME}
               className="cell_input"
               value={event.event_params[param.NAME] ? event.event_params[param.NAME] : ''}
-              onChange={(value) => this.updateEventList(index, param.NAME, value)} />
+              onChange={(value) => this.updateEventList(index, 'event_params', param.NAME, value)} />
           );
           break;
         case 'D':
@@ -165,7 +198,7 @@ class Events extends Component {
               name={param.NAME}
               className="cell_input"
               date={event.event_params[param.NAME] ? event.event_params[param.NAME] : ''}
-              onChange={(value) => this.updateEventList(index, param.NAME, value[param.NAME])} />
+              onChange={(value) => this.updateEventList(index, 'event_params', param.NAME, value[param.NAME])} />
           );
           break;
         case 'FL':
@@ -175,7 +208,7 @@ class Events extends Component {
               className="combobox"
               size="1"
               value={event.event_params[param.NAME] ? event.event_params[param.NAME] : ''}
-              onChange={(event) => this.updateEventList(index, param.NAME, event.target.value)} >
+              onChange={(event) => this.updateEventList(index, 'event_params', param.NAME, event.target.value)} >
               <option></option>
               <option value="1">Igen</option>
               <option value="0">Nem</option>
@@ -199,57 +232,81 @@ class Events extends Component {
 
   render() {
     return (
-      <div id="benefit_container" style={{ position: 'relative', top: 150, width: '80%', margin: 'auto', background: '#e1e1e1', border: '1px solid #d1d1d1', padding: 0, paddingBottom: 0 }} >
-        <div>
-          <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 13, textTransform: 'uppercase', paddingTop: 10 }} >
-            Életsemények
+      <Fragment>
+        <div id="benefit_container" style={{ position: 'relative', top: 150, width: '80%', margin: 'auto', background: '#e1e1e1', border: '1px solid #d1d1d1', padding: 0, paddingBottom: 0 }} >
+          <div>
+            <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 13, textTransform: 'uppercase', paddingTop: 10 }} >
+              Életsemények
           </div>
-          <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
-            <table width="100%" border="0" cellPadding="8" >
-              <tbody>
-                <tr>
-                  <td>
-                    <Select
-                      name="event"
-                      className="combobox"
-                      value={this.state.selectedEvent}
-                      onChange={(value) => this.setState(() => ({ selectedEvent: value }))}
-                      options={this.state.events.reduce((prev, event) => ({
-                        ...prev, ...{ [event.EVENT_CD]: event.EVENT_DESC }
-                      }), {})} />
-                    <input type="button" className="button" style={{ marginLeft: 10 }} value=" Hozzáadás " onClick={this.addEvent} />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
+              <table width="100%" border="0" cellPadding="8" >
+                <tbody>
+                  <tr>
+                    <td>
+                      <Select
+                        name="event"
+                        className="combobox"
+                        value={this.state.selectedEvent}
+                        onChange={(value) => this.setState(() => ({ selectedEvent: value }))}
+                        options={this.state.events.reduce((prev, event) => ({
+                          ...prev, ...{ [event.EVENT_CD]: event.EVENT_DESC }
+                        }), {})} />
+                      <input type="button" className="button" style={{ marginLeft: 10 }} value=" Hozzáadás " onClick={this.addEvent} />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         {
           this.props.eventList.map((event, index) => (
-            <div key={event.event_cd + index}>
-              <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 13, textTransform: 'uppercase', paddingTop: 10 }} >
-                {index + 1}. Életesemény: {this.state.events.filter((e) => e.EVENT_CD === event.event_cd)[0].EVENT_DESC}
-                <input type="button" className="button" style={{ marginLeft: 10 }} value=" Törlés " onClick={() => this.removeEvent(index)} />
+            <Fragment key={index} >
+              <div id="benefit_container" style={{ position: 'relative', top: 180 + index * 30, width: '80%', margin: 'auto', background: '#deb306', border: '1px solid #d1d1d1', padding: 0, paddingBottom: 0 }} >
+                <div key={event.event_cd + index}>
+                  <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 14, textTransform: 'uppercase', paddingTop: 10 }} >
+                    {index + 1}. Életesemény: {this.state.events.filter((e) => e.EVENT_CD === event.event_cd)[0].EVENT_DESC}
+                    <input type="button" className="button" style={{ marginLeft: 10 }} value=" Törlés " onClick={() => this.removeEvent(index)} />
+                    {
+                      event.benefits.length > 0 &&
+                      <input type="button" className="button" style={{ marginLeft: 10 }} value={event.show_benefit_params ? ' Ellátás paramétereinek elrejtése ' : ' Ellátás paramétereinek mutatása '} onClick={() => this.toggleBenefitShow(index)} />
+                    }
+                  </div>
+                  <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
+                    <table width="100%" border="0" cellPadding="8" >
+                      <tbody>
+                        <tr>
+                          <td align="center">
+                            <table border="0" cellPadding="8" >
+                              <tbody>
+                                {event.event_params_descriptor.map(this.renderParam(event, index))}
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-              <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
-                <table width="100%" border="0" cellPadding="8" >
-                  <tbody>
-                    <tr>
-                      <td align="center">
-                        <table border="0" cellPadding="8" >
-                          <tbody>
-                            {event.event_params_descriptor.map(this.renderParam(event, index))}
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+              {
+                event.show_benefit_params &&
+                event.benefits.map((benefit) => (
+                  event.benefit_params_descriptor.filter((param) => param.ELLATAS_CD === benefit.ELLATAS_KOD).length > 0 &&
+                  <BenefitParams
+                    key={benefit.ELLATAS_KOD}
+                    top={180 + index * 30}
+                    benefit={benefit.ELLATAS_NEV}
+                    benefitParams={event.benefit_params_descriptor.filter((param) => param.ELLATAS_CD === benefit.ELLATAS_KOD)}
+                    benefitDescription={benefit.ELLATAS_NEV}
+                    params={event.benefit_params}
+                    setParam={this.setBenefitParam(index, 'benefit_params')} />
+                ))
+              }
+            </Fragment>
           ))
         }
-      </div>
+      </Fragment>
     );
   }
 }

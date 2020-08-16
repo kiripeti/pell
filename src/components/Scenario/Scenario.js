@@ -5,10 +5,8 @@ import Loading from '../Loading';
 import JkodInput from '../JkodInput';
 import CustomerData from './CustomerData';
 import Events from './Events';
-import BenefitParams from '../BenefitParams';
 import DatePicker from '../FormElements/DatePicker';
 import CheckBox from '../FormElements/CheckBox';
-import { benefits } from '../../test_data/benefits';
 
 class Scenario extends Component {
   constructor(props) {
@@ -26,27 +24,6 @@ class Scenario extends Component {
 
     this.sas = new SAS();
   }
-
-  componentDidMount = () =>
-    this.sas.call({
-      program: 'getBenefits',
-      isDebug: this.props.isDebug,
-      preprocess: () => this.setState(() => ({
-        isLoading: true,
-        loadingMessage: 'Betöltés'
-      })),
-      success: (res) => {
-        this.setState(() => ({
-          benefits: res.benefits,
-          benefitParams: res.benefitParams
-        }));
-      },
-      postprocess: () => {
-        this.setState(() => ({
-          isLoading: false
-        }));
-      }
-    });
 
   jkodClick = () => {
     const jkod = this.state.jkod;
@@ -96,6 +73,36 @@ class Scenario extends Component {
       customer[type][index][property] = data;
       return { customer: customer };
     });
+  
+  calculate = () => {
+    const tables = {
+      events: this.state.eventList.map((event, index) => ({
+        order: index+1,
+        event: event.event_cd
+      })),
+      family: this.state.family.map((member) => ({
+        JKOD: this.state.jkod, ...member
+      }))
+    };
+
+    this.state.eventList.forEach((element, index) => {
+      tables['event_'+(index+1)+'_params'] = [{...element.event_params, ...element.benefit_params, ...this.state.params}];
+    });
+
+    this.sas.call({
+      program: 'calculateScenario',
+      isDebug: this.props.isDebug,
+      tables: tables,
+      preprocess: () => this.setState(() => ({
+        isLoading: true,
+        loadingMessage: 'Szcenárió futás'
+      })),
+      success: console.log,
+      postprocess: () => this.setState(() => ({
+        isLoading: false
+      }))
+    });
+  }
 
   render() {
     if (this.state.isLoading) {
@@ -126,57 +133,43 @@ class Scenario extends Component {
                 setParam={this.setParam} />
               <Events
                 eventList={this.state.eventList}
-                eventListUpdate={({eventList, benefitList}) => this.setState({eventList: eventList, selectedBenefits: benefitList})} />
+                eventListUpdate={({ eventList }) => this.setState({ eventList: eventList })} />
             </Fragment>
           }
           {
             this.state.eventList.length > 0 &&
-            <Fragment>
-              {
-                this.state.selectedBenefits.map((benefit) => (
-                  <BenefitParams
-                    key={benefit}
-                    benefit={benefit}
-                    benefitParams={this.state.benefitParams.filter((param) => param.ELLATAS_CD === benefit)}
-                    benefitDescription={this.state.benefits.filter((elem) => elem.ELLATAS_KOD === benefit)[0].ELLATAS_NEV}
-                    params={this.state.params}
-                    setParam={this.setParam} />
-                ))
-              }
-
-              <div id="bottom_container" style={{ position: 'relative', top: 180, width: '80%', margin: 'auto', background: '#e1e1e1', border: '1px solid #d1d1d1', padding: 0, paddingTop: 8, paddingBottom: 10, paddingLeft: 0 }} >
-                <table border="0" cellPadding="8" style={{ marginLeft: 20 }} >
-                  <tbody>
-                    <tr>
-                      <td className="cell_text">Vizsgált időpont:</td>
-                      <td className="cell_spacer"></td>
-                      <td className="cell_text">
-                        <DatePicker
-                          name='LEKERDEZES_DT'
-                          date={this.state.params.LEKERDEZES_DT}
-                          onChange={this.setParam} />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="cell_text">Teszt futtatás:</td>
-                      <td className="cell_spacer"></td>
-                      <td className="cell_text">
-                        <CheckBox
-                          checked={this.props.isDebug}
-                          onChange={this.setDebug}
-                          label="" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="2"></td>
-                      <td>
-                        <input type="button" className="button" style={{ marginLeft: 0 }} value=" Számol " onClick={this.calculate} />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </Fragment>
+            <div id="bottom_container" style={{ position: 'relative', top: 180 + this.state.eventList.length * 30, width: '80%', margin: 'auto', background: '#e1e1e1', border: '1px solid #d1d1d1', padding: 0, paddingTop: 8, paddingBottom: 10, paddingLeft: 0 }} >
+              <table border="0" cellPadding="8" style={{ marginLeft: 20 }} >
+                <tbody>
+                  <tr>
+                    <td className="cell_text">Vizsgált időpont:</td>
+                    <td className="cell_spacer"></td>
+                    <td className="cell_text">
+                      <DatePicker
+                        name='LEKERDEZES_DT'
+                        date={this.state.params.LEKERDEZES_DT}
+                        onChange={this.setParam} />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="cell_text">Teszt futtatás:</td>
+                    <td className="cell_spacer"></td>
+                    <td className="cell_text">
+                      <CheckBox
+                        checked={this.props.isDebug}
+                        onChange={this.setDebug}
+                        label="" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="2"></td>
+                    <td>
+                      <input type="button" className="button" style={{ marginLeft: 0 }} value=" Számol " onClick={this.calculate} />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           }
         </div>
       </Fragment>

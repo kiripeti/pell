@@ -7,7 +7,7 @@ import customer_data from '../test_data/ugyfel_adat';
 import { benefits } from '../test_data/benefits';
 import { events } from '../test_data/getEvents';
 
-const dev = true;
+const dev = false;
 
 const fromSasDateTime = (sasDate) => sasDate ? h54sFromSASdttm(sasDate) : null;
 const fromSASDate = (sasDate) => sasDate ? fromSasDateTime(sasDate * 24 * 60 * 60) : null;
@@ -40,6 +40,8 @@ const functionOnColumns = (table, columns, func) => (
   })
 );
 
+const dtFromJS2SASAllColumn = (table) => functionOnColumns(table, '_ALL_', (value) => value instanceof Date ? toSASDate(value) : value)
+
 const removeEmptyKeysFromOcjet = (obj) => {
   for (const key in obj) {
     if (obj[key] == null || obj[key] === '') {
@@ -71,8 +73,15 @@ export class SAS {
   });
 
   call = ({ program, tables, preprocess, success, postprocess, isDebug }) => {
+    tables = tables ? Object.getOwnPropertyNames(tables)
+      .reduce((modTables, tableName) => ({
+        ...modTables,
+        [tableName]: dtFromJS2SASAllColumn(tables[tableName])
+      }), {}) : null;
+
     if (dev) {
       if (preprocess) preprocess();
+      console.log('tables:', tables);
       success(action[program])
       if (postprocess) postprocess();
       return;
