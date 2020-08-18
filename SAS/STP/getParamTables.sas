@@ -23,14 +23,18 @@
 
     %let ptable_count = %eval(%sysfunc(count(&ptables., |)) + 1);
 
-    %do i %to &ptable_count.;
-        %let ptable_name = %scan(&ptables., &i., |);
-        data WORK.&ptable_name.;
-            set PARAMS.&ptable_name.;
-            where MODIFICATIONSTATUS_CD = 'Y';
-            drop RULE_RK VERSION_RK MODIFICATIONSTATUS_CD DELETION_DTTM MODIFICATION_DTTM VALID_FROM_DTTM VALIDptable_nameO_DTTM MODIFIEDBY_NM DELETEDBY_NM APPROVEDBY_NM;
-        run;
-    %end;
+    %macro create_tables;
+        %do i %to &ptable_count.;
+            %let ptable_name = %scan(&ptables., &i., |);
+            data WORK.&ptable_name.;
+                set PARAMS.&ptable_name.;
+                where MODIFICATIONSTATUS_CD = 'Y';
+                drop RULE_RK VERSION_RK MODIFICATIONSTATUS_CD DELETION_DTTM MODIFICATION_DTTM VALID_FROM_DTTM VALIDptable_nameO_DTTM MODIFIEDBY_NM DELETEDBY_NM APPROVEDBY_NM;
+            run;
+        %end;
+    %mend;
+
+    %create_tables;
 
     %macro add_inputs;
         %do i %to &ptable_count.;
