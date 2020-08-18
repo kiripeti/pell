@@ -98,7 +98,7 @@
     /* End of Manage FAMILY */
     
     /* Calculate Scenarios*/
-        %include "&jobs_dir./Szcenariok_szamitasa.sas";
+        %include "&jobs_dir./Szcenario_elemzes.sas";
     /* End of Calculate Scenarios */
     
     /* Calculated JOGVISZONY*/

@@ -78,8 +78,10 @@ class Scenario extends Component {
     });
   
   calculate = () => {
+    const events = [...this.state.eventList, this.state.nyug];
+
     const tables = {
-      events: this.state.eventList.map((event, index) => ({
+      events: events.map((event, index) => ({
         order: index+1,
         event: event.event_cd
       })),
@@ -89,7 +91,7 @@ class Scenario extends Component {
       params: [{ ...this.state.params, LEKERDEZES_DT: new Date() }]
     };
 
-    [...this.state.eventList, this.state.nyug].forEach((event, index) => {
+    events.forEach((event, index) => {
       tables['event_'+(index+1)+'_params'] = [{...event.event_params, ...event.benefit_params}];
     });
 
@@ -147,16 +149,6 @@ class Scenario extends Component {
             <div id="bottom_container" style={{ position: 'relative', top: 180 + this.state.eventList.length * 30, width: '80%', margin: 'auto', background: '#e1e1e1', border: '1px solid #d1d1d1', padding: 0, paddingTop: 8, paddingBottom: 10, paddingLeft: 0 }} >
               <table border="0" cellPadding="8" style={{ marginLeft: 20 }} >
                 <tbody>
-                  <tr>
-                    <td className="cell_text">Vizsgált időpont:</td>
-                    <td className="cell_spacer"></td>
-                    <td className="cell_text">
-                      <DatePicker
-                        name='LEKERDEZES_DT'
-                        date={this.state.params.LEKERDEZES_DT}
-                        onChange={this.setParam} />
-                    </td>
-                  </tr>
                   <tr>
                     <td className="cell_text">Teszt futtatás:</td>
                     <td className="cell_spacer"></td>
