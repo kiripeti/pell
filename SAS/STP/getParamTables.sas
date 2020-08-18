@@ -4,22 +4,43 @@
 
     %init_stp(getParamTables); /* => work.benefit */
 
-    proc sql;
-        create tables as
+    %if %sysfunc(exist(benefit)) eq 0 %then %do;
+        data benefit;
+            BENEFIT = 'AT';
+        run;
+    %end;
+
+    %local ptables i ptable_name ptable_count;
+
+    proc sql noprint;
+        create table WORK.TABLES as
         select
-            table
-        from work.benefit inner join params.paramtebales
+            PARAMETERTABLA AS TABLA
+            into :ptables separated by '|'
+        from WORK.BENEFIT b
+            inner join PARAMS.ELLATAS_PARAMS e on (b.BENEFIT = e.ELLATAS);
     quit;
 
-    /*
-        TABLE
-        -----
-        GYOD_PARAMS 
-    */
+    %let ptable_count = %eval(%sysfunc(count(&ptables., |)) + 1);
 
-    /* =>  %bafOutDataset(GYOD_PARAMS, work, GYOD_PARAMS) (drop = MTE-s oszlopok)*/
+    %do i %to &ptable_count.;
+        %let ptable_name = %scan(&ptables., &i., |);
+        data WORK.&ptable_name.;
+            set PARAMS.&ptable_name.;
+            where MODIFICATIONSTATUS_CD = 'Y';
+            drop RULE_RK VERSION_RK MODIFICATIONSTATUS_CD DELETION_DTTM MODIFICATION_DTTM VALID_FROM_DTTM VALIDptable_nameO_DTTM MODIFIEDBY_NM DELETEDBY_NM APPROVEDBY_NM;
+        run;
+    %end;
+
+    %macro add_inputs;
+        %do i %to &ptable_count.;
+            %let ptable_name = %scan(&ptables., &i., |);
+            %bafOutDataset(&ptable_name., work, &ptable_name.)
+        %end;
+    %mend;
 
 %bafheader()
     %bafOutDataset(runid, work, runid)
     %bafOutDataset(param_tables, work, tables)
+    %add_inputs
 %bafFooter()
