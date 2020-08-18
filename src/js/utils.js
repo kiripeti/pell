@@ -7,7 +7,7 @@ import customer_data from '../test_data/ugyfel_adat';
 import { benefits } from '../test_data/benefits';
 import { events } from '../test_data/getEvents';
 
-const dev = true;
+const dev = false;
 
 const fromSasDateTime = (sasDate) => sasDate ? h54sFromSASdttm(sasDate) : null;
 const fromSASDate = (sasDate) => sasDate ? fromSasDateTime(sasDate * 24 * 60 * 60) : null;
