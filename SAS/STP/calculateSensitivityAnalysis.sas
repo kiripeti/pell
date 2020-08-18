@@ -93,7 +93,7 @@
         proc sql;
             create table work.results_pre as
             (
-            select
+                select
                     'ORIGINAL' as PARAMETER_KESZLET,
                     'Eredeti' as PARAMETER_KESZLET_LBL,
                     %_calculate_formatted_stats()
