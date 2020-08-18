@@ -5,6 +5,17 @@
 
     %init_stp(sensitivityAnalysis);
 
+    %if %sysfunc(exist(work.benefit)) eq 0 %then %do;
+        data work.benefit;
+            BENEFIT = 'GYOD';
+        run;
+
+        data work.GYOD_PARAMS;
+            set params.GYOD_PARAMS;
+            GYOD_ALAPOSSZEG=124000000;
+        run;
+    %end;
+
     /* Manage BENEFITS */
         data pelltmp.BENEFITS_&postfix.;
             set BENEFIT;
