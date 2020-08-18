@@ -43,6 +43,7 @@
                     
                     order=&i;
                     set transposed;
+                    value=strip(value);
                 run;
 
                 proc append
@@ -65,7 +66,19 @@
             run;
         %end;
     /* End of Manage FAMILY */
+    
+    /* Calculate Scenarios*/
+        %include "&jobs_dir./Szcenariok_szamitasa.sas";
+    /* End of Calculate Scenarios */
+    
+    /* Calculated JOGVISZONY*/
+        data jogviszony;
+            set pelltmp.JOGVISZONY_&postfix.(where=(source_method not in ('DM' 'GUI')));
+        run;
+    /* End of Calculated JOGVISZONY */
 
 %bafheader()
     %bafOutDataset(runid, work, runid)
+    %bafOutDataset(brm_output, pelltmp, BRM_OUT_&postfix.)
+    %bafOutDataset(jogviszony, work, jogviszony)
 %bafFooter()

@@ -8,7 +8,7 @@
 
     %if %sysfunc(exist(pelltmp.params_&postfix)) %then %do;
         data _null_;
-            set pelltmp.params_&postfix;
+            set pelltmp.params_&postfix(where=(value ne ''));
             call symputx(name, value, 'G');
         run;
     %end;
