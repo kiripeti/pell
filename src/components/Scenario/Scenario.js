@@ -89,8 +89,8 @@ class Scenario extends Component {
       params: [{ ...this.state.params, LEKERDEZES_DT: new Date() }]
     };
 
-    this.state.eventList.forEach((element, index) => {
-      tables['event_'+(index+1)+'_params'] = [{...element.event_params, ...element.benefit_params}];
+    [...this.state.eventList, this.state.nyug].forEach((event, index) => {
+      tables['event_'+(index+1)+'_params'] = [{...event.event_params, ...event.benefit_params}];
     });
 
     this.sas.call({
