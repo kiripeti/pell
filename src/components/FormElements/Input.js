@@ -1,9 +1,11 @@
 import React from 'react'
 
-const Input = ({name, value, type, className, onChange}) => {
+const Input = ({name, value, type, className, onChange, readOnly}) => {
   let onChangeHandler;
-  
-  if (type === 'N') {
+
+  if (readOnly) {
+    onChangeHandler = () => {}
+  } else if (type === 'N') {
     onChangeHandler = (event) => {
       if (!isNaN(event.target.value)) {
         const parsedVal = parseFloat(event.target.value);

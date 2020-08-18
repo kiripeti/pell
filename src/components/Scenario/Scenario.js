@@ -20,7 +20,8 @@ class Scenario extends Component {
       jkod: '',
       selectedTab: 'CUSTOMER',
       family: [],
-      eventList: []
+      eventList: [],
+      nyug: {}
     };
 
     this.sas = new SAS();
@@ -64,6 +65,7 @@ class Scenario extends Component {
   updateSelectedTab = (value) => this.setState({ selectedTab: value });
   updateFamily = (family) => this.setState(() => ({ family: family }));
   setParam = (param) => this.setState(state => ({ params: { ...state.params, ...param } }));
+  updateNyug = (nyug) => this.setState(() => ({nyug: nyug}))
 
   updateCustomer = (type, index, property, data) =>
     this.setState((state) => {
@@ -83,11 +85,12 @@ class Scenario extends Component {
       })),
       family: this.state.family.map((member) => ({
         JKOD: this.state.jkod, ...member
-      }))
+      })),
+      params: [{ ...this.state.params, LEKERDEZES_DT: new Date() }]
     };
 
     this.state.eventList.forEach((element, index) => {
-      tables['event_'+(index+1)+'_params'] = [{...element.event_params, ...element.benefit_params, ...this.state.params}];
+      tables['event_'+(index+1)+'_params'] = [{...element.event_params, ...element.benefit_params}];
     });
 
     this.sas.call({
@@ -134,7 +137,9 @@ class Scenario extends Component {
                 setParam={this.setParam} />
               <Events
                 eventList={this.state.eventList}
-                eventListUpdate={({ eventList }) => this.setState({ eventList: eventList })} />
+                eventListUpdate={({ eventList }) => this.setState({ eventList: eventList })}
+                nyug={this.state.nyug}
+                updateNyug={this.updateNyug} />
             </Fragment>
           }
           {

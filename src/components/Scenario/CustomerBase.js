@@ -21,34 +21,34 @@ class CustomerBase extends Component {
                           <DatePicker
                             name="SZUL_DT"
                             className="cell_input"
-                            date={this.props.base.SZUL_DT ? this.props.base.SZUL_DT : ''}
-                            onChange={(dateObject) => this.props.updateCustomer('ALAP_ADATOK', 0, 'SZUL_DT', dateObject.SZUL_DT)} />
+                            date={this.props.base.SZUL_DT ? this.props.base.SZUL_DT : ''} />
                         </td>
                         <td className="cell_spacer"></td>
-                        <td className="cell_property">Egészségügyi állapot:</td>
+                        <td className="cell_property">Egészségi állapot:</td>
                         <td className="cell_value">
                           <Input
                             type="N"
                             name="EU_ALLAPOT"
                             className="cell_input"
                             value={this.props.eu.EU_ALLAPOT != null ? this.props.eu.EU_ALLAPOT : ''}
-                            onChange={(value) => this.props.updateCustomer('EU_ADATOK', 0, 'EU_ALLAPOT', value)} />
+                            readOnly />
                           &nbsp;%
                         </td>
                         <td className="cell_spacer"></td>
                         <td className="cell_property">Kereső tevékenységet végez:</td>
                         <td className="cell_value">
-                          <select id="KER_TEV_FLG" name="KER_TEV_FLG" className="combobox" size="1" value={this.props.params.KER_TEV_FLG ? this.props.params.KER_TEV_FLG : ''} onChange={(event) => this.props.setParam({KER_TEV_FLG: event.target.value})} >
-                            <option value=""></option>
-                            <option value="1">Igen</option>
-                            <option value="0">Nem</option>
-                          </select>
+                          <Input
+                            type="N"
+                            name="REHABILITALHATO_FL"
+                            className="cell_input"
+                            value={this.props.params.KER_TEV_FLG ? (this.props.params.KER_TEV_FLG === '1' ? 'Igen' : 'Nem') : ''}
+                            readOnly />
                         </td>
                       </tr>
                       <tr>
                         <td className="cell_property">Nem:</td>
                         <td className="cell_value">
-                          <input type="text" name="NEM" className="cell_input" value={this.props.base.NEM ? this.props.base.NEM : ''} onChange={this.changeData('ALAP_ADATOK', 'NEM')} />
+                          <input type="text" name="NEM" className="cell_input" value={this.props.base.NEM ? this.props.base.NEM : ''} readOnly />
                         </td>
                         <td className="cell_spacer"></td>
                         <td className="cell_property">Rehabilitálható flag:</td>
@@ -58,17 +58,18 @@ class CustomerBase extends Component {
                             name="REHABILITALHATO_FL"
                             className="cell_input"
                             value={this.props.eu['REHABILITALHATO_FL'] != null ? this.props.eu['REHABILITALHATO_FL'] : ''}
-                            onChange={(value) => this.props.updateCustomer('EU_ADATOK', 0, 'REHABILITALHATO_FL', value)} />
+                            readOnly />
                         </td>
                         <td className="cell_spacer">
                         </td>
                         <td className="cell_property">Rendszeres pénzellátásban részesül:</td>
                         <td className="cell_value">
-                          <select id="RENDSZ_PENZELL_FLG" name="RENDSZ_PENZELL_FLG" className="combobox" size="1"  value={this.props.params.RENDSZ_PENZELL_FLG ? this.props.params.RENDSZ_PENZELL_FLG : ''} onChange={(event) => this.props.setParam({RENDSZ_PENZELL_FLG: event.target.value})} >
-                            <option></option>
-                            <option value="1">Igen</option>
-                            <option value="0">Nem</option>
-                          </select>
+                          <Input
+                            type="N"
+                            name="REHABILITALHATO_FL"
+                            className="cell_input"
+                            value={this.props.params.RENDSZ_PENZELL_FLG ? (this.props.params.RENDSZ_PENZELL_FLG === '1' ? 'Igen' : 'Nem') : ''}
+                            readOnly />
                         </td>
                       </tr>
                       <tr>
@@ -80,14 +81,14 @@ class CustomerBase extends Component {
                             name="ONELLATAS_FL"
                             className="cell_input"
                             value={this.props.eu['ONELLATAS_FL'] != null ? this.props.eu['ONELLATAS_FL'] : ''}
-                            onChange={(value) => this.props.updateCustomer('EU_ADATOK', 0, 'ONELLATAS_FL', value)} />
+                            readOnly />
                         </td>
                       </tr>
                       <tr>
                         <td colSpan="3"></td>
                         <td className="cell_property">Komplex minősítés:</td>
                         <td className="cell_value">
-                          <input type="text" name="KMPX_MIN" className="cell_input" value={this.props.eu.KMPX_MIN ? this.props.eu.KMPX_MIN : ''} onChange={this.changeData('EU_ADATOK', 'KMPX_MIN')} />
+                          <input type="text" name="KMPX_MIN" className="cell_input" value={this.props.eu.KMPX_MIN ? this.props.eu.KMPX_MIN : ''} readOnly />
                         </td>
                       </tr>
                     </tbody>

@@ -33,6 +33,28 @@ class Events extends Component {
           benefits: res.benefits,
           benefitParams: res.benefitParams
         }));
+
+        this.props.updateNyug({
+          event_cd: 'NYUG',
+          event_desc: 'Nyugdíj',
+          event_params: {},
+          event_params_descriptor: [],
+          benefits: res.benefits
+            .filter(benefit => benefit.ELLATAS_KOD === 'OREGSEGI' || benefit.ELLATAS_KOD === 'NOK40' )
+            .sort((b1, b2) => b1.ELLATAS_KOD < b2.ELLATAS_KOD ? -1 : 1),
+          benefit_params: res.benefitParams
+            .filter(param => param.ELLATAS_CD === 'OREGSEGI' || param.ELLATAS_CD === 'NOK40' )
+            .filter(param => param.SCEN_FLG === 1)
+            .reduce((params, param) => {
+              if (param.DEFAULT) params[param.NAME] = param.DEFAULT;
+              return params;
+            }, {}),
+          benefit_params_descriptor: res.benefitParams
+            .filter(param => param.ELLATAS_CD === 'OREGSEGI' || param.ELLATAS_CD === 'NOK40' )
+            .filter(param => param.SCEN_FLG === 1)
+            .sort((p1, p2) => p1.ORDER < p2.ORDER ? -1 : 1),
+          show_benefit_params: true
+        });
       },
       postprocess: () => {
         this.setState(() => ({
@@ -70,7 +92,7 @@ class Events extends Component {
     const benefits = this.state.eventBenefits
       .filter(event => event.EVENT_CD === this.state.selectedEvent)
       .map(event => event.BENEFIT_CD);
-    
+
     const benefit_params_descriptor = this.state.benefitParams
       .filter(param => benefits.indexOf(param.ELLATAS_CD) > -1)
       .filter(param => param.SCEN_FLG === 1)
@@ -83,7 +105,8 @@ class Events extends Component {
         event_desc: this.state.events.filter((e) => e.EVENT_CD === this.state.selectedEvent)[0].EVENT_DESC,
         event_params: {},
         event_params_descriptor: this.state.eventParams
-          .filter((param) => (param.EVENT_CD === this.state.selectedEvent)),
+          .filter((param) => (param.EVENT_CD === this.state.selectedEvent))
+          .sort((p1, p2) => p1 < p2 ? -1 : 1),
         benefits: this.state.benefits
           .filter(benefit => benefits.indexOf(benefit.ELLATAS_KOD) > -1)
           .sort((b1, b2) => b1.ELLATAS_KOD < b2.ELLATAS_KOD ? -1 : 1),
@@ -132,11 +155,19 @@ class Events extends Component {
     this.props.eventListUpdate({ eventList: eventList });
   }
 
-  setBenefitParam = (index, property) => 
+  setBenefitParam = (index, property) =>
     obj => {
       const key = Object.getOwnPropertyNames(obj)[0];
       this.updateEventList(index, property, key, obj[key]);
     }
+
+  setNyugParam = (obj) => this.props.updateNyug({
+    ...this.props.nyug,
+    benefit_params: {
+      ...this.props.nyug.benefit_params,
+      ...obj
+    }
+  })
 
   renderParam = (event, index) => {
     return (param) => {
@@ -306,6 +337,33 @@ class Events extends Component {
               }
             </Fragment>
           ))
+        }
+        {
+          this.props.eventList.length > 0 &&
+          <Fragment >
+            <div id="benefit_container" style={{ position: 'relative', top: 180 + this.props.eventList.length * 30, width: '80%', margin: 'auto', background: '#deb306', border: '1px solid #d1d1d1', padding: 0, paddingBottom: 0 }} >
+              <div>
+                <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 14, textTransform: 'uppercase', paddingTop: 10 }} >
+                  Nyugdíj
+                </div>
+                <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
+                </div>
+              </div>
+            </div>
+            {
+              this.props.nyug.benefits.map((benefit) => (
+                this.props.nyug.benefit_params_descriptor.filter((param) => param.ELLATAS_CD === benefit.ELLATAS_KOD).length > 0 &&
+                <BenefitParams
+                  key={benefit.ELLATAS_KOD}
+                  top={180 + this.props.eventList.length * 30}
+                  benefit={benefit.ELLATAS_NEV}
+                  benefitParams={this.props.nyug.benefit_params_descriptor.filter((param) => param.ELLATAS_CD === benefit.ELLATAS_KOD)}
+                  benefitDescription={benefit.ELLATAS_NEV}
+                  params={this.props.nyug.benefit_params}
+                  setParam={this.setNyugParam} />
+              ))
+            }
+          </Fragment>
         }
       </Fragment>
     );

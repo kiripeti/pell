@@ -2,7 +2,7 @@
     %if %symexist(postfix) eq 0 %then
         %do;
             data _null_;
-            call symputx('postfix', "&_metauser", 'G');
+                call symputx('postfix', "&_metauser", 'G');
             run;
         %end;
 
@@ -20,15 +20,15 @@
         run;
     %end;
 
-    %if %symexist(date) %then %do;
-        data _null_;
-            call symputx('LEKERDEZES_DT', &date, 'G');
-            call symputx('dttm', dhms(&date, 23, 59, 59), 'G');
-        run;
-    %end; %else %do;
+    %if %symexist(LEKERDEZES_DT) %then %do;
         data _null_;
             call symputx('date', &LEKERDEZES_DT, 'G');
             call symputx('dttm', dhms(&LEKERDEZES_DT, 23, 59, 59), 'G');
+        run;
+    %end; %else %do;
+        data _null_;
+            call symputx('LEKERDEZES_DT', &date, 'G');
+            call symputx('dttm', dhms(&date, 23, 59, 59), 'G');
         run;
     %end;
 %mend;

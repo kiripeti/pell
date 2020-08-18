@@ -16,6 +16,36 @@
         run;
     /* End of Manage EVENTS */
 
+    /* Manage PARAMS */
+        data pelltmp.params_&postfix;
+            length
+                name    $32
+                value  $250;
+            stop;
+        run;
+
+        proc transpose
+            data=params
+            out=transposed(rename=(value1=value))
+            prefix=value
+            name=name;
+            var _all_;
+        run;
+
+        data param;
+            length
+                name    $32
+                value  $250;
+            set transposed;
+            value=strip(value);
+        run;
+
+        proc append
+            base=pelltmp.params_&postfix
+            data=param;
+        run;
+    /* End of Manage PARAMS */
+
     /* Manage EVENT_PARAMS */
         %macro generate_event_params;
             data pelltmp.scen_params_&postfix;
