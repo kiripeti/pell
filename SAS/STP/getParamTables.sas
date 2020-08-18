@@ -10,8 +10,6 @@
         run;
     %end;
 
-    %local ptables i ptable_name ptable_count;
-
     proc sql noprint;
         create table WORK.TABLES as
         select
