@@ -74,8 +74,8 @@
 
     /* Calculate Difference */
         data _null_;
-            set PARAMS.UGYFEL_INPUT_GENERATED (nobs=cnt);
-            call symputx("n_sample", nobs, 'G');
+            set PARAMS.UGYFEL_INPUT_GENERATED nobs=cnt;
+            call symputx("n_sample", cnt, 'G');
             stop;
         run;
 
