@@ -86,7 +86,7 @@
                         label="Jogosultak száma" as JOGOSULTAK_SZAMA,
                     put(count(distinct case when ELLATAS_START_DT is not null then ELLATAS_JKOD end) / &n_sample., nlpct32.2 -L)
                         label="Jogosultak aránya" as JOGOSULTAK_ARANYA,
-                    put(sum(ELLATAS_AMOUNT), nlnum32. -L)
+                    put(coalesce(sum(ELLATAS_AMOUNT), 0), nlnum32. -L)
                         label="Összeg" as SUM_OSSZEG,
         %mend;
 
