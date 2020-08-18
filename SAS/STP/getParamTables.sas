@@ -22,7 +22,7 @@
     %let ptable_count = %eval(%sysfunc(count(&ptables., |)) + 1);
 
     %macro create_tables;
-        %do i %to &ptable_count.;
+        %do i=1 %to &ptable_count.;
             %let ptable_name = %scan(&ptables., &i., |);
             data WORK.&ptable_name.;
                 set PARAMS.&ptable_name.;
@@ -35,7 +35,7 @@
     %create_tables;
 
     %macro add_inputs;
-        %do i %to &ptable_count.;
+        %do i=1 %to &ptable_count.;
             %let ptable_name = %scan(&ptables., &i., |);
             %bafOutDataset(&ptable_name., work, &ptable_name.)
         %end;
