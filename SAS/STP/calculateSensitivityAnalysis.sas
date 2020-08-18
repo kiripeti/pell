@@ -5,8 +5,19 @@
 
     %init_stp(sensitivityAnalysis);
 
-    %let date=%sysfunc(today());
-    %let keresztmetszet=1;
+    data pelltmp.params_&postfix;
+        length
+            name $32
+            value $250;
+        
+        name='date';
+        value=strip(put(today(), 8.));
+        output;
+        
+        name='keresztmetszet';
+        value='1';
+        output;
+    run;
 
     %if %sysfunc(exist(work.benefit)) eq 0 %then %do;
         data work.benefit;
