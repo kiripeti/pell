@@ -83,11 +83,11 @@
                     put(&n_sample., nlnum32. -L) 
                         label='Minta elemszám' as MINTA_ELEMSZAM,
                     put(count(distinct ELLATAS_JKOD), nlnum32. -L)
-                        format=nlnum32. label="Jogosultak száma" as JOGOSULTAK_SZAMA,
+                        label="Jogosultak száma" as JOGOSULTAK_SZAMA,
                     put(count(distinct case when ELLATAS_START_DT is not null then ELLATAS_JKOD end) / &n_sample., nlpct32.2 -L)
-                        format=nlpct32.2 label="Jogosultak aránya" as JOGOSULTAK_ARANYA,
+                        label="Jogosultak aránya" as JOGOSULTAK_ARANYA,
                     put(sum(ELLATAS_AMOUNT), nlnum32. -L)
-                        format=nlnum32. label="Összeg" as SUM_OSSZEG,
+                        label="Összeg" as SUM_OSSZEG,
         %mend;
 
         proc sql;
