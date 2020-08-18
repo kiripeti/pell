@@ -14,7 +14,13 @@
         create table WORK.TABLES as
         select
             PARAMETERTABLA AS TABLA
-            into :ptables separated by '|'
+        from WORK.BENEFIT b
+            inner join PARAMS.ELLATAS_PARAMS e on (b.BENEFIT = e.ELLATAS);
+    quit;
+
+    proc sql noprint;
+        select
+            PARAMETERTABLA into :ptables separated by '|'
         from WORK.BENEFIT b
             inner join PARAMS.ELLATAS_PARAMS e on (b.BENEFIT = e.ELLATAS);
     quit;
