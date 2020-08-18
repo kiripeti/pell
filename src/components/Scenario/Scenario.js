@@ -7,6 +7,7 @@ import CustomerData from './CustomerData';
 import Events from './Events';
 import DatePicker from '../FormElements/DatePicker';
 import CheckBox from '../FormElements/CheckBox';
+import Table from '../Table';
 
 class Scenario extends Component {
   constructor(props) {
@@ -97,7 +98,7 @@ class Scenario extends Component {
         isLoading: true,
         loadingMessage: 'Szcenárió futás'
       })),
-      success: console.log,
+      success: (res) => this.setState({result: res}),
       postprocess: () => this.setState(() => ({
         isLoading: false
       }))
@@ -169,6 +170,38 @@ class Scenario extends Component {
                   </tr>
                 </tbody>
               </table>
+            </div>
+          }
+          {
+            this.state.result &&
+            <div>
+              BRM_OUTPUT
+              <Table
+                header={[
+                  { name: 'ELLATAS_CD',       align: 'C', label: 'Ellátás kódja' },
+                  { name: 'ELLATAS_NM',       align: 'C', label: 'Ellátás neve' },
+                  { name: 'ELLATAS_START_DT', align: 'C', label: 'Ellátás Kezdete' },
+                  { name: 'ELLATAS_END_DT',   align: 'C', label: 'Ellátás Vége' },
+                  { name: 'ELLATAS_DAYS_NUM', align: 'C', label: 'Ellátás hossza' },
+                  { name: 'ELLATAS_AMOUNT',   align: 'C', label: 'Ellátás összege' },
+                  { name: 'ELLATAS_DESC',     align: 'C', label: 'Megjegyzés' }
+                ]}
+                data={this.state.result.brm_output}
+              />
+              JOGVISZONY
+              <Table
+                header={[
+                    {name: 'TARGYEV',                   align: 'R', label: 'Tárgyév'},
+                    {name: 'ALKMIN',                    align: 'L', label: 'ALKMIN kód'},
+                    {name: 'KEZDESDATUM',               align: 'C', label: 'Jogviszony kezdete'},
+                    {name: 'VEGEDATUM',                 align: 'C', label: 'Jogviszony vége'},
+                    {name: 'OSZTONAP',                  align: 'R', label: 'Osztónap'},
+                    {name: 'NYUGDIJBIZTOSITASIJARULEK', align: 'R', label: 'Összeg'},
+                    {name: 'FORRAS_TABLA',              align: 'L', label: 'Pszeudó / Valódi'},
+                    {name: 'SOURCE_METHOD',             align: 'L', label: 'Jogviszony forrása'}
+                  ]}
+                data={this.state.result.jogviszony}
+              />
             </div>
           }
         </div>
