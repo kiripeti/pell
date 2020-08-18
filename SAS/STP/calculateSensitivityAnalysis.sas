@@ -56,7 +56,7 @@
     /* Calculate Benefits and Save Results*/
         %include "&jobs_dir./Ellatasok_szamitasa.sas";
 
-        data pelltmp.&benefit._ORIG_&postfix.
+        data pelltmp.&benefit._ORIG_&postfix.;
             set pelltmp.&benefit._&postfix.;
         run;
     /* End of Calculate Benefits and Save Results */
