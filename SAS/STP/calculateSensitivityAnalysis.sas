@@ -1,7 +1,7 @@
 %include '/sas/decman/Lev1/SASApp/SASEnvironment/SASCode/H54S/h54s.sas';
 
 
-%bafgetdatasets(); /*--> work.param tablak (tartalom a getparamshoz k√©pest lehet m√°s), work.benefit*/
+%bafgetdatasets(); /*--> work.param tablak (tartalom a getparamshoz kÈpest lehet m·s), work.benefit*/
 
     %init_stp(sensitivityAnalysis);
 
@@ -81,13 +81,13 @@
 
         %macro _calculate_formatted_stats();
                     put(&n_sample., nlnum32. -L) 
-                        label='Minta elemsz√°m' as MINTA_ELEMSZAM,
+                        label='Minta elemsz·m' as MINTA_ELEMSZAM,
                     put(count(distinct ELLATAS_JKOD), nlnum32. -L)
-                        format=nlnum32. label="Jogosultak sz√°ma" as JOGOSULTAK_SZAMA,
+                        format=nlnum32. label="Jogosultak sz·ma" as JOGOSULTAK_SZAMA,
                     put(count(distinct case when ELLATAS_START_DT is not null then ELLATAS_JKOD end) / &n_sample., nlpct32.2 -L)
-                        format=nlpct32.2 label="Jogosultak ar√°nya" as JOGOSULTAK_ARANYA,
+                        format=nlpct32.2 label="Jogosultak ar·nya" as JOGOSULTAK_ARANYA,
                     put(sum(ELLATAS_AMOUNT), nlnum32. -L)
-                        format=nlnum32. label="√ñsszeg" as SUM_OSSZEG,
+                        format=nlnum32. label="÷sszeg" as SUM_OSSZEG,
         %mend;
 
         proc sql;
@@ -103,7 +103,7 @@
             ) union corr (
                 select
                     'MODIFIED' as PARAMETER_KESZLET,
-                    'M√≥dos√≠tott' as PARAMETER_KESZLET_LBL,
+                    'MÛdosÌtott' as PARAMETER_KESZLET_LBL,
                     %_calculate_formatted_stats()
                     1 as dummy
                 from 
