@@ -10,7 +10,7 @@
             name $32
             value $250;
         
-        name='date';
+        name='LEKERDEZES_DT';
         value=strip(put(today(), 8.));
         output;
         
