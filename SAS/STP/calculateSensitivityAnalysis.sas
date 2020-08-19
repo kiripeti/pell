@@ -72,6 +72,12 @@
         %include "&jobs_dir./&benefit..sas";
     /* End of Calculate Benefits */
 
+    /* Cleanup */
+    proc datasets lib=pelltmp nolist;
+        delete ALAPADATOK_&postfix. CHILDREN_&postfix. EU_ADATOK_&postfix. EV_ELEMZES_&postfix. JOGVISZONY_&postfix.;
+    run;
+    /* End of Cleanup */
+
     /* Calculate Difference */
         data _null_;
             set PARAMS.UGYFEL_INPUT_GENERATED nobs=cnt;
