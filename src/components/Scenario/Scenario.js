@@ -170,36 +170,55 @@ class Scenario extends Component {
             </div>
           }
           {
-            this.state.result &&
-            <div>
-              BRM_OUTPUT
-              <Table
-                header={[
-                  { name: 'ELLATAS_CD',       align: 'C', label: 'Ellátás kódja' },
-                  { name: 'ELLATAS_NM',       align: 'C', label: 'Ellátás neve' },
-                  { name: 'ELLATAS_START_DT', align: 'C', label: 'Ellátás Kezdete' },
-                  { name: 'ELLATAS_END_DT',   align: 'C', label: 'Ellátás Vége' },
-                  { name: 'ELLATAS_DAYS_NUM', align: 'C', label: 'Ellátás hossza' },
-                  { name: 'ELLATAS_AMOUNT',   align: 'C', label: 'Ellátás összege' },
-                  { name: 'ELLATAS_DESC',     align: 'C', label: 'Megjegyzés' }
-                ]}
-                data={this.state.result.brm_output}
-              />
-              JOGVISZONY
-              <Table
-                header={[
-                    {name: 'TARGYEV',                   align: 'R', label: 'Tárgyév'},
-                    {name: 'ALKMIN',                    align: 'L', label: 'ALKMIN kód'},
-                    {name: 'KEZDESDATUM',               align: 'C', label: 'Jogviszony kezdete'},
-                    {name: 'VEGEDATUM',                 align: 'C', label: 'Jogviszony vége'},
-                    {name: 'OSZTONAP',                  align: 'R', label: 'Osztónap'},
-                    {name: 'NYUGDIJBIZTOSITASIJARULEK', align: 'R', label: 'Összeg'},
-                    {name: 'FORRAS_TABLA',              align: 'L', label: 'Pszeudó / Valódi'},
-                    {name: 'SOURCE_METHOD',             align: 'L', label: 'Jogviszony forrása'}
+            this.state.result && 0 &&
+            <Fragment>
+              <div style={{ position: 'relative', top: 180 + (this.state.eventList.length + 1) * 30, width: '80%', margin: 'auto', background: '#deb306', border: '1px solid #d1d1d1', padding: 0, paddingBottom: 0 }} >
+                <div key={event.event_cd + index}>
+                  <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 14, textTransform: 'uppercase', paddingTop: 10 }} >
+                    Eredmények
+                  </div>
+                  <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
+                  </div>
+                </div>
+              </div>
+              <div style={{position:'relative', top: 180 + (this.state.eventList.length + 1) * 30, width:'80%', margin:'auto', background:'#e1e1e1', border:'1px solid #d1d1d1', padding:0, paddingTop:8, paddingBottom:0}} >
+                <div style={{paddingLeft:20, paddingBottom:8, fontSize:13, textTransform:'uppercase'}} >
+                  BRM Output
+                </div>
+                <div style={{background:'#fff', padding:5, borderTop:'1px solid #d1d1d1', margin:'0px auto', horizontalAlign:'center'}} >
+                  <Table
+                  header={[
+                    { name: 'ELLATAS_CD',       align: 'C', label: 'Ellátás kódja' },
+                    { name: 'ELLATAS_NM',       align: 'C', label: 'Ellátás neve' },
+                    { name: 'ELLATAS_START_DT', align: 'C', label: 'Ellátás Kezdete' },
+                    { name: 'ELLATAS_END_DT',   align: 'C', label: 'Ellátás Vége' },
+                    { name: 'ELLATAS_DAYS_NUM', align: 'C', label: 'Ellátás hossza' },
+                    { name: 'ELLATAS_AMOUNT',   align: 'C', label: 'Ellátás összege' },
+                    { name: 'ELLATAS_DESC',     align: 'C', label: 'Megjegyzés' }
                   ]}
-                data={this.state.result.jogviszony}
-              />
-            </div>
+                  data={this.state.result.brm_output} />
+                </div>
+              </div>
+              <div style={{position:'relative', top: 180 + (this.state.eventList.length + 1) * 30, width:'80%', margin:'auto', background:'#e1e1e1', border:'1px solid #d1d1d1', padding:0, paddingTop:8, paddingBottom:0}} >
+                <div style={{paddingLeft:20, paddingBottom:8, fontSize:13, textTransform:'uppercase'}} >
+                  Generált jogviszonyok
+                </div>
+                <div style={{background:'#fff', padding:5, borderTop:'1px solid #d1d1d1', margin:'0px auto', horizontalAlign:'center'}} >
+                <Table
+                  header={[
+                      {name: 'TARGYEV',                   align: 'R', label: 'Tárgyév'},
+                      {name: 'ALKMIN',                    align: 'L', label: 'ALKMIN kód'},
+                      {name: 'KEZDESDATUM',               align: 'C', label: 'Jogviszony kezdete'},
+                      {name: 'VEGEDATUM',                 align: 'C', label: 'Jogviszony vége'},
+                      {name: 'OSZTONAP',                  align: 'R', label: 'Osztónap'},
+                      {name: 'NYUGDIJBIZTOSITASIJARULEK', align: 'R', label: 'Összeg'},
+                      {name: 'FORRAS_TABLA',              align: 'L', label: 'Pszeudó / Valódi'},
+                      {name: 'SOURCE_METHOD',             align: 'L', label: 'Jogviszony forrása'}
+                    ]}
+                  data={this.state.result.jogviszony} />
+                </div>
+              </div>
+            </Fragment>
           }
         </div>
       </Fragment>
