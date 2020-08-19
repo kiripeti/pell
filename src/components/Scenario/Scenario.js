@@ -170,7 +170,7 @@ class Scenario extends Component {
             </div>
           }
           {
-            this.state.result && 0 &&
+            this.state.result &&
             <Fragment>
               <div style={{ position: 'relative', top: 180 + (this.state.eventList.length + 1) * 30, width: '80%', margin: 'auto', background: '#deb306', border: '1px solid #d1d1d1', padding: 0, paddingBottom: 0 }} >
                 <div >
