@@ -103,7 +103,14 @@ class Scenario extends Component {
         isLoading: true,
         loadingMessage: 'Szcenárió futás'
       })),
-      success: (res) => this.setState({result: res}),
+      success: (res) => this.setState({result: {
+        brm_output: utils.dtFromSAS2JS(res.brm_output, ['ELLATAS_START_DT', 'ELLATAS_END_DT']),
+        jogviszony: utils.functionOnColumns(
+          res.jogviszony,
+          ['KEZDESDATUM', 'VEGEDATUM'],
+          (sasDateTime) => utils.fromSasDateTime(sasDateTime).toLocaleDateString('hu-HU')
+        )
+      }}),
       postprocess: () => this.setState(() => ({
         isLoading: false
       }))
