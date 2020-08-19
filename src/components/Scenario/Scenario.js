@@ -88,7 +88,7 @@ class Scenario extends Component {
       family: this.state.family.map((member) => ({
         JKOD: this.state.jkod, ...member
       })),
-      params: [{ ...this.state.params, LEKERDEZES_DT: new Date() }]
+      params: [{ ...this.state.params, LEKERDEZES_DT: new Date(), DONTES_KIIR: 1 }]
     };
 
     events.forEach((event, index) => {
