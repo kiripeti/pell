@@ -173,7 +173,7 @@ class Scenario extends Component {
             this.state.result && 0 &&
             <Fragment>
               <div style={{ position: 'relative', top: 180 + (this.state.eventList.length + 1) * 30, width: '80%', margin: 'auto', background: '#deb306', border: '1px solid #d1d1d1', padding: 0, paddingBottom: 0 }} >
-                <div key={event.event_cd + index}>
+                <div >
                   <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 14, textTransform: 'uppercase', paddingTop: 10 }} >
                     Eredmények
                   </div>
