@@ -5,7 +5,7 @@
     %init_stp(sensitivityAnalysis);
 
     /* TESZT */
-    /*
+    
     %if %sysfunc(exist(work.benefit)) eq 0 %then %do;
         data work.benefit;
             BENEFIT = 'GYOD';
@@ -16,7 +16,7 @@
             GYOD_ALAPOSSZEG=124000000;
         run;
     %end;
-    */
+    
 
     %global postfix;
     %let postfix = &user.%sysfunc(time(), B8601TM6);
