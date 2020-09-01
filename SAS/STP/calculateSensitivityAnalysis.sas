@@ -22,6 +22,7 @@
     %let postfix = &user.%sysfunc(time(), B8601TM6);
 
     %let now = %sysfunc(datetime(), 12.);
+    %let today = %sysfunc(today(), 12.);
     
     /* Init PARAMS */
         data pelltmp.params_&postfix;
@@ -30,7 +31,7 @@
                 value $250;
             
             name='LEKERDEZES_DT';
-            value=strip("&now.");
+            value=strip("&today.");
             output;
             
             name='keresztmetszet';
