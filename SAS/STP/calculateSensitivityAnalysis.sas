@@ -102,10 +102,12 @@
                 %let ptable_postfix = %scan(&ptables_postfix., &i., |);
                 data KERESZT.&ptable_postfix._O;
                     set PELLTMP.&ptable_postfix.;
+                    drop rule_rk version_rk modificationstatus_cd valid_from_dttm valid_to_dttm modifiedby_nm deletedby_nm deletion_dttm modification_dttm approvedby_nm;
                 run;
 
                 data KERESZT.&ptable_postfix._M;
                     set WORK.&ptable.;
+                    drop rule_rk version_rk modificationstatus_cd valid_from_dttm valid_to_dttm modifiedby_nm deletedby_nm deletion_dttm modification_dttm approvedby_nm;
                 run;
             %end;
         %mend;
