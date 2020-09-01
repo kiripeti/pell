@@ -47,7 +47,7 @@
         run;
 
         data _null_;
-            set PARAMS.ELLATASOK (where=(ELLATAS_KOD="&benefit."))
+            set PARAMS.ELLATASOK (where=(ELLATAS_KOD="&benefit."));
             call symputx("benefit_nm", ELLATAS_NEV, 'G');
         run;
     /* End of Manage BENEFITS */
