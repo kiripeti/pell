@@ -5,7 +5,7 @@
 
     /* TESZT */
     
-    %if %sysfunc(exist(work.runid)) eq 0 %then %do;
+    %if %sysfunc(exist(work.sensitivity_id)) eq 0 %then %do;
         data work.sensitivity_id;
             runid = 'sasinst182616';
         run;
