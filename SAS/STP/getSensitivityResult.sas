@@ -60,7 +60,7 @@
     /* Get KERESZT Run ID */
         proc sql noprint;
             select runid
-                    into :postfix.
+                    into :postfix
                 from work.runid
             ;
         quit;
