@@ -21,8 +21,7 @@
     %global postfix;
     %let postfix = &user.%sysfunc(time(), B8601TM6);
 
-    %let dt = %sysfunc(today());
-    %let today = %sysfunc(datetime(), 12.);
+    %let now = %sysfunc(datetime(), 12.);
     
     /* Init PARAMS */
         data pelltmp.params_&postfix;
@@ -31,7 +30,7 @@
                 value $250;
             
             name='LEKERDEZES_DT';
-            value=strip("&dttm.");
+            value=strip("&now.");
             output;
             
             name='keresztmetszet';
@@ -57,7 +56,7 @@
             insert into kereszt.SENSITIVITY_STATUS
                 (runid, user, start_dttm, status, benefit_code, benefit_name)
             values
-                ("&postfix.", "&user.", &dttm., 'RUNNING', "&benefit.", "&benefit_nm.")
+                ("&postfix.", "&user.", &now., 'RUNNING', "&benefit.", "&benefit_nm.")
             ;
         quit;
     /* End of Insert Run Record into KERESZT Status Table */
