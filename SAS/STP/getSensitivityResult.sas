@@ -6,7 +6,7 @@
     /* TESZT */
     
     %if %sysfunc(exist(work.runid)) eq 0 %then %do;
-        data work.runid;
+        data work.sensitivity_id;
             runid = 'sasinst182616';
         run;
     %end;
@@ -15,7 +15,7 @@
         proc sql noprint;
             select runid
                     into :postfix_kereszt
-                from work.runid
+                from work.sensitivity_id
             ;
         quit;
     /* End of Get KERESZT Run ID */
