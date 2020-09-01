@@ -158,18 +158,18 @@
                     put(count(distinct o.ELLATAS_JKOD) / &n_sample., nlpct32.2 -L)
                         label="Jogosultak aránya" as O_JOGOSULTAK_ARANYA,
                     put(sum(o.ELLATAS_AMOUNT), nlnum32. -L)
-                        label="Összeg" as O_SUM_OSSZEG
+                        label="Összeg" as O_SUM_OSSZEG,
                     put(count(distinct case when m.ELLATAS_JKOD is null then o.ELLATAS_JKOD end), nlnum32. -L)
-                        label="Jogosultak száma (különbség)" as O_JOGOSULTAK_KUL
+                        label="Jogosultak száma (különbség)" as O_JOGOSULTAK_KUL,
 
                     put(count(distinct m.ELLATAS_JKOD), nlnum32. -L)
                         label="Jogosultak száma" as M_JOGOSULTAK_SZAMA,
                     put(count(distinct m.ELLATAS_JKOD) / &n_sample., nlpct32.2 -L)
                         label="Jogosultak aránya" as M_JOGOSULTAK_ARANYA,
                     put(sum(m.ELLATAS_AMOUNT), nlnum32. -L)
-                        label="Összeg" as M_SUM_OSSZEG
+                        label="Összeg" as M_SUM_OSSZEG,
                     put(count(distinct case when o.ELLATAS_JKOD is null then m.ELLATAS_JKOD end), nlnum32. -L)
-                        label="Jogosultak száma (különbség)" as M_JOGOSULTAK_KUL,
+                        label="Jogosultak száma (különbség)" as M_JOGOSULTAK_KUL
 
                 from KERESZT.&benefit._&postfix._O o
                     full join KERESZT.&benefit._&postfix._M m on (
