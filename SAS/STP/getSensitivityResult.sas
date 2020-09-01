@@ -14,7 +14,7 @@
     /* Get KERESZT Run ID */
         proc sql noprint;
             select runid
-                    into :postfix
+                    into :postfix_kereszt
                 from work.runid
             ;
         quit;
@@ -24,11 +24,11 @@
         proc sql noprint;
             select
                 PARAMETERTABLA,
-                POSTFIX_FIZIKAI_NEV
+                tranwrd(POSTFIX_FIZIKAI_NEV, '&postfix.', '&postfix_kereszt.')
                     into
                         :ptables separated by '|',
                         :ptables_postfix separated by '|'
-                from KERESZT.PTABLA_&postfix.
+                from KERESZT.PTABLA_&postfix_kereszt.
             ;
         quit;
         %let ptable_count = %eval(%sysfunc(count(&ptables., |)) + 1);
@@ -47,6 +47,6 @@
     
 %bafheader()
     %bafOutDataset(runid, work, runid)
-    %bafOutDataset(result, kereszt, res_&postfix.)
+    %bafOutDataset(result, kereszt, res_&postfix_kereszt.)
     %_add_params
 %bafFooter()
