@@ -6,57 +6,10 @@
     /* TESZT */
     
     %if %sysfunc(exist(work.runid)) eq 0 %then %do;
-    
-    /*
         data work.runid;
-            runid = 'TST1234';
+            runid = 'sasinst182616';
         run;
-
-        data kereszt.ptabla_TST1234;
-            PARAMETERTABLA = 'TST_PT1'; output;
-            PARAMETERTABLA = 'TST_PT2'; output;
-        run;
-
-        data kereszt.TST_PT1_TST1234_O;
-            content = '1o';
-        run;
-
-        data kereszt.TST_PT2_TST1234_O;
-            content = '2o';
-        run
-        
-        data kereszt.TST_PT1_TST1234_M;
-            content = '1m';
-        run
-
-        data kereszt.TST_PT2_TST1234_M;
-            content = '2m';
-        run
-
-        data kereszt.RES_TST1234;
-        
-            PARAMETER_KESZLET = 'ORIGINAL';
-            PARAMETER_KESZLET_LBL = 'Eredeti';
-
-            JOGOSULTAK_SZAMA = '0';
-            JOGOSULTAK_ARANYA = '1';
-            SUM_OSSZEG = '3';
-            JOGOSULTAK_KUL = '4';
-            output;
-            
-            PARAMETER_KESZLET = 'MODIFIED';
-            PARAMETER_KESZLET_LBL = 'Módosított';
-
-            JOGOSULTAK_SZAMA = '4';
-            JOGOSULTAK_ARANYA = '3';
-            SUM_OSSZEG = '2';
-            JOGOSULTAK_KUL = '1';
-            output;
-        run;
-
     %end;
-*/
-    
 
     /* Get KERESZT Run ID */
         proc sql noprint;

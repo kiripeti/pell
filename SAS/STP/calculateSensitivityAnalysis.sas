@@ -219,7 +219,7 @@
         proc sql noprint;
             update kereszt.SENSITIVITY_STATUS
                 set
-                    end_dttm=datetime(),
+                    end_dttm=int(datetime()),
                     status='FINISHED'
                 where
                     runid = "&postfix."
