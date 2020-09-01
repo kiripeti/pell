@@ -7,6 +7,7 @@
     
     %if %sysfunc(exist(work.runid)) eq 0 %then %do;
     
+    /*
         data work.runid;
             runid = 'TST1234';
         run;
@@ -54,7 +55,7 @@
         run;
 
     %end;
-
+*/
     
 
     /* Get KERESZT Run ID */
@@ -68,8 +69,12 @@
 
     /* Get Parameter Table Names */
         proc sql noprint;
-            select PARAMETERTABLA
-                    into :ptables separated by '|'
+            select
+                PARAMETERTABLA,
+                POSTFIX_FIZIKAI_NEV
+                    into
+                        :ptables separated by '|',
+                        :ptables_postfix separated by '|'
                 from KERESZT.PTABLA_&postfix.
             ;
         quit;
@@ -80,8 +85,9 @@
         %macro _add_params;
             %do i=1 %to &ptable_count.;
                 %let ptable = %scan(&ptables., &i., |);
-                %bafOutDataset(&ptable._o, kereszt, &ptable._&postfix._o)
-                %bafOutDataset(&ptable._m, kereszt, &ptable._&postfix._m)
+                %let ptable_postfix = %scan(&ptables_postfix., &i., |);
+                %bafOutDataset(&ptable._o, kereszt, &ptable_postfix._o)
+                %bafOutDataset(&ptable._m, kereszt, &ptable_postfix._m)
             %end;
         %mend;
     /* Add Parameter Table Names to Output */

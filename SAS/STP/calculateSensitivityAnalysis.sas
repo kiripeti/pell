@@ -78,30 +78,6 @@
         %let ptable_count = %eval(%sysfunc(count(&ptables., |)) + 1);
     /* End of Write Parameter Tables to Macro */
 
-    /* Save Parameter Table List and Parameter Tables to KERESZT */
-        proc sql noprint;
-            create table KERESZT.PTABLA_&postfix. as
-                select PARAMETERTABLA
-                from PARAMS.ELLATAS_PARAMS
-                where ELLATAS = "&benefit."
-            ;
-        quit;
-
-        %macro _save_parameter_tables;
-            %do i=1 %to &ptable_count.;
-                %let ptable = %scan(&ptables., &i., |);
-                data KERESZT.&ptable._&postfix._O;
-                    set PELLTMP.&ptable.;
-                run;
-
-                data KERESZT.&ptable._&postfix._M;
-                    set WORK.&ptable.;
-                run;
-            %end;
-        %mend;
-        %_save_parameter_tables;
-    /* End of Save Parameter Tables to KERESZT */
-
     /* Calculate Benefits and Save Results*/
         %include "&jobs_dir./Ellatasok_szamitasa.sas";
 
@@ -110,6 +86,32 @@
         run;
 
     /* End of Calculate Benefits and Save Results */
+
+    /* Save Parameter Table List and Parameter Tables to KERESZT */
+        proc sql noprint;
+            create table KERESZT.PTABLA_&postfix. as
+                select PARAMETERTABLA, POSTFIX_FIZIKAI_NEV
+                from PARAMS.ELLATAS_PARAMS
+                where ELLATAS = "&benefit."
+            ;
+        quit;
+
+        %macro _save_parameter_tables;
+            %do i=1 %to &ptable_count.;
+                %let ptable = %scan(&ptables., &i., |);
+                %let ptable_postfix = %scan(&ptables_postfix., &i., |);
+                data KERESZT.&ptable_postfix._O;
+                    set PELLTMP.&ptable_postfix.;
+                run;
+
+                data KERESZT.&ptable_postfix._M;
+                    set WORK.&ptable.;
+                run;
+            %end;
+        %mend;
+        %_save_parameter_tables;
+    /* End of Save Parameter Tables to KERESZT */
+
 
     /* Modify parameters according to user input */
         %macro _modify_parameter_tables;
