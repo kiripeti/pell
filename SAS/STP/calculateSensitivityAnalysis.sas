@@ -22,7 +22,7 @@
     %let postfix = &user.%sysfunc(time(), B8601TM6);
 
     %let dt = %sysfunc(today());
-    %let dttm = %sysfunc(datetime(), 12.);
+    %let today = %sysfunc(datetime(), 12.);
     
     /* Init PARAMS */
         data pelltmp.params_&postfix;
