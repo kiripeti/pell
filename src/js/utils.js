@@ -6,6 +6,7 @@ import h54s, {
 import customer_data from '../test_data/ugyfel_adat';
 import { benefits } from '../test_data/benefits';
 import { events } from '../test_data/getEvents';
+import { getParamTables, getSensitivityResult, getSensitivityStatus } from '../test_data/sensitivity';
 
 const dev = false;
 
@@ -62,7 +63,10 @@ const removeEmptyKeys = (obj) => {
 const action = {
   'getCustomer': customer_data,
   'getBenefits': benefits,
-  'getEvents': events
+  'getEvents': events,
+  'getParamTables': getParamTables,
+  'getSensitivityResult': getSensitivityResult,
+  'getSensitivityStatus': getSensitivityStatus
 };
 
 export class SAS {
@@ -97,7 +101,7 @@ export class SAS {
 
     this.sas.call(program, sasData, (err, res) => {
       if (dev) {
-        success(action[program])
+        success(action[program]);
       } else {
         if (err) {
           if (err.type === 'notLoggedinError') {
