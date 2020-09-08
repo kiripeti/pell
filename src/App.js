@@ -25,7 +25,7 @@ class App extends Component {
           label: 'Beállítások'
         }
       },
-      selectedMenu: 'SENSITIVITY',
+      selectedMenu: 'BENEFIT',
       isDebug: true
     };
 
