@@ -122,6 +122,9 @@
                 %let ptable_postfix = %scan(&ptables_postfix., &i., |);
                 data PELLTMP.&ptable_postfix.;
                     set WORK.&ptable.;
+                    modificationstatus_cd = 'Y';
+                    valid_from_dttm = 0;
+                    valid_to_dttm = '31DEC4999 23:59:59'dt;
                 run;
             %end;
         %mend;
