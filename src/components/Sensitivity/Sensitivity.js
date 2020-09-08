@@ -5,7 +5,6 @@ import Table from '../Table';
 import utils, { SAS } from '../../js/utils';
 import Select from '../FormElements/Select';
 import Input from '../FormElements/Input';
-import CheckBox from '../FormElements/CheckBox';
 
 class Sensitivity extends Component {
   constructor(props) {
@@ -42,7 +41,7 @@ class Sensitivity extends Component {
       }
     });
 
-  componentDidMount = () =>
+  getSensitivityStatus = () =>
     this.sas.call({
       program: 'getSensitivityStatus',
       isDebug: this.props.isDebug,
@@ -55,7 +54,7 @@ class Sensitivity extends Component {
           sensitivityStatus: utils.functionOnColumns(
             res.sensitivityStatus,
             ['START_DTTM', 'END_DTTM'],
-            (sasDateTime) => utils.fromSasDateTime(sasDateTime).toLocaleString('hu-HU')
+            (sasDateTime) => sasDateTime ? utils.fromSasDateTime(sasDateTime).toLocaleString('hu-HU') : ''
           ).map(row => ({
             ...row,
             'SHOW': row['STATUS'] === 'FINISHED' ? <input type="button" className="button" style={{ marginLeft: 0 }} value=" Mutat " onClick={this.showResult(row['RUNID'])} /> : ''
@@ -69,6 +68,8 @@ class Sensitivity extends Component {
         }));
       }
     });
+
+  componentDidMount = () => this.getSensitivityStatus();
 
   showResult = (runID) =>
     () => this.sas.call({
@@ -113,7 +114,7 @@ class Sensitivity extends Component {
           <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 13, textTransform: 'uppercase' }} >
             {param['PARAMETERTABLA']} (eredeti)
           </div>
-          <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
+          <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center', overflow: 'auto' }} >
             <Table
               header={Object.keys(origParam[0]).reduce((header, key) => [...header, { name: key, align: 'C', label: key }], [])}
               data={origParam} />
@@ -123,7 +124,7 @@ class Sensitivity extends Component {
           <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 13, textTransform: 'uppercase' }} >
             {param['PARAMETERTABLA']} (módosított)
             </div>
-          <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
+          <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center', overflow: 'auto' }} >
             <Table
               header={Object.keys(modParam[0]).reduce((header, key) => [...header, { name: key, align: 'C', label: key }], [])}
               data={modParam} />
@@ -242,11 +243,14 @@ class Sensitivity extends Component {
     });
 
     setTimeout(
-      () => this.setState({
-        isLoading: false,
-        showNew: false,
-        showResult: false
-      }),
+      () => {
+        this.setState({
+          isLoading: false,
+          showNew: false,
+          showResult: false
+        });
+        this.getSensitivityStatus();
+      },
       1000 + Math.random()*1000
     );
   }

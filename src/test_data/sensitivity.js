@@ -20,7 +20,7 @@ export const getSensitivityStatus = {
   "runid":
     [{ "RUNID": "sasinst105330" }],
   "sensitivityStatus":
-    [{ "RUNID": "sasinst182334", "USER": "sasinst", "START_DTTM": 1914603814, "END_DTTM": 1914603830.28, "STATUS": "RUNNING", "BENEFIT_CODE": "GYOD", "BENEFIT_NAME": "Gyermekek otthongondozási díja" }, { "RUNID": "sasinst182616", "USER": "sasinst", "START_DTTM": 1914603976, "END_DTTM": 1914603982.8, "STATUS": "FINISHED", "BENEFIT_CODE": "GYOD", "BENEFIT_NAME": "Gyermekek otthongondozási díja" }, { "RUNID": "sasinst185040", "USER": "sasinst", "START_DTTM": 1914605440, "END_DTTM": 1914605457, "STATUS": "FINISHED", "BENEFIT_CODE": "GYOD", "BENEFIT_NAME": "Gyermekek otthongondozási díja" }],
+    [{ "RUNID": "sasinst182334", "USER": "sasinst", "START_DTTM": 1914603814, "END_DTTM": null, "STATUS": "RUNNING", "BENEFIT_CODE": "GYOD", "BENEFIT_NAME": "Gyermekek otthongondozási díja" }, { "RUNID": "sasinst182616", "USER": "sasinst", "START_DTTM": 1914603976, "END_DTTM": 1914603982.8, "STATUS": "FINISHED", "BENEFIT_CODE": "GYOD", "BENEFIT_NAME": "Gyermekek otthongondozási díja" }, { "RUNID": "sasinst185040", "USER": "sasinst", "START_DTTM": 1914605440, "END_DTTM": 1914605457, "STATUS": "FINISHED", "BENEFIT_CODE": "GYOD", "BENEFIT_NAME": "Gyermekek otthongondozási díja" }],
   "usermessage": "blank",
   "logmessage": "blank",
   "requestingUser": "sasinst",
