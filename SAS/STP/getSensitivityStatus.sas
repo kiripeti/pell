@@ -5,5 +5,5 @@
 
 %bafheader()
     %bafOutDataset(runid, work, runid)
-    %bafOutDataset(status, kereszt, sensitivity_status)
+    %bafOutDataset(sensitivityStatus, kereszt, sensitivity_status)
 %bafFooter()

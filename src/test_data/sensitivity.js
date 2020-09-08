@@ -35,9 +35,11 @@ export const getSensitivityResult = {
     [{ "RUNID": "sasinst105418" }],
   "result":
     [{ "STATISTIC": "Minta elemszám", "ORIGINAL": "10", "MODIFIED": "10" }, { "STATISTIC": "Jogosultak száma", "ORIGINAL": "0", "MODIFIED": "0" }, { "STATISTIC": "Jogosultak aránya", "ORIGINAL": "0,00%", "MODIFIED": "0,00%" }, { "STATISTIC": "Összeg", "ORIGINAL": ".", "MODIFIED": "." }, { "STATISTIC": "Jogosultak száma (különbség)", "ORIGINAL": "0", "MODIFIED": "0" }],
-  "GYOD_PARAMS_o":
+  "params":
+    [{ "PARAMETERTABLA": "GYOD_PARAMS", "POSTFIX_FIZIKAI_NEV": "P_GYOD_&postfix." }],
+  "GYOD_PARAMS_O":
     [{ "GYOD_ALAPOSSZEG": 124000, "NYUGDIJJARULEK": 10, "TOBBSZEREK_SZORZO": 1.5 }],
-  "GYOD_PARAMS_m":
+  "GYOD_PARAMS_M":
     [{ "GYOD_ALAPOSSZEG": 124000000, "NYUGDIJJARULEK": 10, "TOBBSZEREK_SZORZO": 1.5 }],
   "usermessage": "blank",
   "logmessage": "blank",

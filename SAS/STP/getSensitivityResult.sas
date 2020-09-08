@@ -39,8 +39,8 @@
             %do i=1 %to &ptable_count.;
                 %let ptable = %scan(&ptables., &i., |);
                 %let ptable_postfix = %scan(&ptables_postfix., &i., |);
-                %bafOutDataset(&ptable._o, kereszt, &ptable_postfix._o)
-                %bafOutDataset(&ptable._m, kereszt, &ptable_postfix._m)
+                %bafOutDataset(&ptable._O, kereszt, &ptable_postfix._o)
+                %bafOutDataset(&ptable._M, kereszt, &ptable_postfix._m)
             %end;
         %mend;
     /* Add Parameter Table Names to Output */
@@ -48,5 +48,6 @@
 %bafheader()
     %bafOutDataset(runid, work, runid)
     %bafOutDataset(result, kereszt, res_&postfix_kereszt.)
+    %bafOutDataset(params, kereszt, PTABLA_&postfix_kereszt.)
     %_add_params
 %bafFooter()
