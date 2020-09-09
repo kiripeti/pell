@@ -165,8 +165,17 @@ class Sensitivity extends Component {
 
   setParam = (tableName, index, property, data) =>
     this.setState((state) => {
+      const origIsChar = typeof state.params[tableName][index][property] === 'string';
+      const dataIsChar = isNaN(parseFloat(data));
+
       let params = Object.assign({}, state.params);
-      params[tableName][index][property] = data;
+      params[tableName][index][property] = origIsChar
+        ? data 
+        : (
+          dataIsChar
+            ? state.params[tableName][index][property]
+            : parseFloat(data)
+        );
       return { params: params };
     });
   
