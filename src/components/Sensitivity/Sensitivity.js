@@ -87,7 +87,8 @@ class Sensitivity extends Component {
         this.setState(() => ({
           result: res,
           showResult: true,
-          showNew: false
+          showNew: false,
+          runID: runID
         }));
 
         setTimeout(
@@ -315,7 +316,7 @@ class Sensitivity extends Component {
               <div style={{ position: 'relative', top: 150, width: '80%', margin: 'auto', background: '#deb306', border: '1px solid #d1d1d1', padding: 0, paddingBottom: 0 }} >
                 <div >
                   <div style={{ paddingLeft: 20, paddingBottom: 8, fontSize: 14, textTransform: 'uppercase', paddingTop: 10 }} >
-                    Eredmények
+                    Eredmények ({this.state.runID})
                   </div>
                   <div style={{ background: '#fff', padding: 5, borderTop: '1px solid #d1d1d1', margin: '0px auto', horizontalAlign: 'center' }} >
                     <Table
