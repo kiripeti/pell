@@ -34,7 +34,7 @@ export const getSensitivityResult = {
   "runid":
     [{ "RUNID": "sasinst105418" }],
   "result":
-    [{ "STATISTIC": "Minta elemszám", "ORIGINAL": "10", "MODIFIED": "10" }, { "STATISTIC": "Jogosultak száma", "ORIGINAL": "0", "MODIFIED": "0" }, { "STATISTIC": "Jogosultak aránya", "ORIGINAL": "0,00%", "MODIFIED": "0,00%" }, { "STATISTIC": "Összeg", "ORIGINAL": ".", "MODIFIED": "." }, { "STATISTIC": "Jogosultak száma (különbség)", "ORIGINAL": "0", "MODIFIED": "0" }],
+    [{ "STATISTIC": "Minta elemszám", "ORIGINAL": "10", "MODIFIED": "10" }, { "STATISTIC": "Jogosultak száma", "ORIGINAL": "3", "MODIFIED": "5" }, { "STATISTIC": "Jogosultak aránya", "ORIGINAL": "30,00%", "MODIFIED": "50,00%" }, { "STATISTIC": "Összeg", "ORIGINAL": "300000", "MODIFIED": "500000" }, { "STATISTIC": "Jogosultak száma (különbség)", "ORIGINAL": "1", "MODIFIED": "3" }],
   "params":
     [{ "PARAMETERTABLA": "GYOD_PARAMS", "POSTFIX_FIZIKAI_NEV": "P_GYOD_&postfix." }],
   "GYOD_PARAMS_O":
