@@ -41,7 +41,7 @@ class Sensitivity extends Component {
       }
     });
 
-  getSensitivityStatus = () =>
+  getSensitivityStatus = (getBenefits) =>
     this.sas.call({
       program: 'getSensitivityStatus',
       isDebug: this.props.isDebug,
@@ -60,7 +60,8 @@ class Sensitivity extends Component {
             'SHOW': row['STATUS'] === 'FINISHED' ? <input type="button" className="button" style={{ marginLeft: 0 }} value=" Mutat " onClick={this.showResult(row['RUNID'])} /> : ''
           }))
         }));
-        this.getBenefits();
+
+        if (getBenefits) this.getBenefits();
       },
       postprocess: () => {
         this.setState(() => ({
@@ -69,7 +70,7 @@ class Sensitivity extends Component {
       }
     });
 
-  componentDidMount = () => this.getSensitivityStatus();
+  componentDidMount = () => this.getSensitivityStatus(true);
 
   showResult = (runID) =>
     () => this.sas.call({
@@ -295,7 +296,7 @@ class Sensitivity extends Component {
                 <div id="output" style={{ margin: '0px auto', width: '100%', height: '100%', textAlign: 'center', overflow: 'auto' }} >
                   <Table
                     header={[
-                      { name: 'SHOW', align: 'C', label: '' },
+                      { name: 'SHOW', align: 'C', label: <input type="button" className="button" style={{ marginLeft: 0 }} value=" Frissítés " onClick={() => this.getSensitivityStatus(false)} /> },
                       { name: 'RUNID', align: 'C', label: 'Futás azonosító' },
                       { name: 'USER', align: 'C', label: 'Felhasználó' },
                       { name: 'START_DTTM', align: 'C', label: 'Futás kezdete' },
