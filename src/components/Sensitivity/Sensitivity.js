@@ -31,7 +31,7 @@ class Sensitivity extends Component {
       })),
       success: (res) => {
         this.setState(() => ({
-          benefits: res.benefits
+          benefits: res.benefits.sort((b1, b2) => b1['ELLATAS_NEV'] < b2['ELLATAS_NEV'] ? -1 : 1)
         }));
       },
       postprocess: () => {
