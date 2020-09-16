@@ -142,7 +142,7 @@
     /* End of Modify Parameters According to User Input */
 
     /* Calculate Benefits and Save Results */
-        %include "&jobs_dir./&benefit..sas"; /*TODO: sas_file makró*/
+        %include "&jobs_dir./&sas_file..sas";
 
         data kereszt.&benefit._&postfix._M;
             set pelltmp.&benefit._&postfix. (where=(ELLATAS_NM is not null));
