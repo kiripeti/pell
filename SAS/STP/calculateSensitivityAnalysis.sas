@@ -8,16 +8,15 @@
     
     %if %sysfunc(exist(work.benefit)) eq 0 %then %do;
         data work.benefit;
-            BENEFIT = 'GYOD';
+            BENEFIT = 'NFA';
         run;
 
-        data work.GYOD_PARAMS;
-            set params.GYOD_PARAMS;
-            GYOD_ALAPOSSZEG=124000000;
+        data work.FOLDGAZ;
+            set params.FOLDGAZ;
+            NAGYCSALAD_GY_N = 5;
         run;
     %end;
     
-
     %global postfix;
     %let postfix = &user.%sysfunc(time(), B8601TM6);
 
@@ -51,6 +50,20 @@
             call symputx("benefit_nm", ELLATAS_NEV, 'G');
         run;
     /* End of Manage BENEFITS */
+
+        
+    /* Get benefit flag and SAS_FILE */
+    data _null_;
+        set PARAMS.ELLATASOK;
+        if upcase(ELLATAS_KOD) = upcase("&benefit.") then do;
+            call symputx(ELLATAS_KOD, 1, 'G');
+            call symputx('sas_file', strip(SAS_FILE), 'G'); 
+        end;
+        else do;
+            call symputx(ELLATAS_KOD, 0, 'G');
+        end;
+    run;
+    /* End of Get benefit flag and SAS_FILE */
 
     /* Insert Run Record into KERESZT Status Table */
         proc sql noprint;
@@ -132,7 +145,7 @@
     /* End of Modify Parameters According to User Input */
 
     /* Calculate Benefits and Save Results */
-        %include "&jobs_dir./&benefit..sas";
+        %include "&jobs_dir./&sas_file..sas";
 
         data kereszt.&benefit._&postfix._M;
             set pelltmp.&benefit._&postfix. (where=(ELLATAS_NM is not null));
