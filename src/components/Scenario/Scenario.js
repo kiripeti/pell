@@ -195,6 +195,7 @@ class Scenario extends Component {
                 <div style={{background:'#fff', padding:5, borderTop:'1px solid #d1d1d1', margin:'0px auto', horizontalAlign:'center'}} >
                   <Table
                   header={[
+                    { name: 'ELLATAS_JKOD',     align: 'C', label: 'Ügyfél-azonosító' },
                     { name: 'ELLATAS_CD',       align: 'C', label: 'Ellátás kódja' },
                     { name: 'ELLATAS_NM',       align: 'C', label: 'Ellátás neve' },
                     { name: 'ELLATAS_START_DT', align: 'C', label: 'Ellátás Kezdete' },
