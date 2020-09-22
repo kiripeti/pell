@@ -24,7 +24,7 @@
         proc sql noprint;
             select
                 PARAMETERTABLA,
-                tranwrd(POSTFIX_FIZIKAI_NEV, '&postfix.', '&postfix_kereszt.')
+                tranwrd(lowcase(POSTFIX_FIZIKAI_NEV), '&postfix.', '&postfix_kereszt.')
                     into
                         :ptables separated by '|',
                         :ptables_postfix separated by '|'
