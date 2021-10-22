@@ -1,7 +1,14 @@
-import h54s, { 
+import h54s, {
   fromSasDateTime as h54sFromSASdttm,
-  toSasDateTime as h54sToSASdttm 
+  toSasDateTime as h54sToSASdttm
 } from 'h54s';
+
+import customer_data from '../test_data/ugyfel_adat';
+import { benefits } from '../test_data/benefits';
+import { events } from '../test_data/getEvents';
+import { getParamTables, getSensitivityResult, getSensitivityStatus } from '../test_data/sensitivity';
+
+const dev = false;
 
 const fromSasDateTime = (sasDate) => sasDate ? h54sFromSASdttm(sasDate) : null;
 const fromSASDate = (sasDate) => sasDate ? fromSasDateTime(sasDate * 24 * 60 * 60) : null;
@@ -29,10 +36,12 @@ const functionOnColumns = (table, columns, func) => (
           modCols[column] = func(row[column], index);
         }
       });
-  }
+    }
     return { ...row, ...modCols };
   })
 );
+
+const dtFromJS2SASAllColumn = (table) => functionOnColumns(table, '_ALL_', (value) => value instanceof Date ? toSASDate(value) : value)
 
 const removeEmptyKeysFromOcjet = (obj) => {
   for (const key in obj) {
@@ -51,26 +60,39 @@ const removeEmptyKeys = (obj) => {
   }
 }
 
+const action = {
+  'getCustomer': customer_data,
+  'getBenefits': benefits,
+  'getEvents': events,
+  'getParamTables': getParamTables,
+  'getSensitivityResult': getSensitivityResult,
+  'getSensitivityStatus': getSensitivityStatus
+};
+
 export class SAS {
   sas = new h54s({
-    metadataRoot:'/PELL/Stored Processes/',
+    metadataRoot: '/PELL/Stored Processes/',
     debug: true,
     maxXhrRetries: 0
   });
 
-  call = ({ program, tables, preprocess, success, postprocess }) => {
+  call = ({ program, tables, preprocess, success, postprocess, isDebug }) => {
+    tables = tables ? Object.getOwnPropertyNames(tables)
+      .reduce((modTables, tableName) => ({
+        ...modTables,
+        [tableName]: dtFromJS2SASAllColumn(tables[tableName])
+      }), {}) : null;
+
+    if (isDebug) console.log('tables', tables);
+
     if (preprocess) preprocess();
 
-    let sasData = null;
+    let sasData = new h54s.SasData([{ debug: isDebug ? 1 : 0 }], 'debug');
 
     if (tables && Object.keys(tables).length > 0) {
       const tableNames = Object.keys(tables);
 
-      let tableName = tableNames[0];
-      let data = removeEmptyKeys(tables[tableName]);
-      sasData = new h54s.SasData(data, tableName);
-
-      for (let i = 1; i < tableNames.length; i++) {
+      for (let i = 0; i < tableNames.length; i++) {
         let tableName = tableNames[i];
         let data = removeEmptyKeys(tables[tableName]);
         sasData.addTable(data, tableName);
@@ -78,14 +100,21 @@ export class SAS {
     }
 
     this.sas.call(program, sasData, (err, res) => {
-      if (err) {
-        if (err.type === 'notLoggedinError') {
-          window.location.href = '/pell';
-        }
-        console.log(err);
-        alert('Hiba lépett fel a feldolgozás során!');
+      if (dev) {
+        success(action[program]);
       } else {
-        success(res);
+        if (err) {
+          if (err.type === 'notLoggedinError') {
+            alert('A munkamenet lejárt! Frissítse az oldalt a bejelentkezéshez.');
+          } else {
+            console.log(err);
+            alert('Hiba lépett fel a feldolgozás során!');
+          }
+        } else {
+          if (isDebug) console.log('response', res);
+          success(res);
+        }
+
       }
 
       if (postprocess) postprocess();

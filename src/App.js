@@ -1,17 +1,25 @@
 import React, { Component, Fragment } from 'react';
 import CalculateBenefits from './components/CalculateBenefits';
+import Scenario from './components/Scenario/Scenario';
 import Settings from './components/Settings';
 import pkg from '../package.json'
+import Sensitivity from './components/Sensitivity/Sensitivity';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      menu: ['BENEFIT', 'SETTINGS'],
+      menu: ['BENEFIT', 'SCENARIO', 'SENSITIVITY', 'SETTINGS'],
       menuDetailes: {
         'BENEFIT': {
           label: 'Egységes ügyfélkép'
+        },
+        'SCENARIO': {
+          label: 'Szcenárióelemzés'
+        },
+        'SENSITIVITY': {
+          label: 'Keresztmetszeti vizsgálat'
         },
         'SETTINGS': {
           label: 'Beállítások'
@@ -28,7 +36,7 @@ class App extends Component {
     selectedMenu: code
   }))
 
-  debugChange = (bool) => this.state(() => ({
+  debugChange = (bool) => this.setState(() => ({
     isDebug: bool
   }))
 
@@ -37,8 +45,14 @@ class App extends Component {
       case 'BENEFIT':
         return <CalculateBenefits isDebug={this.state.isDebug} debugChange={this.debugChange} />;
 
+      case 'SCENARIO':
+        return <Scenario isDebug={this.state.isDebug} debugChange={this.debugChange} />;
+
+      case 'SENSITIVITY':
+        return <Sensitivity isDebug={this.state.isDebug} debugChange={this.debugChange} />;
+
       case 'SETTINGS':
-        return <Settings isDebug={this.state.isDebug} debugChange={this.debugChange} />
+        return <Settings isDebug={this.state.isDebug} debugChange={this.debugChange} />;
 
       default:
         return null;

@@ -3,6 +3,7 @@ import Table from './Table';
 
 const Results = ({results}) => {
   const headers = [
+    { name: 'ELLATAS_JKOD',     align: 'C', label: 'Ügyfél-azonosító' },
     { name: 'ELLATAS_NM',       align: 'C', label: 'Ellátás neve' },
     { name: 'ELLATAS_START_DT', align: 'C', label: 'Ellátás Kezdete' },
     { name: 'ELLATAS_END_DT',   align: 'C', label: 'Ellátás Vége' },

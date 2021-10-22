@@ -5,7 +5,7 @@ import Input from './FormElements/Input';
 class BenefitParams extends Component {
   renderParam = (param) => {
     if (param.NAME.indexOf('_FLG')>-1 && param.TYPE !== 'S') {
-      param.TYPE = 'F';
+      param.TYPE = 'FL';
     }
 
     let input = null;
@@ -66,7 +66,7 @@ class BenefitParams extends Component {
             onChange={this.props.setParam} />
         );
         break;
-      case 'F':
+      case 'FL':
         input = (
           <select
             name={param.NAME}
@@ -94,9 +94,10 @@ class BenefitParams extends Component {
     );
   }
 
-  render(props) {
+  render() {
+    const top = this.props.top ? this.props.top : 180;
     return (
-      <div id="rehab_container" style={{position:'relative', top:180, width:'80%', margin:'auto', background:'#e1e1e1', border:'1px solid #d1d1d1', padding:0, paddingTop:8, paddingBottom:0}} >
+      <div id="rehab_container" style={{position:'relative', top: top, width:'80%', margin:'auto', background:'#e1e1e1', border:'1px solid #d1d1d1', padding:0, paddingTop:8, paddingBottom:0}} >
         <div style={{paddingLeft:20, paddingBottom:8, fontSize:13, textTransform:'uppercase'}} >
           {this.props.benefitDescription + ' paraméterei'}
         </div>
